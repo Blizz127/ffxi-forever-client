@@ -1,0 +1,118 @@
+Owner request 3657ba956dcb0621: explicit server backup/restore across devices
+Status: inventory + proposed contract + UNWIRED precondition model only.
+Priority: disjoint preparation behind #1 smooth transitions / pre-Zilart journey.
+No production UI, transfer, storage, authentication or restore is implemented here.
+
+Existing facilities (source inspected, not a claim of retail cloud compatibility)
+- crates/vana-client/src/client/macros.rs: USER/<content_id in hex>, 40 books,
+  ten sets/book, twenty records/set, six macro lines. Retail record version/length/
+  MD5 checks exist. user_root uses retail directory if writable/unmanaged, otherwise
+  managed data directory seeded once. Do NOT invoke load_set for a backup scan:
+  missing set loading can write defaults. Use a new read-only validating adapter.
+  Do not upload entire USER trees, equipment/item state or arbitrary addon files.
+- crates/vana-client/src/config.rs: config.json contains portable choices alongside
+  saved/sealed passwords, account history, paths, servers and unknown passthrough.
+  Whole-file serialization/upload is forbidden. Existing save uses fs::write;
+  this alone is NOT a crash-safe multi-file restore transaction.
+- crates/vana-client/src/gamecfg.rs: GameConfig global + characters keyed by name;
+  config kinds determine per-character/global, kind5 transient never saved.
+- client/modern/mod.rs: modern_places keyed by character name; current position/
+  size defaults and user customizations must survive. Names/content IDs are local
+  lookup aids, never authentication or cross-realm ownership proof.
+- No universal native hotbar persistence contract found. Modern UI is command-
+  browser based (docs/modern-ui.md); addon hotbars exist via Lua integration.
+  Action-bar backup needs a typed adapter for the actual owner-used format;
+  no claim to back up arbitrary addon scripts or invent an action-bar system.
+- Existing server owner backlog: [redacted-path]
+  section11. It proposes authenticated launcher/accounts transfer; endpoint,
+  authorization and storage availability NOT established. No QST chat transport.
+
+Proposed scope and portable schema v1 (contract to reconcile with existing owners)
+- Server derives realm/account/current character from authenticated identity and
+  verifies ownership on EVERY list/read/create/restore request. Names are labels.
+- Account templates: explicitly selected portable general preferences and layout
+  presets. Per-character snapshots: macros, job action assignments, per-character
+  retail settings and existing layout overrides. Template never propagates to
+  siblings automatically. Default restore target is the same character only;
+  copying between characters is outside increment1, not an implicit fallback.
+- Envelope: schema version, section schema versions, producer build/flavor,
+  server-issued immutable snapshot id/revision, server time, section byte lengths
+  and content digests, explicit identity/scope. Bound aggregate sizes and counts
+  before allocation, validate finite/ranged values, reject unknown incompatible
+  schema; reject unsupported sections rather than silently dropping them.
+- Typed allowlist, not a blacklist: macro names/recognized game command lines;
+  portable chat/UI/camera preferences; validated action IDs/book-set references;
+  normalized layout anchors/size plus source viewport. Preserve original layout
+  and preview screen-fit changes; do not permanently rewrite it on smaller devices.
+- Never export auth/login/token/social credentials, server endpoints, named servers,
+  plugin/script code, logs/chat history, machine paths, display-device IDs,
+  launcher channels, game/install directories or unknown config maps. Performance/
+  display mode and device bindings stay device-local in increment1. Unknown addon
+  commands/path-bearing macros excluded pending explicit safe typed support.
+  Free-form macro text could contain user-entered secrets: no automatic upload;
+  preview content locally, reject unsupported commands, no payload logging, and
+  require deliberate selection. No regex can promise to identify every secret.
+- Restored macros are inert data: never execute on import. Gameplay/autonav state,
+  active scripts, account privileges, equipment, inventory, balances and progression
+  are not settings and cannot be restored by this feature.
+
+Explicit flows and conflict protection
+1. Save to server: select sections/scope, review contents/exclusions locally, then
+   confirm. Create immutable new snapshot using expected latest revision (CAS).
+   Concurrent update produces conflict and new preview, never last-writer-wins.
+   Stable request id makes retries idempotent, response loss cannot create copies.
+   Retain previous server revisions; no silent pruning/deletion in increment1.
+2. Restore: select snapshot, download to bounded memory/staging, validate digest,
+   schema, identity and section adapters, show before/after counts and changed
+   preferences/positions. Cancel makes no changes. Confirmation binds exact
+   snapshot+section selection+local revision+server revision+session identity.
+3. Recheck identity and local edits at apply; account switch/relog/disconnect or
+   any changed revision invalidates preview. Require idle settings editor, no macro
+   execution or zone/cutscene transition. No forced logout/restart or player input.
+4. Before any write, durably save ALL affected local preimages and a recoverable
+   transaction journal. Stage validated bytes, atomically replace each file under
+   one settings writer, commit journal last; recover/rollback partial writes after
+   interruption. Disk-full, preimage failure or stale revisions => no apply.
+   Preserve unrelated keys and files byte-for-byte where possible. UI mode changes
+   retain existing timed Keep/Revert; config save loop must honor restore lock.
+5. Undo restore uses retained preimage as another previewed restore, with the same
+   current-revision guard, not a silent overwrite of subsequent edits. Server save
+   and local restore are separate explicit actions; restoring never overwrites the
+   server snapshot. No file paths or archive entries supplied by server payload.
+
+Ownership, milestone and gates
+- Client: sole existing writer owns schema/adapters, preview/confirmation/rollback
+  UI and focused checks. Platform: existing server lead inventories storage and
+  coordinates existing accounts owner for authenticated transport. Existing ffxi
+  installer handles any eventually approved server deployment; banshee-realm-client
+  remains sole client publisher. No new worker or service ownership assignment.
+- Next deliverable: agreed transport/ownership contract plus read-only portable
+  export adapter and synthetic preview. Then staged transaction failure/recovery
+  tests; then explicit safe QA integration. No real account/token needed for model.
+- New auth scope/access expansion or live table/schema/data migration requires
+  separate scoped approval/preimage/rollback; none authorized by this prototype.
+  Existing social.chat token is NOT authorization for settings storage. Transport
+  availability is unknown, not permission to bypass service owners or invent API.
+- Required focused checks: realm/account/sibling isolation, version/size/digest
+  rejection, secret/path exclusion, unknown fields, Unicode macros, screen fit,
+  concurrent edits/devices, cancel/retry/duplicate request, disk-full, interrupted
+  multi-file commit and recovery, undo-after-edit, classic separation. Native UI
+  proof only after adapter/transport integration; this model is not that proof.
+
+Prepared code/evidence
+release/prototypes/settings_restore.rs is deliberately not in the client module
+tree. Tests cover identity/scope/schema/session, revision conflicts, exact explicit
+confirmation, matching preimage, idle guard and repeated apply. Revision numbers
+stand for validated immutable contents; atomic storage/CAS and authentication
+are future adapter/server responsibilities, not proven by this model.
+Evidence: ~/.cache/forever-client-build/owner-20261106-settings-backup/focused.log.
+No build/republication for an unwired model. Existing 46/18 live baseline unchanged.
+
+Server-owner inventory follow-up a6daf2a (received2026-11-06; report titled2026-11-07):
+reports/2026-11-07-settings-backup-inventory/README.md confirms no suitable bulk
+route in platform repo: login-only auth, small game/feed packets, tell tables and
+bot-only socket are not settings transports. Launcher/accounts service candidate
+requires existing owner design; new table/grant/endpoint approval boundaries
+remain. chars.accid ownership check and per-character charid mapping established
+by platform source inventory, not a live integration test. Retention limit and
+account-template DB key still proposal details; no DB/auth/action taken.

@@ -1,0 +1,22 @@
+Forever.27 — missions-first objective HUD
+
+- The opt-in Mission & Quest Tracker now highlights the selected objective,
+  current server step/count and where to go. Current-nation missions and the
+  next mission come first by default; an explicit player selection still wins.
+- One numbering order connects the HUD, numbered area-map markers, circular
+  minimap arrow and a separate gold numbered compass marker. Manual cyan
+  waypoints and Wide Scan/help tracking remain independent.
+- For a remote mission, guidance points to the first known ordinary zone exit
+  and names the destination and next zone. The current area map marks that exit;
+  a destination map can still show the objective itself when its floor is known.
+- Complete server objectives now survive zoning, matching v3.51's capped,
+  incremental QST1 feed. Updates/removals remain server-authoritative. Partial
+  fragments are discarded at zone boundaries; arrows wait while location loads.
+- Missing locations, unknown routes and unknown steps are described explicitly.
+  Guidance is a direction hint, not pathfinding or a promise of floor/access.
+
+Uses the existing tracker toggle, L shortcut, saved panel placement and explicit
+tracking choices. Forever Modern only; regular FFXI is unchanged. Available quest
+giver entries (k:a) and overhead !/? markers are not part of this mission increment.
+No real-account login, live gameplay, owner-device or Windows GUI check is claimed.
+Frozen .25 and .26 releases are unchanged; their publisher proceeds independently.

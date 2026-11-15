@@ -1,0 +1,36 @@
+Forever Training and Home Point markers
+
+Training is a Modern command-menu entry. Enter/Space toggles its on-screen
+tracker; Escape closes the menu. The HUD preference is remembered and starts
+off. Field Manual/Grounds tome page, level range, repeat state and goal counts
+come from FVT1 system messages, not inferred kills. Missing names use numbered
+goals; an omitted zone name is resolved from the installed game data. A brief
+completion notice survives the server's subsequent reset/no-page message.
+
+The hidden feed is enabled while the menu or HUD is visible and disabled when
+both close. Opening a menu with the HUD already enabled asks for a new snapshot.
+Subscriptions reconcile after login/zone changes because the server preference
+persists. Disconnect destroys transient state; it cannot send an OFF after the
+network thread has ended. Requests use the say protocol directly without local
+chat echo or changes to the selected chat channel. Normal server responses and
+refusals remain visible.
+
+Home Point feeds run while a map or the Modern minimap is in use. HPM1 snapshots
+are current-zone-only; complete ordered multipart updates replace markers
+atomically. Malformed, wrong-zone, incomplete and expired snapshots do not
+replace the visible set. Zone changes clear it. Registered/unregistered points
+have distinct labels on full maps and filled/outlined crystals on the minimap.
+Floor identity uses the installed teleport table, then current-zone collision.
+Map ownership and preview visibility remain enforced.
+
+The feed has no snapshot generation, destination-zone request, Home Point ID or
+submap key. It cannot supply unseen teleport destinations. The existing
+DAT/0x063 destination preview remains separate and still requires the server's
+0x114 refresh response. Live Home Point/Survival Guide expansion-mask validation
+and owner-device checks were not performed during this implementation.
+
+Both features compile only in the forever Cargo flavor and require the runtime
+Forever gate. Training additionally requires Modern UI. Neither feature sends
+requests on regular servers or in the classic binary. Incoming feed text is
+consumed before ordinary chat/Lua delivery; unknown protocol versions are hidden
+and ignored. Neither feature logs in, changes account permissions or reconnects.

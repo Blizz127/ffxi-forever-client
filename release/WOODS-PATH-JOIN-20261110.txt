@@ -1,0 +1,76 @@
+Woods diagonal path follow-up — 2026-11-10
+
+Latest art-lane finding was investigated using existing80/81 images and cached
+native triangle/UV metadata. No old scene was rerendered, no frozen build changed,
+and no helper or additional publisher/QA gate was created.
+
+Private evidence:
+[redacted-path]
+Same directory: geometry.json, edge-samples.json, wrap-bleed-counterfactual.json,
+trace.py, sample_edges.py. Native metadata stays private and out of archives.
+
+Three exact shared opaque t_win00d edges are at world x20/y2/z-32..-44, on
+wi_hand27 and wi_hand21 part1. Endpoints and vertex colors match. Independently
+decoded placements match six cached native bounds within0.00000143 world units.
+Camera projection of the prior raised join also matches its reviewed location.
+The diagnosed path line projects approximately(714.8,378.1)->(757.0,338.9)->
+(790.5,307.8)->(817.8,282.5); the middle/upper segments are the strongest match
+to the art-lane ROI. Do not claim every pixel in its approximate line is explained.
+
+Concrete defect: sigma4 classification wraps grass from the atlas left edge into
+earth at the right edge. On the middle join, reproduced grass weight on the right
+side rises to0.781 in80/81 vs0.125 in79; its mate remains earth. Window16 paired
+LOD0 encoded-RGB disagreement rises from3.34 in79 to12.86/12.45 in80/81.
+Existing exact images show darker mid/upper centers in80/81. Python float64 sample
+reproduction is a diagnostic, not bit-exact Rust, GPU mip, lighting or visual proof.
+Native UV rotations/offsets and stock texture differences also exist; no universal
+phase continuity or open-geometry-hole claim is made.
+
+Separate follow-up83 source frozen289892f5c22578bdca8bff93b17c57d85273e84e,
+treeae379d7080fc91104e524d5d60a2a2f60c5ad147, branchprivate/woods-path83-20261110,
+[redacted-path] Based on test-corrected0d5c0112,
+runtime-cumulative with82. Change clamps only horizontal classification Gaussian
+addressing for the transition atlas. Interior sigma4, vertical wrapping, macro/art
+filtering, native UVs/alpha/normals and default-off preview remain. One regression
+fixture covers opposing grass/earth borders and preservation of the interior blend.
+
+Build evidence:
+[redacted-path]
+One focused Woods module job, one Linux dist, one Windows dist dispatched. At start,
+48 logical CPUs were saturated (99-114 runnable, CPU PSI some avg10=51.43%); each
+compile uses1CPU quota/1job and nice19. Memory pressure was nearzero. No retired
+global heavy-batch lock is used. One watch-smokes.py owns exact83 startup, near/art
+boundary, stock-off/Original and Wine CLI after successful exits. Check current
+results before acting; never duplicate those jobs or the immutable81/82 handoffs.
+
+Next: record focused result, inspect exact83 scenes, package/hash/flavor/license/
+no-DAT checks, backup/stage and one Game QA/Banshee intake through coordinator.
+Scripts are prepared, not yet run. No83 artifact, visual-pass, QA or live claim at
+this checkpoint. If an own job failed, inspect that failure and preserve completed
+work; do not replay a whole pipeline. Publisher must keep actual predecessor
+rollback and return real activation/channel/full-package readbacks. Art lane owns
+picture transfer; no owner-device/server/player-progress action. No level-sync
+rerun, public release, new shared-crate donation, source push or credentials work.
+
+Completed checkpoint2026-11-10T03:35Z, supersedes pending jobs above:
+Private1.0.8-forever.83 packaged and verified;12focused tests, both distribution
+builds, exact Linux startup/near/boundary/control scenes and Wine CLI PASS.
+Changed scenes manually viewed; the reported distant diagonal is no longer
+conspicuous versus81. Fine detail retained; no new visible hole/alpha cut in
+these two views. Full scene/seam/mip/final-art acceptance remains unfinished.
+Stock-off/Original hashes and selected architecture/bank controls unchanged.
+DROP671ff728e34c513f33b8f5464520ddff9c9b41d56708b4e86cb65766955e0d02
+Linux26eea9eaaa2eaf8e7e0d1fa37d8314c81dfa649597509e0afe15f8dc7fda57aa
+Windows91408cc2743841694ed89145018ace6dd47328c5d02abab44015efbe075fe83f
+Canonical[redacted-path]
+Sealed[redacted-path]
+Backup[redacted-path]
+ONE coordinator report task3088a12c17ec at03:35:32Z for Game QA/Banshee.
+Receipt in release83/publication/coordinator-intake-receipt.json. No QA approval
+or live publication established. Preserve actual predecessor rollback.
+Frozen83 does not include late F1 menu/teleport/training fixes; intake explicitly
+keeps that corrective task open. Do not certify these bugs fixed by83.
+Exact render paths/settings/binary/PNG/config identities are recorded in
+release83/render-inspection.json and changed-feature-smoke.json. Art result
+return via native send was rejected because target already has an active writer;
+no restart/retry/queue bypass. Evidence remains available for coordinator relay.

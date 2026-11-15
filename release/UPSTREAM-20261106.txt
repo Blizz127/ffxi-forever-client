@@ -1,0 +1,22 @@
+Private client update: 1.0.7-forever.39 / 1.0.7-vana.16
+
+Upstream lenonk/vana-client master 30082fe62db126d08363ba94bc164385b13f21e5 -> dd2d249 (1.0.7).
+Preserves fork 861aade and subsequent standing notes; isolated merge then normal integration.
+Both flavours: upstream event/animation/rendering fixes, bounded login timeout,
+voice peer validation, delivery-box close recovery, classic Mog House menu,
+chat/event packet pacing and list improvements where supported.
+Forever: Modern list search, retaining all private-era, navigation, HUD, settings,
+mouse recovery, map, chat and opt-in environment preview changes.
+Classic excludes Modern UI, enhanced effects and Forever gameplay/features.
+Merge correction: per-container combine requests wait behind the upstream one-second
+send gate rather than losing later containers; duplicate pending merges coalesce.
+Send interval retains 400ms default. Upstream zone preloading remains disabled;
+existing regular/event zone loaders retain opt-in environment texture application.
+Launcher-managed updating and separate desktop IDs retained. No public source push.
+
+Validation and publisher receipts are recorded separately under
+~/.cache/forever-client-build/owner-20261106-release39/.
+Do not infer publication from this source file. Private publisher retains baton;
+regular client requires fresh zero-human checks; Forever client does not.
+No owner-device/live gameplay/native Windows GUI test, live server deployment,
+door/HP/Survival/0x114 hold clearance, credential/access change or game-data distribution.

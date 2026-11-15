@@ -1,0 +1,29 @@
+{
+  "utc": "2026-11-06T16:15:57.315909+00:00",
+  "assets": [
+    {
+      "file": "tower-ashlar-v1.png",
+      "sha256": "347cd275e63870a8ddcac9e8afbbc806d1a865cd39ad52193c8f2ad092763fae",
+      "size": [
+        887,
+        1774
+      ],
+      "source": "Built-in image_gen text-only original generation; no owned asset supplied",
+      "generation_file": "exec-6edcb9a9-ac6d-4c10-985d-6a1ee56f134f.png",
+      "prompt_summary": "Original portrait1:2 ancient warm olive-grey limestone ashlar,8staggered courses; neutral diffuse texture, no borrowed input.",
+      "limits": "Not an in-game image or proof of seamless tiling. Requires actual same-camera render review."
+    },
+    {
+      "file": "tower-ground-v1.png",
+      "sha256": "650102e1fa83424cd65cc1773ef7846fcbe0568375a3db8428d7f442b44f344a",
+      "size": [
+        1254,
+        1254
+      ],
+      "source": "Built-in image_gen text-only original generation; no owned asset supplied",
+      "generation_file": "exec-207ae540-e844-4991-9216-40a107d05108.png",
+      "prompt_summary": "Original square continuous rough indoor limestone, muted earthy brown-grey, fine granular detail; no slabs, neutral diffuse texture, no borrowed input.",
+      "limits": "Not an in-game image or proof of seamless tiling. Requires actual same-camera render review."
+    }
+  ]
+}

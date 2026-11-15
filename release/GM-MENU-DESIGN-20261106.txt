@@ -1,0 +1,395 @@
+Separate GM menu — owner4ebb0407fb3be051, assessment/preparation only
+2026-11-06. Existing sole client writer; platform owns commands/security;
+launcher owns publication. No runtime integration, privilege grant or command
+execution. Owner is playing GMBlizz: no device input/restart/scene replay.
+
+Current findings (source, not current live-account diagnosis)
+- No separate GM menu in client Special: special.rs lists Solo, Autocast,
+  Navigation, QuestBooks, Settings, Back. No new row added by this design.
+- era.rs::locked uses era_lock plus lobby_expansions. mission_log_on keeps logs
+  0..2; quest_area_on keeps areas0..4. No per-character ERA1 runtime adapter exists.
+  Therefore naming a character GMBlizz cannot make later logs appear. The owner
+  relay says no grant yet; client did not inspect DB or current player state.
+- ERA1 only allows presentation, with r2 lifecycle documented in
+  GM-CHARACTER-VISIBILITY-PLAN-20261106.txt. It is NOT a command catalog, gmlevel
+  grant, state query or action authorization. Nameplate/chat/account bits cannot
+  substitute. Receive-generation/timer attribution remains unresolved.
+- Platform session.rs::a_gm_is_told_what_a_command_cannot_do_and_a_player_is_not
+  has assertions for own-character wallhack on/off and godmode on/off through
+  LSB scripts, and player refusals. These tests were read, not rerun here.
+  script_host.rs implements getWallhack/setWallhack; player_api.rs holds a
+  session-only flag. zonein/selfchar.rs carries Hackmove in0x037 flags1 bit12
+  and0x00D bits. No native no-clip acceptance established.
+- Client net.rs Entity no_snap reads ground/HackMove bits for entity snapping;
+  SelfStatus currently extracts speed from0x2c and omits a dedicated Hackmove
+  field. This is not proof of local collision bypass working. No collision
+  change is made or promised by a button labeled wallhack.
+- Server generated forever_gm_coverage.lua refuses missing-binding commands
+  upfront; e.g. immortal lacks setUnkillable/getCursorTarget/isNPC. godmode is
+  a separate effect/mod implementation, not synonymous with immortality.
+- Exact zone command arguments, safe destination authority, per-command levels,
+  reversibility and current deployed support must come from existing platform
+  owner. Do not copy an arbitrary historical LSB command tree or offer207
+  scripts merely because their filenames exist.
+- Shared AH, parked entities, quest containers and stage0 feeds stay limited.
+  Seeing later mission headings would not establish those missions are playable.
+
+Proposed useful UI (not a new server protocol)
+A distinct GM Tools window in Forever, reachable only after current-character
+server permission for the menu is established. No account-wide access and no
+local enable switch. If current signal is absent/invalid, it does not appear.
+Unknown command support is never rendered as an enabled control. After future
+integration, it may show a plain explanation of unavailable capabilities inside
+an already-authorized menu; ordinary characters retain current base UI.
+
+Zone / teleport:
+- Search installed zone names against server-permitted destination catalog.
+- Show exact zone, destination/page/coordinates if established, missing-data and
+  content-coverage warnings. No fabricated spawn coordinate or force-zone mode.
+- Selection only previews; explicit Confirm states the movement destination.
+- Refuse while mandatory scene/zoning/logout/reconnect or a request is pending.
+- Preserve state on Cancel; no automatic retry if reply is lost. Treat server
+  zone transition as authoritative success, not a click or sent chat line.
+
+God mode:
+- Show server-confirmed status, or Unknown. Do not infer from HP or buffs alone.
+- Clearly describe the actual supported effects and reversibility from platform.
+- Prefer explicit on/off command semantics if supported. For toggle-only
+  commands require known state plus confirmation; never blindly retry a toggle.
+- Pending remains pending until correlated server result/state; error leaves
+  status unknown/unchanged, not optimistic success. No client invulnerability.
+
+Collision test (owner's wall hack):
+- Label as a server-authorized collision test, not universal flying/pathfinding.
+- Disabled/unavailable until exact capability, flag decoding, local movement
+  semantics, floors/doors and authoritative server acceptance are verified.
+- No local debug switch, packet injection, path validation bypass or persistent
+  setting. Honor server revocation and zone/disconnect reset. Do not claim an
+  emergency return or automatic rollback unless a real supported server action
+  has been established; no surprise teleport on disable.
+
+Safety/state design common to all rows
+Typed allowlisted actions only, own character initially, no freeform exec or
+other-character target fields. No grants, account controls, give-item/currency,
+quest/reward completion, destructive commands or reload controls in first menu.
+Per-character permission and supported command state must be fresh and tied to
+current network context. Close/clear menu, confirmation and pending UI on zone,
+relog, disconnect or revocation. Revalidate at confirm and send. Disable repeated
+clicks while pending. Never resend uncertain mutations on reconnect. State
+refresh and errors must not log credentials or unrestricted command arguments.
+Server revalidates every action regardless of client checks.
+
+Dependencies and release boundary
+1 Platform: exact deployed supported-command/permission/state-response contract,
+  zone destination semantics, toggle/cancel/error/timeout behavior, existing
+  GM guard/!gmmenu work ownership. ERA1 alone is insufficient.
+2 Client/platform: prove generation attribution, reset/revocation and sibling
+  isolation; current10 visibility tests only cover a supplied-context model.
+3 Client: prepare disjoint pure menu model after contract; later decoder/UI
+  integration, keyboard/mouse focus/confirm/cancel. No debug bypass implementation.
+4 Runtime integrator: exact authenticated account/character association, preimage,
+  capabilities and action-time owner approval before any live grant/security
+  rollout. This request supplies none of those approvals.
+5 Focused acceptance when contract exists: ordinary/sibling/forged/stale signals
+  cannot expose or dispatch; revoked-between-preview-and-confirm refuses; unknown
+  support/state disabled; repeated clicks one request; server refusal and lost
+  reply no retry; scene/zone/disconnect clears; classic remains excluded. Native
+  disposable-fixture checks only under existing safe ownership/permission.
+6 Separate tested held increment for access-related integration; no mixing into
+  pinned transition releases. No publication/restart from this assessment.
+
+Verification this increment: source cross-check and git diff --check only.
+No new runtime model, packet fixture, server test run, native menu or gameplay
+claim. Existing10 visibility model tests are not tests of this unbuilt menu.
+
+Platform command-contract handoff — 2026-11-06, source/report only
+- gm-guard-r1 a80e149/0db466e is an offline, unmerged, approval-held branch;
+  !gmmenu/GMC1 and target/server guards exist there only, not in a shipped kit.
+  Commit contents inspected read-only. No cherry-pick or branch switch performed.
+- Platform reports 71 runnable commands in v3.47/v3.62 source, 57 permission1.
+  This is not proof that every command works natively or is safe for this menu.
+- Replies are free-text system chat without request correlation. Do not treat
+  arbitrary system text as completion of a pending UI action. GMC1 is not an
+  established live status/acknowledgement channel.
+- !godmode [tier] toggles a persistent GodMode character variable; effects and
+  modifiers may not survive like the variable. There is no status command.
+  Persisted variable, buffs or HP are insufficient to reconstruct actual state.
+  The proposed known-state toggle prerequisite is therefore NOT satisfied;
+  keep an interactive on/off control unavailable pending authoritative semantics.
+- !wallhack [name] toggles a session flag reset on login, with no status query.
+  Platform reports 0x037 Flags1 offset44 bit12 and 0x00D HackMove/GroundFlag after
+  setWallhack. Confirm offset radix/layout against packet source before decoder
+  work. Current self-status decoding lacks the dedicated field; native collision
+  behavior is unproven. No optimistic state, retry, collision bypass or auto-walk
+  safety relaxation. Future supported control requires capability plus observed
+  own-character state and end-to-end semantics, not a sent command alone.
+- !hide details were truncated: unsupported/unknown until the existing platform
+  owner supplies full arguments, permission, state lifetime, packet/state signal,
+  failure/side effects and retry rules. Do not infer them from the command name.
+
+Next contract dependency: complete per-command response/status matrix from the
+existing platform owner, including godmode variable/effect mismatch and wallhack
+flag layout. Correlated results or safe read-only state recovery are not present
+by assumption. Source preparation stays separate from grant/security activation;
+no live command, access switch, release or owner-session test authorized here.
+
+Proposed platform contract integration requirements — coordinator086387b6fa524531
+Offline preparation/tests only; platform owns gm-guard-r1. GMS1 actual-state,
+self-only idempotent !gmset/GMR1 and audited !gmzone are proposals, not live
+capabilities. Do not wire the existing toggles or !zone (missing coordinates may
+fall back to0,0,0). Source merge/release/access activation remain separately held.
+
+Requirements to reconcile with that owner before client runtime integration:
+1 Versioned typed schemas, exact arguments/units/limits, system-channel provenance,
+  maximum150-byte framing and multipart rules if needed. Include explicit unknown,
+  unsupported, denied and error states; no inference from free-text replies.
+2 After every accepted0x00A invalidate capabilities, status, confirmations and
+  pending mutations. Re-request capability through the agreed supported query;
+  no mutations until fresh capability AND state match current character/session.
+  A missing/older server response leaves controls disabled, no fallback toggles.
+3 Preserve validated receive generation through decode and UI consumption, plus
+  account/realm/character identity. Reply correlation alone does not prove session
+  freshness. Reject stale/pre-zone/malformed/untrusted hook-origin capability.
+4 GMS1 must report actual effects/modifiers, not just GodMode variable; represent
+  disagreement explicitly. Define wallhack flag layout (0x037 offset/radix and
+  0x00D), state lifetime, and what can/cannot be confirmed without native movement.
+5 !gmset requests explicit desired state, own character only. Define bounded
+  request IDs and duplicate handling: same ID/payload has no second side effect;
+  same ID/different payload refused. GMR1 must match pending ID/action/generation,
+  carry outcome and authoritative state/revision or require a fresh GMS1 query.
+  Lost reply means Unknown; do not blindly resend, toggle or infer success.
+6 !gmzone must reject absent/unaudited coordinates and unauthorized destinations,
+  including closed zones under its proposed scope. Audit map page/floor/landing
+  data; UI selection previews, Confirm names destination, server validates again.
+  No default origin, arbitrary coordinates, repeat click or automatic retry after
+  reconnect. Zone transition success is distinct from request acceptance.
+7 Tests: non-GM/sibling denied; stale response/revoke between confirm and dispatch;
+  duplicate/conflicting IDs; lost/error/partial reply; relog state mismatch; old
+  server; interrupted scene/zone; bad destination; no unintended save/reward/item
+  writes. Native collision/zone acceptance remains untested until authorized QA.
+
+No second backend, command parser, runtime wire or local privilege override added.
+Per-character settings and pinned Tower release remain separate and untouched.
+
+Held contract review — platform gm-guard-r1@8864dd6, 2026-11-06
+Read section6, forever_gm_actions.lua and test definitions with git show; no
+checkout/merge/server edit or test rerun. Platform reports offline completion;
+not in a kit, not deployed. Rebase/revalidation required at approved integration.
+
+Concrete contract: GMS1 live lvl/god/wall/hide/speed plus optional discrepant godvar;
+!gmset god(on/off/tier1), wall/hide(on/off), speed(decimal0..255,0 reset); !gmzone
+zoneId with audited non-origin point and server entry eligibility. GMR1 req is
+optional on wire,1..16 [A-Za-z0-9_-], with cmd/what-or-zone/ok/error and optional
+state. Whole line <=150 bytes, no multipart; godvar then state omitted to fit.
+Client will always use fresh req, match cmd/target as well as ID and generation,
+and request !gmstate if state absent. Unsupported/error/timeout stays disabled or
+Unknown, not optimistic success. god0 includes partial effect sets: must not be
+labelled guaranteed invulnerability-off; godvar is a discrepancy warning only.
+
+Important differences from earlier requested requirements:
+- Req is correlation only. No replay/dedup cache or same-ID/different-payload
+  refusal found in this implementation. Explicit setters are state-idempotent;
+  this is NOT exactly-once dispatch. !gmzone may move again if sent again. Client
+  never automatically retries; new deliberate click needs fresh state. Platform
+  must clarify whether stronger dedup remains required before integration.
+- GMS1 has no request ID or revision; refresh must be serialized and stale replies
+  cannot be distinguished merely by request time. Receive provenance remains a
+  separate prerequisite; correct current-generation lines can arrive after0x00A.
+- gmzone closed means unauthorized under server era_zone_endpoint, not every
+  later-era zone: an approved era-visible GM may pass if an audited point exists.
+  This is held authority policy, not permission to activate it. Base-only baked
+  safe-point coverage does not establish all-era teleport availability.
+- internal/not_applied can follow setter effects; a refusal is not universally
+  no-mutation. Mark uncertain, refresh actual state, never claim client rollback.
+- GMR1 ok is tested before cross-zone0x00B, but same-zone setPos has no next0x00A;
+  distinguish request acceptance from observed authoritative destination, with
+  same-zone position confirmation semantics still to reconcile.
+
+Test SOURCE inspected: gm_menu3/gm_set9/gm_zone8 plus safe-point loader4, guard
+and signature checks listed by platform. Includes residue cleanup, toggle-vs-set
+parity, invalid arguments, packet150-byte limits, audited point rejection and
+GMR1-before0x00B ordering. No test run/native proof by client; no claim of dedup,
+real no-clip, actual landing, sibling persistence or delayed decoder proof.
+Full hide setter contract is now available: live getGMHidden, writes variable and
+char_flags.gmHiddenEnabled when differing; Flags1 InvisFlag bit15. This resolves
+prior truncated hide description, not live capability or permission.
+
+Existing runtime/unwired boundary and all grant/security/source release holds
+remain. No changes to settings isolation, Tower artifact, owner session or kit.
+
+Coordinator a927c7f5b5fafd16 evidence receipt — 2026-11-06
+Same8864dd6 contract reviewed above; no duplicate server implementation/test run.
+Platform-reported71GM passed/1ignored (including20new e2e),4safe-point units,
+allLua,Python23+9. Safe-point tests use synthetic tables, not actual native landing.
+Branch reported5main commits behind; requires approval-time rebase/revalidation,
+not a merge-ready kit or permission to activate. Exact ignored-test scope not
+provided by this relay; do not count it passed.
+
+Existing10 client ERA1 model tests remain supplied-context-only and are not
+GMC1/GMS1/GMR1 parser, authenticated-origin or real decoder tests. No GM menu
+runtime fixture exists yet. Integration blockers remain verified server-origin
+and generation/character propagation through decode/hooks/UI consumption; no
+arbitrary system-text pattern may grant capability. Also reconcile uncorrelated
+GMS1 ordering and same-zone arrival semantics with platform as already sent.
+Req echo is not replay dedup: client no-retry policy remains mandatory, without
+claiming exactly-once execution. Security/source activation holds remain separate
+from these technical dependencies. Tower51 tested artifact/handoff is independent.
+
+Read-only platform relay clarification — 2026-11-06
+Wall Flags1 offset44 is DECIMAL (0x2C), bit12/mask0x1000. This resolves the
+radix question only; packet byte order/layout and the additional0x00D field
+remain to verify with the platform owner before any decoder integration. Hide
+loads char_flags.gmHiddenEnabled at login; typed setter aligns GMHidden and
+setGMHidden/persisted flag and advertises InvisFlag bit15. This is the typed
+held-branch contract, not confirmation of every legacy !hide behavior. The
+relay explicitly did not contact the platform owner because its active-task
+guard blocked that separate attempt; no delivery/acknowledgement inferred.
+No runtime decoder/menu, command execution, source merge, privilege/access
+activation or native collision behavior is established by this information.
+
+Platform owner exact packet clarification — 2026-11-06
+Offsets are decimal from subpacket start INCLUDING four-byte header; u32 LE.
+0x037 Flags1 @44/0x2c: speed bits0–11, Hackmove12/0x1000, frozen13,
+InvisFlag15/0x8000, SpeedBase17–24.0x00D Flags1 @32: HackMove27, InvisFlag29;
+Flags0 @24 GroundFlag15 represents wallhack. Server sends0x037 aftersetWallhack.
+This resolves the pending source-layout/byte-order question above, but is no
+native collision proof, receive-generation proof or authorization to wire/ship
+held GM controls.8864dd6 stilloffline/unmerged/approval-held. No activation.
+
+Client source cross-check8889c5c — 2026-11-06
+net/map/session.rs SubPacket.data includes the four-byte header and u32 uses
+little-endian. Existing client/net.rs self_plate reads0x037 f1@0x2c, invisible
+bit15, frozen13 and combines f1bit12 OR f0bit2 into no_snap. SelfStatus reads
+speed0..11 and SpeedBase17..24. Entity0x00D reads GroundFlag@0x18bit15 and
+HackMove@0x20bit27 into no_snap. These existing decodes match the supplied
+layout, so an earlier blanket statement that the client lacks HackMove decode
+is too broad: it lacks a distinct authoritative wall-toggle status for GM UI.
+no_snap combines two flags and controls event ground snapping/tilt; it cannot
+be presented as proof of active collision bypass or permission to bypass it.
+No new decoder, command, capability acceptance or runtime behavior was added.
+
+Platform contract r2 decision handoff — 2026-11-06
+Status: ASSIGNED to the existing platform helper, not completed, inspected,
+tested, merged, packaged or released. Baseline code evidence remains held
+r1 gm-guard-r1@8864dd6. The following are owner decisions for the proposed
+contract, not capabilities the client can currently rely on.
+
+Proposed server behavior:
+- gmset/gmzone require req (1–16 [A-Za-z0-9_-]). Retain the last 32 requests
+  per generation. Same ID and payload returns cached GMR1 with dup:1, without
+  another effect/move; same ID with a different payload returns req_conflict.
+  Clear the cache at 0x00A.
+- GMS1 gains generation g and state revision. Revision advances on actual
+  changes, including plain LSB toggles. Client rejects state older than the
+  last accepted GMR1 revision for that same generation and character.
+- Same-zone gmzone ok includes actual resulting position and arrive:now.
+  Cross-zone arrive:zone acknowledges acceptance; destination arrival is the
+  next matching 0x00A, not the success reply itself.
+- Pre-change refusals: bad_req, bad_what, bad_value, bad_zone, in_event, closed,
+  no_safe_point, req_conflict. internal/not_applied can follow an attempt and
+  carry actual state; neither implies rollback or an unchanged character.
+- closed means not authorized now. It is not a blanket later-zone ban;
+  authorization and audited safe-point coverage both remain prerequisites.
+- god:3 means partial/mixed effects. Display Mixed/partial, not Off or a
+  guaranteed invulnerability state. Optional godvar remains a discrepancy.
+
+Client integration requirements, still offline/held:
+1. Keep r1 observations above historically accurate. Do not silently treat r1
+   GMS1/GMR1 as r2, or infer dedup/revision support from unchanged message names.
+   Require an explicit negotiated capability/schema distinction before controls
+   can rely on r2. Exact advertisement/version fields need the completed contract.
+2. Bind g, req and rev to authenticated server/realm, account, character and
+   receive-generation context. A self-reported g in arbitrary or stale chat is
+   insufficient. On 0x00A/disconnect/identity change, invalidate capability,
+   pending actions and revision state before accepting a fresh generation.
+3. No automatic retry is introduced by this proposal. A 32-entry cache is a
+   bounded replay window, not durable exactly-once execution. Evicted requests,
+   generation changes, reconnects and wraparound must not re-enable old actions.
+   If retry is later supported, keep the same req and canonical payload only
+   while the exact authenticated generation and server cache semantics permit it.
+4. Cached GMR1 state can be older than a later state change. Treat dup:1 as the
+   prior command result, never as permission to roll the UI state revision back.
+   Serialize refresh while GMS1 correlation/order semantics remain unspecified.
+5. For arrive:now, display the reported actual position as server-reported state;
+   native placement/collision remains separately unverified. For arrive:zone,
+   retain a pending transition until the expected new 0x00A is observed. Timeout,
+   disconnect or another destination must not be reported as successful arrival.
+6. Under the 150-byte bound, correlation/generation/revision/result must remain
+   unambiguous. Confirm GMR1 revision/generation fields, required arrival-position
+   fields, overflow handling and state-refresh behavior in the final wire schema.
+   Never invent omitted state/position or accept malformed/partial authority.
+
+Acceptance cases to reconcile with the existing helper (NOT tests run here):
+- Repeated setter and same-/cross-zone request with identical req/payload causes
+  one effect/move; conflicting payload refuses before change.
+- 32-entry eviction, 0x00A clearing, reconnect and character/realm switches do
+  not turn stale client actions into new commands or carry authority to siblings.
+- Plain LSB toggle changes rev; delayed GMS1 and cached GMR1 cannot regress state.
+  Equal-revision conflicts, revision reset/wrap and omitted state fail safely.
+- god:0/1/2/3 plus mismatched godvar render distinctly, including after relog.
+- Same-zone actual-position reply, cross-zone acceptance then matching arrival,
+  unrelated zone-in, interrupted transition and timeout have distinct outcomes.
+- Every listed pre-change refusal preserves state; post-attempt failures report
+  actual state without fabricated client rollback; all response shapes fit150bytes.
+
+Unresolved technical details: exact capability/version and generation binding,
+GMR1 g/rev/arrival schema, revision equality/reset/wrap rules, request canonicalization
+and cache eviction semantics. Final source/test evidence from the existing helper
+is needed before client adapter implementation. Receive provenance and action-time
+security/source merge/release/privilege holds are unchanged. No new helper,
+backend, parser, command send, player action or release is created by this note.
+
+R2 completed OFFLINE source reconciliation — platform63755b7
+Inspected pinned docs section6.1–6.7, gm_menu.rs and response builder in
+forever_gm_actions.lua. This supersedes the earlier ASSIGNED/proposed status,
+not the security hold: branch gm-guard-r1 is unmerged, in no kit, no grant or
+activation. No client runtime adapter/command sender added or tests rerun here.
+
+Confirmed source contract:
+- Every GMC1/GMS1/GMR1 carries c/g. GMC1 multipart must complete consistently.
+  GMS1/GMR1 rev tracks observed god/wall/hide/speed digest changes, not every
+  intermediate mutation. god3 is partial/mixed (ordinary spell effects can
+  qualify); uns fields are unsupported, not Off. god off may remove those
+  ordinary effects, so future confirmation must disclose that consequence.
+- Mandatory req; last32 FIFO cache per generation. Same canonical lower-cased
+  payload returns cached dup:1 without another action; conflict refuses. Cache
+  stores refusals and an internal pre-attempt placeholder; eviction/new generation
+  loses that protection. No retries or req reuse introduced by client design.
+- Same-zone arrive:now/position is server readback, not native floor proof.
+  Cross-zone arrive:zone is acceptance; next matching zone-in proves arrival.
+  No native collision, other-character hidden view or movement claim.
+- Complete pre-change errors: bad_req, req_conflict, bad_what, bad_value,
+  bad_zone, in_event, closed, no_safe_point, unsupported, god_unavailable,
+  state_unavailable. Post-attempt: internal, not_applied; no rollback implied.
+- GMR1 size ladder can omit state, arrive, then what/zone; post-attempt errors
+  prioritize state over target/arrive. Essential c/g/req/cmd/ok/err/rev and pos
+  when present are retained. Post-attempt state omitted for size gets following
+  GMS1; cached dup does not repeat it. Never manufacture omitted state/arrival.
+- Full hide behavior and packet flags now source documented: hide persists in
+  char_flags.gmHiddenEnabled and GMHidden, but UI uses live getter. InvisFlag
+  and SilenceFlag can also come from spells; neither establishes GM authority.
+
+Evidence inspected, not executed here:
+Section6.7 records xi-map gm103PASS/0FAIL/2ignored, 19 wire scenarios, 3 menu
+units, 4 safe-point units; Lua30 and target-generator23 PASS. Source includes
+revision/cache/wrap units and response-size ladders. Native receive/render/
+movement and deployed parity remain untested. This is platform-owned evidence.
+
+Remaining contract questions for the SAME platform owner before integration:
+1. Bootstrap/provenance: g is process-wide and assigned on accepted c2s0x00A;
+   inspected references expose it through Lua lines, not an identified field of
+   the received zone-in. How bind first GMC1.g to current receive generation,
+   rather than accepting an already-sent old line? Need transport ordering/key
+   proof or an agreed handshake; arbitrary chat and c/g alone are insufficient.
+   Reset all capability on realm/account/char/zone/disconnect. R2 required-field
+   validation rejects r1, but is not an authentication mechanism.
+2. Section6.6 demands matching what/zone and explicit arrival while section6.1
+   and actual builder omit them under size pressure. Need agreed use of the
+   unique pending req+cmd context when target omitted and an Unknown/pending
+   arrival outcome when arrive absent; no guessed success or automatic retry.
+3. rev wraps9999999->1 in source while docs use simple lower-than rejection.
+   Need reset/resync or rollover rule; never silently accept stale state or
+   permanently discard fresh wrapped revisions. Equal revisions do not imply
+   identical lvl/godvar, which are outside the four-field digest.
+These are design/receive-safety gaps, not evidence that held server commands
+have run or a new authorization gate. Existing approval holds still apply.

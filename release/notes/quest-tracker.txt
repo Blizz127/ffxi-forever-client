@@ -1,0 +1,33 @@
+Forever optional quest and mission helper (Forever.19)
+
+The Journal remains the full quest/mission log. Its Quest tracker checkbox and
+Settings > Interface > Quest Tracker enable an additional remembered Modern HUD,
+off by default. Settings changes obey Apply/Cancel. The HUD supports selecting
+an objective, refreshing and hiding with the mouse. Numbering is shared by its
+list, minimap edge arrow and area-map markers. Names come from installed DATs;
+step text and [have/need] counts come from the server. No game data is bundled.
+
+QST1 system messages are consumed before chat/Lua. Complete ordered multipart
+updates replace one objective atomically. Malformed, expired and unknown-version
+feeds do not become visible chat or replace a valid entry. Zone changes, refresh
+and subscription transitions clear stale entries. Hidden !qtrack on/off follows
+the opted-in Forever Modern UI state; !qtrack asks for a full refresh. Normal
+server acknowledgements/refusals remain visible. The setting and implementation
+compile out of classic; no regular server subscribes or displays this feature.
+
+Same-zone guidance uses the server position. Other-zone guidance follows the
+first ordinary zone exit on a shortest known route, decoded locally from the
+owner's installed zone DAT region links, within the enabled era. Equivalent
+first exits prefer the nearest. These are direction hints, not walkable paths:
+doors, keys, obstacles and transport requirements are not inferred. Missing or
+ambiguous routes/positions produce no invented arrow. Mog House guidance is
+suppressed. Area-map markers retain map ownership and destination-preview rules;
+floor selection uses collision locally, or only an unambiguous single-map zone.
+
+The inspected server kit 1 covers nation missions 1-1 through 5-2; ordinary
+quest coverage comes later. Client QST1 accepts both quest and mission entries.
+Counts update when the server sends a step/zone/refresh update, not necessarily
+on each item pickup. QSA1 giver/turn-in icons are reserved for a later increment.
+Server kit deployment, real feed/gameplay and owner-device checks are NOT verified
+by this offline client build. Existing door, Home Point/Survival expansion-mask,
+0x114 destination and public-source holds remain unchanged.

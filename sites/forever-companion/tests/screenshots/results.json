@@ -1,0 +1,16 @@
+{
+  "baseURL": "http://127.0.0.1:4317",
+  "checks": [
+    "desktop shell and real catalog",
+    "craft and search filters",
+    "favorites persist and filter",
+    "quantity-aware shopping list",
+    "ingredient market bids update inventory and gil",
+    "practice synthesis consumes acquired materials and persists",
+    "inventory and skill edits persist",
+    "export downloads actual sandbox",
+    "PWA manifest and offline shell",
+    "mobile recipe detail and navigation"
+  ],
+  "errors": []
+}

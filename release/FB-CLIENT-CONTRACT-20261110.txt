@@ -1,0 +1,222 @@
+FFXI /fb client/native contract check — 2026-11-10
+
+Read-only source check during private87 builds. No live server query, deployment,
+restart, gameplay, player/save change or new release gate.
+Client baseline: private87 8ae5460b13cd24d53504d74a433344bfe4eb009e.
+Native source: [redacted-path],
+43a10b2754084025e2472917804711f5ce076c88 (clean at inspection).
+Shared request: [redacted-path]
+
+The native Session fb_chat_command consumes /fb before ordinary broadcast,
+including malformed commands. Its first-slice parser handles help/list/summon/
+dismiss and delegates unknown subcommands to gear-show, gear and orders adapters.
+The current client say 0x0B5 transport and verb/argument ordering agree. Native
+con1.rs CAP_LINE contains CAP1 {"con1":1,"fb":1}; its documented capability is
+build1 support, not per-command support. Delivery uses existing CON/QST1 opt-in.
+This source evidence does not establish live installation, all verbs available,
+or any successful client/server round trip. No protocol change is needed here.
+
+The shared owner's gear update explicitly requests a row per bot: Scale/BiS/Show
+(`/fb gear scale NAME`, `/fb gear bis NAME`, `/fb gear show NAME`). Current86/87
+has global Scale/BiS only, so the next client increment adds those per-member
+controls behind the existing support gate. The client continues to call them
+party members and leaves ownership, eligibility, equipment and inventory to the
+server. No edits to frozen86/87 or their existing release transactions.
+
+Name grammar limitation: native parser accepts ASCII letters up to16 bytes;
+client passes through other non-whitespace/non-control names (including earlier
+Koru-Moru/Unicode fixtures), which native source refuses privately. Real native
+character names normally use the server grammar. No demonstrated live defect;
+runtime client forwarding remains unchanged. New screenshot fixtures use native-valid
+fictional names and a full five-member sample to exercise scrolling; images
+remain pending until the preview build and render complete.
+
+Relevant native files: server/crates/xi-map/src/session/fb.rs,
+fb/command.rs, fb/orders.rs, con1.rs. The client's fb.rs and modern/fbwin.rs retain
+all capability, chat throttling and server-authority behavior.
+
+Rest client increment — 2026-11-10 07:55Z
+
+Native worktree's current R18 files now include orders::Order::Rest with no
+arguments, private feedback "rest requested", normal native healing intent,
+owner/session/readiness checks and no bot relocation. Evidence is local source
+only: docs/forever-fb-rest-r18.md explicitly leaves live deployment/integrated
+playtesting unverified. Root did not launch or test the server.
+
+The shared menu spec lists Rest but client88 omitted it. Sourceca6c11e7 adds
+Action::Rest -> "/fb rest" and a Rest button after Stay, plus existing exact-line
+and required-action coverage assertions. No rest state, healing guarantee or
+per-command capability is invented. CAP1 fb:1 only advertises the existing bot
+command contract; server refusals remain authoritative. Fill/Pull are omitted
+until their native command support exists; the source audit found Rest concrete.
+
+Candidate89 f47e380e adds only marker/notes after this byte-identical module.
+Three existing fbwin checks are dispatched once in owner-20261110-fb-rest;
+results pending. No89 builds/render/package yet.88 continues independently.
+
+08:13Z continuation:88 local delivery complete, exact supported/unsupported full
+party images viewed with solid scrollbar and named gear rows. One existing-route
+intake sent, QA/publication unconfirmed.89 Rest focused3 checks PASS; frozen
+f47e380e retains the tested module and both dist builds/watcher are active.
+No new preview build, full suite, live clicks, scrolling or server round trip.
+Remaining Fill/Pull spec buttons still lack native grammar in15ca31de; no new
+client implementation is justified by that source. Current evidence resides in
+owner-20261110-release89/remaining-menu-backlog.json and ACTIVE.json.
+
+Small-viewport follow-up,08:52Z:89 is fully delivered locally once, publication
+unconfirmed. Extra320x1080/UI150 diagnostic timed out with no image. Source path
+is proven: topbar creates a negative-width Help rectangle, pack-frame tiling uses
+a negative step, then loops away from its endpoint. Host perf access was denied;
+source inspection established cause without sampling or any access changes.
+
+Final90 09051791 combines viewport-bounded Bots body/wrapped controls f1c9626d
+and paint/topbar guard ac3f774e. One actual nontermination regression and two
+distribution builds are active in separate caches; exact original narrow case
+plus normal/short layouts follow. Initial05a98c2f checkout is unused. Command
+maps, support gate and server authority remain unchanged. No PASS is claimed
+before actual results and image review. F5 and other existing holds remain.
+
+09:24Z final90 continuation: both dist builds and ONE paint regression passed.
+Exact startup, normal enabled/disabled, original320 narrow enabled/disabled and
+short synthetic images completed; all6 directly inspected. Title/Back and body
+fit tested viewports. At320px some controls require horizontal scrolling; both
+scrollbars visible, but input/server behavior remains untested. No native DPI
+or Windows GUI claim. Generic title below146 logical points remains limited.
+
+Private90 09051791 packaged/backed up/staged and ONE intake via834a502dda5d;
+QA/publication unconfirmed, pending82-89 only superseded. No repeated old jobs.
+Stage [redacted-path]
+DROP d8baded05c34edfc9ae51eac550c062b632ddd273a67064bc6a14ebdfe124b48
+Linux 6f521839202ec764fe3b5d2764e57f140d0f4130ed104831a7efbf8367229edd
+Windows 755646771636b38a0e2a0243fa54a6c7fbf89b1748d4e0a0d4a6c085a30639b4
+Evidence owner-20261110-release90/finalizer-result.json and render-inspection.json.
+Bounded backlog audit found no further concrete independent client source item;
+Fill/Pull remain unsupported in last inspected native grammar. F5 remains held
+on actual consumer evidence. No live/server/save/device action or receipt polling.
+
+10:08Z private91 delivered locally once. Source7e28f736 replaces per-button child
+scopes with direct enabled widgets in wrapping rows. Both builds/smokes passed;
+all6 exact images reviewed. Narrow commands and visible role buttons wrap;
+normal supported/unsupported PNGs byte-equal90. Title/Back/body remain bounded,
+but live click/scroll/server round trip remain unrun. No command/gate change.
+Stage [redacted-path]
+DROP 8d6925cd800b6b82af787cac20c3cd340676d4ffdd54559ec100048a64b0996e
+Linux 3c8c3f8a97407f624d44ac361fa6b3e76b0c5f0fe2577657ca18ce1fe72ab36a
+Windows 8dea6bb295a1039ea4edbdf909909ef61d7c2c203a0aaeca43bbe0461490a5d8
+ONE intake via834a, pending82-90 only superseded; QA/publication unconfirmed.
+92 brightness Defaults builds are active on e3d6ac1d; menu code unchanged91.
+Read-only native recheck still15ca31de, no Fill/Pull. F5 remains held.
+
+11:04Z private93 source frozen06d2e38db44a4b3aef9a098fe04228e5385b6609.
+Fresh relaydd2cfc3e authorized the next bounded client-readiness fix. Source audit
+found focus_panel never selected Bots, while early Escape closed it regardless of
+foreground ownership. Synthetic modern-shot explicitly supplies Bots focus, so
+earlier screenshots did not expose this. No live/QA reproduction is claimed.
+93 adds lowest-priority focus fallback and gates Escape on that shared owner;
+existing named and unnamed input owners, event/UI Modes suppression and generic
+Back/right-click stale-focus protection remain. Transport, movement and layering
+policies are unchanged. Parent Modern module is already Forever-only; local cfg
+guards are defensive, not recovery from an observed failed compile.
+Two policy regressions and Linux/Windows builds/exact smoke watcher dispatched
+once, results pending. Evidence owner-20261110-fb-focus and owner-20261110-release93.
+After PASS, directly inspect three exact PNGs then package/backup/one existing
+Game QA/publisher intake. Live /fb then /graphics then Escape, confirmations and
+Back/right-click still need gameplay exercise; static fixture supplies focus.
+92 delivery remains complete; no previous work repeated. F5 stays held.
+
+11:17Z93 update: two focus-policy regressions PASS2/0/0 at11:11:21Z, log SHA
+cbe2be35d8b752dcdfdf415625ad50b2e55d3606a1487a69b0e00570ea67e245.
+Existing distribution builds still active, exact smokes/package pending. No job
+restarted. Bounded shared-spec audit found no further justified independent
+client item: /fb entry is present, a Game Menu shortcut/alias is not required,
+supported global/member actions and gated transport are present. No live checks,
+additional source change, repeated completed work or held-lane resume.
+
+11:33:49Z93 local delivery complete. Both builds exit0; exact startup and normal
+supported/unsupported Bots smokes PASS, all3 images directly viewed. Normal Bots
+PNGs byte-identical91. Two actual policy regressions PASS; source wiring reviewed
+separately. Synthetic screenshot focus is explicit, so live Back/right-click/
+Escape, clicks/scrolling and server round trips remain unrun. Wine CLI PASS;
+native Windows GUI/gameplay/device/full suite unrun. Prior unchanged checks reused.
+Canonical drop, staging and full backup93 verified; ONE existing Game QA/publisher
+intake via834a supersedes ONLY pending82-92, never live/in-flight. QA/publication
+unconfirmed; never rebuild/re-smoke/repackage/restage/resend completed93.
+Stage [redacted-path]
+DROP c331e05211221479768c8e72bc136e9999c939c743998905bcc61b85ecca50aa
+Linux 7ea7cc069a5d36044508535f58e01435af9c9fcdf9cf4937b24bbef301ededd4
+Windows 93599777a748fe23950ba7e561eba5e26bc66f4d3c140cf22c7f1a97a91c1d71
+Evidence owner-20261110-release93/finalizer-result.json, verification-forever.json,
+render-inspection.json and direct-image-observations.json. F5 stays held; bounded
+shared-spec audit found no further justified independent client item.
+
+12:09Z94 source45e1a8c4328324d1116c0459999be3cfae74666e adds explicit
+Bring to me / Bring all here / member Bring here wording, all-bot scope on global
+Scale/BiS labels and short hover help for bring/scale/BiS/Show. Existing commands,
+Action enum/membership, server ownership/capability gates, focus and movement are
+unchanged. This responds to fresh relayc673b3db as usability polish, not missing
+native functionality. Current native15ca31de supports the corresponding handlers;
+no live/server proof implied. Separate brightness source audit found no new bug.
+Both94 builds and one exact-smoke watcher687968 dispatched once; all new results
+pending in owner-20261110-release94. Prior focused checks retained by source
+identity, no unit/full-suite rerun for text presentation. Five exact startup/
+normal/narrow supported+unsupported PNGs must be viewed before one guarded
+package/backup/existing-route intake. Hover activation/live input/server/94 short
+viewport unrun.93 delivery immutable; F5 held; no held/native/player/save action.
+
+12:45:32Z94 local delivery complete, source45e1a8c4. Both dist builds and local
+smokes PASS; all5 exact startup/normal/narrow supported+unsupported images viewed.
+Bring/all-gear labels fit the tested viewports. Longer member Bring here wraps
+Dismiss onto a new row at normal size, increasing vertical scrolling. Narrow
+lower member controls lie below the visible body; live scrolling/hover/input/
+server round trip and94 short viewport remain unrun. No new unit suite; unchanged
+command/focus/settings/paint/Classic evidence retained by source identity.
+Drop/stage/full backup and archive/license/flavor/no-game-data/DLSS-Linux-only
+checks PASS. ONE existing Game QA/publisher intake via834a supersedes ONLY pending
+82-93, never live/in-flight. QA/publication unconfirmed; no94 job/intake replay.
+Stage [redacted-path]
+DROP 07eddf2c0e75537efe1aaf87ba7e2fb9a0d068f396d58103a47a75d3d2d2b538
+Linux 1d71bbcd6125c936b47f3367b142405eb2632b191c62d9bb24fa04d329d0c0a7
+Windows 920d8dc3658b379a8c1c4bae2bdc3447c8d0b4f9e8b931ab3c089139caecedbc
+Evidence owner-20261110-release94/finalizer-result.json, verification-forever.json,
+render-inspection.json and direct-image-observations.json. F5 remains held on
+actual consumer adoption evidence; no source push/device/save/server action.
+
+13:15Z95 source frozen dfd1bd641d743e65560431d2bf8f72b8b17d3ecc. Source audit
+found focused Bots handled Escape but let Enter fall through to world target
+talk/action-menu interaction; controller South maps to Enter. Modern intentionally
+surrenders egui focus each draw, so ordinary widget focus does not provide retained
+Bots keyboard navigation. No live reproduction claimed.
+95 takes Enter/Escape only for the existing shared Bots focus. Enter consumes the
+world action, Escape closes as before; higher owners/unrelated keys/movement/
+controller context/transport unchanged. One focused policy regression runner1684017
+and both dist builds plus watcher1696195 dispatched ONCE; results pending.
+Evidence owner-20261110-fb-enter and owner-20261110-release95. Exact startup/normal
+Bots smokes and direct review precede package/backup/one existing-route intake.
+No full suite, new navigation subsystem or live controller/target/command proof.
+94 complete and immutable. F5 evidence requested ONCE via ledger under relay
+d1d0454f3eb03203; only existing consumer records requested, no worker/build launch
+or acknowledgement wait. Real F5 adoption dependency and all other holds remain.
+
+13:34Z95 continuation: ONE key-ownership regression PASS1/0/0 at13:21:46Z,
+log SHA fb19af0eaa3e648e29da3be730fe18fae15c0af5e1d17f6e5c2f89c9405c7583.
+Recorded without rerun. Existing Linux/Windows compilers still active and watcher
+1696195 healthy; no build/smoke/artifact/intake95 completion claim yet. Source
+remains frozen,94 untouched, no duplicate jobs or F5 receipt polling.
+
+13:57:02Z95 local delivery complete on dfd1bd641d743e65560431d2bf8f72b8b17d3ecc.
+Both builds exit0; exact startup/Bots supported+unsupported and Wine CLI smokes
+PASS. All3 PNGs directly viewed; Bots PNGs equal94 byte-for-byte. One actual
+key-ownership regression PASS1/0/0; source dispatch reviewed separately. Harness
+supplies focus, so live Enter/controller/world-target behavior remains unrun,
+as do live click/scroll/hover/server/gameplay/native Windows GUI/device checks.
+Prior unaffected checks/layout proof retained by source identity, no full suite.
+Drop/full backup/stage and archive/license/flavor/no-game-data/DLSS-Linux-only
+checks PASS. ONE Game QA/publisher intake via834a supersedes ONLY pending82-94,
+never live/in-flight. QA/publication unconfirmed; never repeat95 jobs/intake.
+Stage [redacted-path]
+DROP 81935b9a9da3d229f29239bf19b9fb0f187a119ae4d07b07b7c6f93811f7a52d
+Linux 84d83477b1ffef4ab2e854a8b4f2323832423ba5317383c3f26f67904df32946
+Windows c3400f3ae2ef27ade04d3a64709e03227947ae04e4c2fac69ca6f632bda5dd4b
+Evidence owner-20261110-release95/finalizer-result.json, verification-forever.json,
+render-inspection.json and direct-image-observations.json. F5 hold remains; one
+ledger adoption-evidence request already sent, no polling or second request.

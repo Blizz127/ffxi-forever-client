@@ -1,0 +1,7 @@
+Private client increment: 1.0.7-forever.40 / 1.0.7-vana.17
+
+Both flavours wait until the streamed zone geometry/textures finish their GPU upload before acknowledging scene resources or starting a queued event. Previously CPU installation plus a renderer handle could pass that gate before the upload completed. Fade/resource/event startup now share the same resource predicate. Existing settling, zoning, lift, server readiness counts and acknowledgement timing rules remain.
+
+Actor readiness is deliberately separate: the server may provide event actors after the resource acknowledgement. No new wait on actors in SendResRdy, no fixed delay, automatic event choice/completion, route movement or server change. Known-pending event presentation and server continuation timing are unchanged; this increment is not proof the entire owner-reported chained-scene/BCNM issue is fixed.
+
+Focused checks: streamed scene state progression, reused-scene handoff and failed/no-renderer rejection, existing zone fade, event/VM regressions, classic exclusion. Exact final build/smoke results belong in owner-20261106-release40 evidence; this source note does not claim they ran. No live login, owner-device or native Windows GUI claim. Existing sole publisher, classic zero-human gate, Forever no human gate and all unrelated holds retained.

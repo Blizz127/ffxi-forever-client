@@ -1,0 +1,24 @@
+Forever.34 — party and quest tracker spacing (Forever Modern UI only)
+
+The party panel keeps its normal readable rows and grows upward as members join.
+The mission/quest tracker now checks the current frame's party, target, minimap,
+job helper/Wide Scan and chat rectangles. It moves upward within its column when
+there is enough room, or beside a crowded column. A constrained viewport scrolls
+the tracker instead of compressing party rows or discarding objectives. When the
+party shrinks, the tracker returns toward its requested position.
+
+Automatic adjustments are temporary: saved coordinates, dock, width and height
+are not rewritten. Nonoverlapping custom placements stay in place. Explicit
+tracker width/height are respected as available; manual dragging remains active
+and temporarily suspends collision avoidance, which resumes after release.
+Extremely cramped or deliberately occupied screens may have no clear readable
+slot; no guarantee for every possible conflicting custom arrangement is made.
+Classic has no Modern UI, so remains vana.15 unchanged.
+
+Focused checks cover solo through six members, short and long tracker content,
+saved placement preservation, current-frame party join/leave and reduced-height
+recovery. Exact Linux startup and HUD previews, Windows Wine CLI and archive/
+flavor/hash evidence accompany the drop. No owner-device input, restart, live
+party/gameplay, real login or native Windows GUI test. No server changes. Existing
+source/device/server holds retained. Publisher retains release baton; .33 rollback.
+No game data or local texture packs distributed.

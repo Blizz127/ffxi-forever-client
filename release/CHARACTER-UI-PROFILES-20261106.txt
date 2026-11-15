@@ -1,0 +1,64 @@
+Forever per-character UI profiles — owner8d61d91f864c6e75
+Normal local UI fix, no GM/access/server/device change.
+
+Cause: Hide arrow wrote global forever_map.navigation; every new World reused
+that global. Tracker/training/auto-navigation preferences were global too; modern
+layouts and recent search picks used only a display name.
+
+Scope now per-character on Forever:
+- all M-map presentation and navigation-arrow mode/size preferences;
+- quest tracker, quest-giver marker preference, training HUD, auto-navigation
+  enable preference (never a running leg or world/quest state);
+- modern panel placements, folded-panel choices and recent search picks.
+Global/device preferences remain graphics/texture selection, display/window,
+frame cap, audio, device/input bindings, UI scale/opacity/font and chat display
+style. Game account credentials, server settings, chat history and retail macro
+files are not moved/exported by this increment. Classic behavior remains unchanged.
+
+Identity: canonical resolved login host + auth/data/view ports, authenticated
+LSB account ID and selected character ID, confirmed by matching first0x00A.
+Display names and credential hashes are never key material. Named-server aliases
+resolving to the same endpoint share identity. A changed endpoint intentionally
+uses a different profile; no guess-based alias/account merge. Missing account ID,
+zero IDs or mismatched map character prevent profile persistence. No profile is
+read/applied until map identity confirms; pre-identity UI uses a temporary safe
+legacy-derived baseline. Interrupted login never creates a character profile.
+
+Storage: next to the selected FFXI_CONFIG (or normal config), character-ui/
+character-ui-v1-<SHA256 identity>/profile.json. No new auth/endpoint/account grant.
+Typed schema_version1, identity, monotonic revision, allowlisted preferences.
+No password/token/hash/game executable/install path exported. Unknown JSON fields
+retained; unknown schema, corrupt/mismatched identity profiles stay untouched.
+Compare-before-write detects changes by another process. Create-only writer lock
+serializes cooperating writers; durable temp + atomic rename replaces document,
+previous.json retains the prior successful revision. A stale writer lock or
+unfinished temp is retained/refused rather than silently bypassed. Errors are
+reported in the client log. No-op saves do not increment revisions.
+
+Migration: original global preferences and old name-keyed layouts remain in the
+original config, unchanged by active character overlay saves. New profiles copy
+safe presentation/tracker defaults and a legacy layout if its name matches;
+this is an initial copy, not a shared reference. Legacy global Hide has no known
+owner, so unprofiled characters start with arrow mode3 instead of inheriting0.
+The old Hide remains recoverable in the legacy config. Auto Navigation starts
+OFF for unprofiled characters; no running navigation state is imported. Existing
+profile choices always win. No automatic deletion, cross-character overwrite,
+reset of saved sets or edits of the owner's files are performed by development.
+A user with ambiguous legacy Hide may set it once for that character, after
+which switching/relog/restart preserves it. This avoids guessing which character
+owned an old global setting.
+
+Backup/restore design compatibility: this schema is a local per-character
+allowlist, not a server upload implementation. Future authenticated accounts
+transport must bind account/char ownership itself, preview changes, use expected
+revision/CAS, preserve local preimage and reject incompatible schemas. Identity
+from an imported document alone never authorizes a server write. Existing schema,
+endpoint and access approvals remain pending; no network backup or restore here.
+
+Focused acceptance: GMBlizz/Blizz distinct arrow choices across switch, relog,
+serialized restart and renamed character; account/realm isolation; interrupted/
+mismatched identity no writes; zone re-entry no reapply; legacy/device globals
+preserved; changed-external/future/corrupt/wrong-identity profiles untouched;
+writer-lock/interrupted-temp guards; no secrets and no-op revision stability.
+Build/test/smoke/publication evidence is recorded separately; this design is not
+a live-device acceptance claim. No owner movement, login, restart or save edits.

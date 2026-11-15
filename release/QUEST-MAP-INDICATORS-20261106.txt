@@ -1,0 +1,17 @@
+Forever 1.0.7-forever.42 candidate: confirmed quest NPC icons on the M map
+
+The owned current-zone area map shows the existing original open crystal book
+for available quests and sealed scroll for ready turn-ins, with an NPC/status
+label. An NPC with both states shows both icons. Uses the existing Quest
+Indicators preference, independently of whether the tracker panel is enabled.
+
+Requires authoritative current-zone QSA1 or existing eligible QST1 availability,
+a received NPC position and the matching map page. No position is invented for
+an unloaded NPC. No icon on another zone, unknown floor, unowned map or teleport
+preview. Empty replacement snapshots, zoning and feed-off clear confirmation.
+Accepted targets, full counts and quest completion/removal do not imply readiness.
+
+Reuses world-marker artwork. Classic code and saved preferences unchanged.
+Includes the previous .41 selected remote exit location fix. No pathfinding,
+wall/door bypass, owner movement, device restart or server deployment. Actual
+server feed, running owner binary and reported route remain separately unverified.

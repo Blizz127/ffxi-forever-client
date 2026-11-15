@@ -1,0 +1,196 @@
+Owner f39d8297: weather, material fidelity and arrow restore
+
+Baseline: .46 source a13b87c; current owner-native .49 source5ea2386, LIVE15:21:52Z.
+Weather DAT/FX/render sources unchanged between them. Owner running version,
+area, weather packet, settings and actual bound textures are UNKNOWN. No device
+probe, movement, login, restart, save/quest change or server command performed.
+
+Weather support established from source, not blanket visual completeness:
+- client/net.rs receives initial0x00A weather@0x68 and0x057 number@8/duration@0x0a.
+- client/mod.rs applies server clock, blends zone weather over minutes*2.4seconds.
+- dat/weather.rs resolves20 tags: fine/suny/clod/mist/dryw/heat/rain/squl/dust/
+  sand/wind/stom/snow/bliz/thdr/bolt/aura/ligt/fogd/dark. Missing zone tag falls
+  back to suny. Availability is zone-specific, not every condition everywhere.
+- DAT environment keys drive sky gradient, sun/moon, actor/world/area lighting,
+  fog/draw distances. render/zone.wgsl and weather::LightEase apply lighting.
+- fx/mod.rs set_weather starts matching zone generators and schedulers, also
+  falling back to suny. Generic particle/mesh/weather-density paths support
+  precipitation/dust. Camera-under-cover suppresses roofed rain/snow/dust.
+- Weather-driven vegetation sway exists (render/sway.rs); still image alone is
+  not animation proof. Weather effect density comes from Config/Misc0x3b;
+  Off=0 may suppress effects. No preference changed by this investigation.
+- FX scheduler/light/flash and audio command paths exist, but lightning timing,
+  thunder synchronization and every condition are NOT visually/audibly verified.
+- Ambient sound selects zone/weather/time/inside folder; audio output required.
+  Source inspection is not a listening test. No native live weather proof.
+
+Permissible current-binary offline observations:
+~/.cache/forever-client-build/owner-20261106-weather-visual-audit
+Exact .49 Linux binary012bf0c8; owned DATs read-only, network-none softwareGPU.
+Woods241 same camera[-132,-10,40] ->[-162,-10,40], noon, suny:
+Original vs Masonry Preview affects696905/1440000pixels (~48.4%, RGBdelta>2),
+mean absolute RGB10.695. Visually inspected arch/ceiling/walls are sharper,
+geometry/palette retained, steps remain stock. Three opaque parts replaced;
+847draws unchanged; logged texture allocation4.1MB ->12.5MB. Not physical VRAM.
+Historical .43 paired16-frame/20warmup software benchmarks remain available in
+owner-20261106-release43/woods-measurement.json; shared CPU/no hardware FPS gain.
+Current sunny/rain/thunder requests in WestSaruta115 are pixel-identical and
+start the same11generators. This is NOT evidence of rendered rain/thunder or a
+confirmed renderer bug: inspect actual zone tags/fallback first. Narrow zone
+selection added to existing offline WeatherSweep to avoid a broad all-zone run.
+
+Accurate owner preview path:
+Settings > Graphics > Forever Graphics: Enhanced;
+Windurst Woods Textures: Masonry Preview; Apply.
+Next voluntary zone load binds it; no forced reload. Look INSIDE the Windurst
+Woods residential-entrance stone arch/tunnel. This is one material at5placements,
+not grass, ground, steps or all buildings. Tower Preview is a separate control
+for Heavens Tower242. Original restores stock next load. Custom installed art
+wins; public/release archives contain no owned DAT art or comparison screenshots.
+
+Next incremental build .50:
+- Journal and quest tracker show Show Navigation Arrow when hidden.
+- Special has persistent Show Arrow action/state, even without tracker.
+- Restore changes only hidden->Auto for current character; visible Objective/Pin
+  mode, scale/layout, auto-nav enable/running state and movement remain unchanged.
+- Existing .49 per-character save/CAS/migration rules apply.
+- Graphics has prominent opt-in scope/Apply/next-load explanation.
+- No new weather simulation, lighting look or material replacement claimed by50.
+Focused widget, preference, Special and classic-exclusion checks plus final
+artifact startup/UI renders, hashes/flavour and existing publisher handoff.
+
+Next graphics increment after baseline:
+Woods ground t_win07d + adjoining t_win00d transition diagnosis as recorded in
+WINDURST-TEXTURE-FIDELITY-20261106.txt. Triangle UV density/material/mips/compression
+first, one original style-matched material only if source detail is limiting.
+Do not map Adoulin references onto Windurst. Resolve supported weather tags and
+actual missing effect/op before any weather improvement. Keep server-authoritative
+weather, chosen FFXI style and scenery, default-off preview, performance evidence
+and Original rollback. No broad untested art replacement or arbitrary rain force.
+Transition correctness remains priority; server dependencies stay with platform.
+
+Follow-up evidence, 2026-11-06 15:49UTC
+- Narrow zone weather-sweep audit (source4fd9bcc diagnostic CLI,120ticks/tag):
+  115/116/241 support clod/fine/mist/suny, not rain/thunder.110 Rolanberry adds
+  dryw/rain;111 Beaucedine has bliz/clod/fogd/mist/snow;117 Tahrongi adds dust/wind;
+  126 Qufim adds aura/ligt/thdr. No skipped operations or missing resources in
+  those short runs, not proof of full timing/condition coverage.
+- Exact49 stills show rain streaks, snowflakes, fog and storm sky/light changes
+  in supported zones. Wind stills do not prove animation, and no lightning bolt
+  or audible thunder was verified. Config/Misc weather0x3b defaults1 (on).
+- Zone110 entry camera now shows coherent near ground/walls with rain; distant
+  silhouettes/geometry and other probe cameras remain insufficient for a blanket
+  scene-completeness claim. Camera list0 means no list/miss, not proof of a bad
+  cull mask (set_camera_list leaves the mask absent for an unknown list).
+- UV metadata helper17df88a is test-only, outside pinned50 runtime7780129.
+  One owned-DAT fixture PASS; measurements at owner-20261106-ground-uv-audit.
+  Woods wi_misr01_1 part1 t_win07d128square:10validtriangles,32texels/worldunit
+  in both axes, anisotropy1.0;16strip-degenerate triangles skipped. No directional
+  UVstretch found on this patch. Source tile spans4worldunits, not the earlier
+  AABB-based8 estimate. Adjacent t_win00d512x256:26validtriangles, density29.67
+  to38.08, anisotropy1..1.283;8sharedboundaryedges. This does not prove matching
+  colors/alpha/normals or city-wide mapping correctness; screen mip choice remains
+  unmeasured. No new art/UV changes were made by the audit.
+- Final50 source7780129 shortens Special label to Show Arrow after initial full
+  label visually overlapped its state. Initial50 never handed/published;50b is
+  pinned separately.22Forever checks PASS plus1classic exclusion. Builds/smokes
+  and final render/package review must finish before existing publisher handoff.
+
+Coordinator b9eb1eb88295c7a3 reconciliation,2026-11-06:
+RETRACTED by coordinator7ba78c8e551f3807/platform633aee7dfa33d92c: the earlier
+report asserted absent initial weather, but livev3.47 session already patched real
+weather/time after the builder. Do not attribute invisible weather to missing
+initial packets or promise1991167 will make it appear sooner. Platform owns parity;
+no client-side invented weather. See corrected evidence below.
+Fresh read-only platform main1434cf4 already contains1991167: session.rs2905
+loads zoneAI login_weather; zonein/selfchar.rs137 writes WeatherNumber@0x68 and
+WeatherTime@0x6C. Added source tests cover packet offsets/initialization paths.
+No tests rerun by client owner and NO deployment/native-weather claim. Note that
+WeatherTime@0x6C is separate from GameTime@0x3C: current builder already writes
+clock fields@0x38/0x3C. Do not describe all time fields as zero from this finding.
+Client net.rs1380 consumes initial weather@0x68/GameTime@0x3C,1556 handles0x057;
+mod.rs9909 stores initial weather and9514 starts the corresponding effects after
+load;10622 change handler blends effects. No protocol change needed for number
+initialization. WeatherTime is not currently used for a previous-weather replay.
+
+Existing49 private offline short audits/rendered rain110,snow111,fog115,sky/light
+126 are limited proof, not everycondition/zone/nativeweather. Windurst/Saruta
+115/116/241 DAT tags are clod/fine/mist/suny; do not invent rain there. Platform
+ledger702eec9 marks period-retail weather-roll parity UNVERIFIED. No rate/table/
+weather force or duplicated server writer/tester requested from this reconciliation.
+
+Tower source description in the relay predates planned51: pin4c9d683 expands
+w05_yk1/w05_kb2 with w05_kb1/w05_yk2,184opaque bindings. Visible loaded/not-bound/
+loading/location status and staged Enable/Original shortcut are implemented/tested.
+All previews remain Forever+Enhanced+opt-in, stock-fingerprint/aspect gated and
+next-voluntary-load; custom inputs preserved. Exact51final binary offline3camera
+pairs+184bindinglogs verified; not owner-runtime proof. Allclientrelease checks
+PASS, originalhandoff queued, publisher CLI resume transport unavailable. Do not
+republish/rebuild or claim51live without receipt/readbacks. Current50lastverified
+16:56:13Z; owner's running/toggle/material state unknown. Active session untouched.
+
+Correction and bounded rendered follow-up,2026-11-06 17:10Z:
+Read-only1991167 parent session.rs2907–2912 confirms post-builder0x00A patch:
+current zoneAI weather/time written at0x68/0x6C. Platform reports new normal
+zone/no-table e2e pass on oldcode; only edge cases differed.1991167 is source
+cleanup/edge handling in sealedv3.62 bde5f5d, NOT a verified absent-weather cure.
+No native packet capture/actual owner weather or source-to-live parity established
+by client lane. Corrected platform livev3.47 statement is lead-reported evidence.
+
+Exact last-verifiedlive50 Linux uses released50artifact from
+owner-20261106-release50b/linux-forever-final; full digest in
+owner-20261106-tower51-audit/weather242-current-evidence.json. The earlier49
+SHA012bf0c8 is a separate retained audit, not this run.
+Tower242 WeatherSweep120ticks: clod/fine/mist/suny, each0weather generators,
+no skipped/missing ops/resources in these short runs;97ambient instances.
+Actual same-camera noon suny/clod renders with120effectticks have identical
+SHA093e280cc0481476b12d56f2ddaa031858e39f338558f02bc0c9fabea788e2de.
+Printed environment/sky/light/fog parameters also equal;487draws. One identical
+image inspected: dark stone interior/pool/lighting, no precipitation. This supports
+no visible sunny/cloudy difference for THIS localTower fixture/camera/time, not
+failure of the weather packet or proof allweather/areas render correctly. Rain/
+snow outdoor probes remain in earlier49audit; no blanket global defect claimed.
+
+Evidence: tower51-audit/weather242-live50.log,offline/weather242-live50(TSV),
+offline/weather242-live50-{suny,clod}.{log,png},weather242-current-evidence.json.
+Network-none/read-only owned DAT/softwareGPU; no owner/session/device movement,
+login/replay/restart or servercommands. Next native discrimination needs existing
+permitted zone/weather packet+config/DAT-match evidence; no liveprobe authorized
+or newly dispatched. Keep zone-roll/static/city/data/effect possibilities separate.
+
+Platform arrow/weather source handoff reconciliation — 2026-11-06
+Arrow path reported at historical a13b87c: Config -> Extras -> Maps -> Navigation
+Arrow, OFF to Auto/Objective/Waypoint; no shortcut found by platform. Current
+client settings.rs still has these modes. Current modern/navigation.rs has Show
+Navigation Arrow and is called from modern/journal.rs and modern/qtrack.rs;
+therefore the tracker restore is already source implementation, not new work to
+queue. Existing50 release evidence above applies; no current owner-device test.
+
+Platform reports scheduler source since949f4a7, included in last reportedv3.47:
+initial weather0x00A@0x68/change-time0x6C,0x057 changes,180–1800earth-second due
+intervals, rare15/common35/normal50 percent selection and eligible outdoor normal
+weather replaced by fog02:00–07:00 Vana time. Static zones send no change update.
+These are platform source reports, not measured live cadence or retail-era parity.
+The shared141-entry Windurst/Saruta table pattern values were truncated; no local
+condition/frequency conclusion is drawn from table length or shared identity.
+Do not infer rain in a zone from scheduler support or fabricate weather client-side.
+The withdrawn ordinary-zone-in zero-weather diagnosis remains withdrawn. Existing
+exact local DAT/render evidence remains narrower than server or owner-runtime proof.
+No new weather/arrow implementation, tests, release, device action or server edit.
+
+Coordinator25fe8e367b0abcef completes the table handoff — 2026-11-06
+Platform source report: four Windurst cities plus West/East Sarutabaruta share
+141 rows:71 all-sunshine,70 sunshine/cloud/cloud. Cities roll sunshine/cloud;
+Sarutabaruta additionally substitutes eligible fog02:00–07:00. This supersedes
+the earlier truncated-pattern gap, not existing weather/render uncertainty.
+Prior-weather crossfade fields remain zero per platform, and first-arrival stale
+weather catch-up is untested. Initial weather already works in reportedv3.47;
+no new missing-initial-weather diagnosis or server fix requested. Native coverage
+remains unproven; local tags/render evidence are explicitly scoped above.
+
+Tower51 remains the next visible target, owned by this existing client writer.
+Exact-binary three matched camera pairs,184bindings and software performance/
+allocation evidence already complete in owner-20261106-release51; no rebuild or
+Woods diversion. Receipt51 absent at this reconciliation; original publisher
+handoff stays queued per recorded delivery blocker. Last verified50 is not a
+fresh feed read. No owner-session action or duplicate graphics/publisher worker.

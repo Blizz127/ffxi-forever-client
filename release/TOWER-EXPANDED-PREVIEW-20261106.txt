@@ -1,0 +1,64 @@
+Owner 57cc8c7126c595be: Heavens Tower expanded preview, planned Forever51
+
+Scope: Forever only, opt-in. Four audited original-input materials replace184
+opaque model bindings (previous91): existing slab floors/lower masonry plus48
+tall-wall and45rough-stone bindings. New artwork is original text-only imagegen;
+provenance in assets/material-studies/20261106-tower-expanded. No owned DAT pixels
+are packaged. Woods preview, custom textures, original art and saved choices stay.
+Geometry, UVs, mesh flags, scene light/fog/time and existing normal maps unchanged;
+newly targeted stock materials have no normals, and none are invented. Animated,
+blended and cutout surfaces, decorative bands, plants, pool and separate room
+interiors are outside this preview. This is not a whole-world overhaul.
+
+Enable: ESC > Settings > Graphics & Interface > Graphics > Enable Tower Preview,
+then Apply and Keep if asked. This stages Enhanced plus Tower Preview while keeping
+other effect/Woods choices. Existing zone stays unchanged until the next voluntary
+zone load; no automatic movement, relog or restart. Use Original Tower + Apply
+reverts on the next voluntary zone load. In-world status distinguishes selected
+settings from materials present in loaded scenery and reports loading/other zones.
+
+Owner current running build/toggle/load/material bindings remain unverified. Do not
+attribute no visible change to perception. Last permitted installed evidence does
+not establish running process or settings. Current source applies materials at
+zone load; preloader remains disabled under its existing hold. Read-only old50
+exact binary comparisons show the earlier preview changed floors/lower masonry
+but left tall walls and rough stone unchanged. Current owner session not touched.
+
+Private evidence: ~/.cache/forever-client-build/owner-20261106-tower51-audit.
+7 focused checks PASS including2explicit private DAT fixtures; classic exclusion
+and final artifact checks recorded separately. Three matched cameras include the
+main hall pool level and lower floor/wall; prototype Original PNGs byte-identical
+to released50 Original, preview changes46.3/78.9/67.6% of pixels respectively.
+These are image differences, not measured perceptual quality. Mainhall camera is
+from historical screenshot/local fixture, not current owner position. Final dist
+binary rendered pairs, binding logs and software-only timing/memory required
+before handoff. No hardware FPS/VRAM, nativeWindowsGUI or owner gameplay claim.
+
+First harness ran before test compile, shortcut fixture initially omitted Keep,
+and DAT fixture wrongly assumed source normals; retained logs document corrections.
+Runtime never added such normals. No failed candidate packaged or published.
+
+Delivery: existing sole publisher, owner-native only, noForeverhuman gate;
+retain actual50channel/fullpackages rollback. No classic release, server/access/
+GM/credentials/device changes. Publication requires receipt and fullreadback;
+source/pin/build alone not live. Transition/base-game dependencies remain intact.
+
+Final artifact verification2026-11-06 16:50Z, source/build4c9d683:
+Both optimized distribution builds PASS; 7Foreverfocused+1classic exclusion PASS.
+Exact Linux startup, Graphics UI and three Original/Preview camera pairs inspected;
+Wine CLI help/version PASS, not nativeWindowsGUI. Final preview PNGs equal prototype
+PNGs and all Original PNGs byte-identical to released50. Runtime logs184bindings.
+Earlier46.3/78.9/67.6% image differences use maxRGBdelta>2 (not surface coverage).
+Mainhall maxRGBdelta>8 changes25.4%; changed-pixel metrics are not quality scores.
+
+Software-only llvmpipe,1600x900,487draws unchanged; ABBA20warmup+16timed/run:
+Original284.294/277.583ms; Preview249.933/263.615ms. Means280.939/256.774ms.
+No hardwareFPS or speedup claim: sharedhost/software format/cache effects apply.
+Texture allocation1.5MB Original,18.3MB prior50preview,35.0MB expanded51preview
+(decimalMB). Sampled process peakRSS378–379MiB Original vs503MiB Preview, about
+124MiB additional. Not measured discreteVRAM, not wholehardwarememorybudget.
+Data/logs: release51/benchmark-results.json,pixel-comparison.json,render-inspection.json.
+Original geometry/UV/light, existing normals/eligibility and chosen scope unchanged.
+No new ownerstate proof, player/deviceaction, nativegameplay or serverclaim.
+Publication remains pending existingpublisherreceipt/readback; do not infer live
+from this source/checkpoint. Existing50rollback required; classic19unchanged.

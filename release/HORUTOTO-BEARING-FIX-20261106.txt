@@ -1,0 +1,95 @@
+Owner reproduction7d692d84c7b0424b — planned Forever52
+Source diagnosis, no current owner-device/session evidence.
+
+The Horutoto Ruins Experiment is Windurst mission1-1: QST1 k=m,l=2,id=0.
+Platform data/mission_steps.lua supplies:
+1 status0/1: Hakkuru-Rinkuru17760273,Port240,(-111.1,-4.2,102.1).
+2 status2: Magical Gizmo gate17563876,Inner192,(420,-1.7,-30.4).
+3 status3: gizmos/broken one17563868,Inner192,(464.5,-3.5,100).
+4 status4: return Cracked Mana Orb to Hakkuru-Rinkuru,Port240.
+Current running build/zone/map page/feed unknown. Asked for current zone/page,
+exact step text and version if visible; source work proceeds independently.
+
+Confirmed source defects in51 baseline:
+- qtrack::guidance returns unavailable for exact step2 entrance_hint before
+  any exit lookup, even outside Inner Horutoto. This intentionally avoids the
+  wrong western entrance but also suppresses all local exit bearings.
+- navigation_markers permits marker only on Check::Clear. Both automatic walking
+  and HUD/compass/minimap consume that marker; >64yalms, walls/floor/unknown
+  ground therefore suppress known location bearings. Earlier41 added map-only
+  exits, but the mission-specific early return still bypasses them.
+
+Change: display bearings separate from clear-approach movement permission.
+Auto Navigation consumes walking_direction only; no collision/floor/door/zone
+checks relaxed. Exact mission identity/step/target/position gates an East entrance
+selection for steps2/3. Use local DAT named z38az5c5 from East116 toInner192;
+westernInner map3 uses named z5caz37f toWest115, then graph guidance toEast116
+excludingInner192 as intermediate. This permits exit-and-reenter same zone without
+pretending its disconnected sections connect. Other/unknown Inner pages get an
+honest unknown-section message. Local eastern map1 shows objective bearing.
+
+DAT region centers are location evidence only, NOT a safe walking path, exact3D
+trigger crossing, live door state, or live server parity. Named exits absent or
+ambiguous destination -> no route, never a guessed coordinate. Steps1/4 and other
+missions keep ordinary zone-line routing; changed objective/done invalidates the
+old destination. M-map exits remain filtered to their local map page, including
+leaving a wrong section of the target zone. Current settings untouched.
+
+Focused validation pending: mission feed progression/zone reset/done, local
+bearing versus blocked/far movement, exact private-DAT entry/exit identities,
+existing approach/autonav and arrow tests, classic exclusion, bothdist builds,
+final-binary startup and changed-feature offline UI. No live owner route, native
+Windows GUI, teleport/quest progression or real movement test authorized here.
+Tower51 artifact and once-only publisher handoff remain immutable/separate.
+
+2026-11-06T18:09:37.640662+00:00 final .52 validation/handoff
+Both pinned distribution builds and final smokes PASS.39 focused tests (including
+2 explicit owned-DAT checks), classic cargo check, Linux startup/map-grid and
+actual-DAT exit navigation render, Wine CLI, archive/hash/flavour checks PASS.
+Exact render: known West->East exit arrow296yalms with walking disabled; unknown
+location still explains no bearing. No owner/native route or Windows GUI proof.
+Drop [redacted-path]
+DROP SHA22d213b7f1cfcb19398a4916fe73958595c5241c7d4f2bd0040c48acf0907525
+Linux4c19befeef0a19f5102b830da204cdd4acb2ac8ee0e6953e4c25e2f7e25709df
+Windows9f83bf9e432bad5aa45fed6c9268fef34c719a9345154c0f72ed45b5b08c4037
+Queued ONCE01a1b20b-ef14-78b1-991f-af05c7ced86a to sole publisher; NOT LIVE.
+No51/52receipt found;51original handoff stays separate, no duplicate publication.
+
+Remaining step3 map projection limitation (not a walking change):
+Final binary map-grid gives gate/Eastarrival key1,map1; Westarrival key3,map3.
+Exact elevated Gizmo(464.5,-3.5,100) gives key0/no map record; marker omitted.
+Same-xz y0 gives key1/map1/I-8, while y-6 gives key0. Ground::map_key uses
+nearest collision face in the retail vertical ray interval; Qtrack::on_page
+currently compares this key directly. No evidence yet proves that bypassing
+the unnumbered face is valid for all multi-floor targets. Next bounded check:
+inspect actual same-xz face heights/keys and nearby floor identity, then test
+a display-only fallback that refuses ambiguous pages, leaves valid direct keys
+unchanged and never alters objective coordinates, player physics or walking.
+Do not hardcode y0 or globally alter the retail map-key selector from this sample.
+Evidence [redacted-path] and
+gizmo-page-diagnostic.log. This remaining limitation is included in publisher
+handoff and local release notes, not concealed by the bearing fix.
+
+Independent follow-up diagnostic b437d55 (test-only, outside pinned53):1PASS.
+Exact Gizmo coordinate hits a default-closed door box1885549919 with mapkey0
+at y-3.8235; same-xz static mapkey1 face at-3.8215 is about0.002 lower.
+Additional key1 geometry and floor0.0084 exist. Thus the unnumbered door face,
+not merely missing zone-map data, masks the nearby page1 geometry. No doors
+opened or body moved. Gate/Eastdirectkey1 andWestdirectkey3 unchanged.
+Evidence owner-20261106-gizmo-floor-audit/diagnostic.log andresult.json.
+Possible next fix is map-display-only handling of a near-coincident unnumbered
+door face, with ambiguous/different-floor/missing-data regression cases. Do not
+change global map_key, door collision, server coordinates or walking permission.
+This diagnosis is not included as a runtime fix in53 and does not delay Tower.
+
+Additional host sample reconciliation (reported .32 offline owned DAT):
+Exact step3 center(464.5,-3.5,100) key0; four x/z +/-3 neighbours at
+same height key1/map1/I-8, and y0 samples key1. Scenery model heights alone
+do not identify the collision face used by map selection. This is consistent
+with the existing client diagnostic above: unnumbered closed-door face nearly
+coincident with a numbered static face. Host sample is supplemental, not a new
+executed client test or a general floor/connectivity rule. No global y override,
+coordinate change, door opening, movement permission or live parity inferred.
+A future display-only map projection fallback must reject ambiguous floors and
+leave collision/route selection intact. Pinned .53 remains unchanged; its exact
+step3 map-marker omission remains disclosed. No duplicate QA requested or run.

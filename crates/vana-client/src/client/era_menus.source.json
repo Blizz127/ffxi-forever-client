@@ -1,0 +1,10 @@
+{
+  "source": "the installed client's own event text, located by shape; the platform report (ffxi-platform branch eragatesA, reports/2026-11-08-era-gates-field-support-conquest, README sections 1.4 and 2.3) names which dialogs and options to drop",
+  "rows": 90,
+  "sha256": "95b9a6834af09204c7705ae546b40144ded31d9c9654407d2be0e2c80346c130",
+  "kinds": {
+    "grounds_reraise_iii": "30 Grounds Tome zones: the Field Support dialog (20 option lines, found as the choice whose lines list Repatriation); option 6 (Reraise III) dropped",
+    "conquest_tier": "30 overseer zones x 2 dialogs (own nation, foreign; 12 option lines: Common, ten rank tiers, Cancel; found as the choice whose option 7 is the rank 7 tier); options 7;8;9;10 dropped"
+  },
+  "note": "The platform's EventsDump numbers every message one higher than the client does (its Boyahda Tree 11390 is the client's 11389, its overseer 7288/7289 are the client's 7287/7288): the dump's ids were NOT used. The owned-DAT test owned_dat_rows_are_choice_dialogs_of_the_recorded_shape checks every row's line count against the install (offline, counts only, no game text)."
+}

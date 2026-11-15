@@ -1,0 +1,104 @@
+Pre-Zilart client scope and evidence inventory — owner277af10de97dc175
+Reconciled 2026-11-06. Existing client plan/owners, not a new project or release.
+
+First content milestone: the pre-Zilart base-game journey, as close to period
+retail as supportable evidence establishes. Windurst Rust migration is the
+initial server content workstream inside that milestone. Smooth scene/zone,
+monster and BCNM transitions, correct state, and loading performance are its
+acceptance requirements. They do not compete with the content scope. No RoZ+
+content import, XP/economy rebalance or silent removal of chosen conveniences.
+
+Ownership and primary registers
+Client source/integration: existing Forever lead; server content/transition:
+existing ffxi-platform lead; runtime install: existing FFXI integrator; private
+client publication: existing launcher publisher. No new workers dispatched.
+Platform register: [redacted-path]
+Platform scope/journey: [redacted-path]
+Platform source inspected55daa0b850cb1e18112eccec9dbb7aaac5cee513; this is NOT a
+server deployment receipt. Do not edit their ledger or duplicate server ownership.
+Client journey: ~/.cache/forever-client-build/owner-20261106-roadmap/CLIENT-ROADMAP.txt
+Transition acceptance: release/TRANSITION-CRITICAL-PATH-20261106.txt
+
+Classification rules
+RETAIL-TARGET: era requirement/source behavior; claim verified period retail only
+with an identified primary artifact/behavior and era/date evidence. Later DATs
+can establish packet/event behavior, but not by themselves its2002-03 eligibility.
+CHOSEN: explicit owner concession; retain its exact scope, not all later rewards.
+DEFECT: established unintended behavior; source/test/live evidence kept distinct.
+UNVERIFIED: coverage, timing, source/date mismatch or intent not established.
+Use owned client data/behavior first, then dated archival evidence. LSB is a
+compatibility reference, not automatic proof of period retail. BG Wiki and
+FFXIclopedia are secondary dated cross-checks; no new wiki verification was run
+for this reconciliation. Platform historical claims remain attributed to that
+register until primary/dated evidence is independently checked.
+
+Source-linked inventory (paths relative to repo unless absolute)
+1 RETAIL-TARGET — base mission/quest/job/zone visibility and server authority.
+  client/era.rs BASE_MISSION_LOGS/BASE_QUEST_AREAS/BASE_JOBS/level_cap;
+  client/zone_era.rs (generated server-era rows); under crates/vana-client/src/.
+  Platform defines precise base endpoint/era rows. Client visibility tests are
+  not proof that every base quest, job or battlefield is complete or era-correct.
+2 RETAIL-TARGET — AH/crafting era eligibility and item/spell data display.
+  client/ah_era_public.tsv, client/crafting_log.rs, client/synth_era_public.tsv.
+  Table-backed client filters do not authorize transactions or later content.
+  Server revalidates; no new items/recipes imported by this scope update.
+3 CHOSEN — Modern UI, maps/M, quest/training guidance, waypoint/nav convenience.
+  Owner Nov3-6 requests in conversation; config.rs::modern_enabled/is_forever;
+  client/modern/, qtrack.rs, autonav.rs, hpmap.rs, training.rs.
+  Foreground controls stay manual; no inferred availability/readiness or safe
+  route from unknown data. Auto Navigation is optional and collision-limited.
+4 CHOSEN — Home Points, Survival Guides, Waypoints, RoE, Fields/Grounds of Valor.
+  Owner Nov3 kept-conveniences correction explicitly withdrew hiding RoE;
+  client/era.rs::has preserves RoE/Trust; modern/journal.rs uses that policy;
+  hpmap.rs and training.rs consume server state. Preserve them, with server-era
+  restrictions on destinations/rewards/content and current action-specific holds.
+5 CHOSEN — Trust/solo/bot accommodations and pacing concessions already approved.
+  Evidence/precise rates/defaults belong to platform forever-deviations.md;
+  client/special.rs sends the Solo Mode request. This request changes none.
+  Do not assume every current server rate/perk was approved beyond that evidence.
+6 CHOSEN — filtering, input/comfort fixes shared with classic; Modern/Enhanced
+  art and effects gated Forever, opt-in previews preserve current preferences.
+  Owner Nov3-6 directions; config.rs graphics/environment gates and client/modern/.
+  Requested style remains recognizable FFXI; texture fidelity is not authority
+  to replace geometry, content, collision, rewards or the period palette broadly.
+7 CHOSEN — chat bridge, optional Crafting Log and approved display conveniences.
+  Owner Nov3 requests; net/friends_feed.rs, client/friends.rs, client/crafting_log.rs,
+  client/modern/items.rs.
+  Feature availability/source code != complete cross-account/gameplay proof.
+8 DEFECT, FIXED SOURCE/FOCUSED/LIVE — resource ACK could precede GPU readiness;
+  actor requests then serialized behind GPU upload. client/zonefade.rs and
+  client/event.rs:40/17 resource gate;46/18 actor prefetch. Historical24 log
+  documents1.136s premature ACK;46 retains ACK/VM readiness and actor-model wait.
+  Current native latency improvement/owner standing-flash resolution UNVERIFIED.
+9 UNVERIFIED — complete base journey, all mandatory scenes/choices, BCNM phases,
+  actual monster behavior and reconnect/save/reward outcomes on current pair.
+  Transition contract [redacted-path];
+  client event.rs/event_vm.rs. Existing server source errors and legacy missing-
+  script/idle fallback are recorded in TRANSITION-CRITICAL-PATH; no success claim.
+10 UNVERIFIED SCOPE CONFLICT — Nov3 owner-kept list includes RoV, while platform
+  roadmap section2 broadly excludes RoV content; client/era.rs mission_log_on
+  currently hides all later logs including RoV. Do NOT unlock or delete anything.
+  Needed distinction: exact kept RoV convenience/reward/subset versus excluded
+  expansion storyline/content. Report once to existing owners/coordinator for
+  evidence reconciliation; it does not block unrelated base-game fixes/releases.
+
+Delivery/acceptance sequence
+A. Finish coherent Windurst introduction -> first mission/combat -> loot/equip ->
+   shops/services -> travel; server owns Lua-to-Rust behavior and state parity.
+B. Expand the same evidence to other base nation missions, jobs/skills, party,
+   dungeons, battlefields and platform-defined final base-game endpoint.
+C. At EVERY increment verify changed scene/zone/control handoff and relevant
+   interruption/retry/save/reward assertions. Do not hold small releasable fixes
+   until all content is complete, or call partial scripts an end-to-end pass.
+Existing bounded content/contract/fixture lanes may proceed in parallel under
+those owners; overlapping client edits/build targets/render slots stay serialized.
+No new full-suite/signoff gate, duplicate publisher or independent live worker.
+
+Current delivered client baseline: sourcea13b87c, Forever1.0.7-forever.46 LIVE
+2026-11-06T12:23:01Z, classic1.0.7-vana.18 LIVE12:19:35Z.45+46 focused checks,
+all4dist/local smokes/headlessBastokparity PASS; current/rollback fullhashreadbacks
+PASS. No owner-device/native network transition/complete BCNM proof. Receipts and
+limits: ~/.cache/forever-client-build/owner-20261106-release46/verification-*.json.
+Next measurable runtime milestone: paired native stage timing on a named safe
+fixture with verified current server/client identities; existing owners are
+reconciling fixture/resource ownership. No owner character reset/move/replay.

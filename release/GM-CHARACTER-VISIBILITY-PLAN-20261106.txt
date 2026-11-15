@@ -1,0 +1,254 @@
+Per-character GM content visibility — owner122dd30e95f85545
+CLIENT ROLE, preparation only,2026-11-06. No live grant or runtime integration.
+
+Clarified owner intent — coordinator825cd173fe0edaa2
+An eligible, server-authorized GM CHARACTER should be able to see all available,
+implemented eras, including later mission and quest menus. Ordinary characters
+remain restricted to the released era plus explicitly chosen conveniences.
+This is the target design, not a claim that current server populations, feeds,
+commands or client menu wiring already support it, and not rollout approval.
+
+Capability is ephemeral server state, separate from saved per-character UI
+preferences. Clear it on account, realm, character, session and zone-generation
+changes, including interrupted login and returning to character selection. Until
+a fresh attributable capability arrives, use ordinary-character restrictions.
+Never restore authority from a settings backup or copy GMBlizz's capability into
+Blizz's session. Missing/invalid/revoked capability closes privileged browsing;
+pending commands must recheck current identity/capability before dispatch, and
+the server must independently authorize every action.
+
+Later logs may be browsable only under that authority; distinguish implemented
+and available content from unavailable populations, missing local data and
+unsupported interactions. Do not imply that a displayed mission can be started,
+or that a visible zone has working NPCs/quests. Existing platform owner must
+provide population/interaction availability and the supported command matrix;
+ERA1 gm/stage alone does not encode these. No locally fabricated population,
+grant switch, no-clip bypass or apparently functional unsupported control.
+
+Acceptance cases for eventual integration: GM -> ordinary sibling -> GM;
+same-named characters across realms/accounts; logout/relog; interrupted identity
+load; queued stale capability; immediate revocation; absent feed; unavailable
+content/command; settings restore cannot grant visibility. Existing pure-model
+tests are not evidence that these decoder/UI/server integration cases pass.
+Wire-generation attribution below remains unresolved. Live security activation,
+GM grants and population rollout stay held. Per-character settings and the
+substantial Tower preview retain their existing independent ownership/priority.
+
+Existing platform plan/contract (read-only, do not duplicate their ownership):
+[redacted-path]
+Related scope: release/PRE-ZILART-CLIENT-INVENTORY-20261106.txt
+Client release baseline46/18 is unchanged; smooth transitions remain critical path.
+
+Authority and source evidence
+- Platform document says chars.gmlevel is per character; accounts.priv is separate.
+  It proposes ERA1 {"gm":1,"stage":0}, system channel, only for an eligible char,
+  at login/zone-in after3s. stage is metadata, not an era-unlock instruction.
+  This is prepared server code/contract, NOT a live deployment or privilege grant.
+- client/net.rs::Marks.gm decodes nameplate bits; client/plate.rs and mod.rs use
+  them for appearance. Chat Attr GM bit marks that message's sender. None proves
+  the logged-in character has the server's content-view capability. Do not use
+  another actor, name, account, chat prefix or visible badge to grant UI access.
+- config.rs era_lock is serde(skip), defaulttrue: it is NOT a saved GM override.
+  era.rs::seen_key(server,account) stores expansion-notice history, NOT authority.
+  Do not put per-character capability in this account cache or persistent config.
+- All game commands/zone entry/items/rewards remain checked by server. Client
+  browsing permission is never authorization to execute a command or transaction.
+
+Visibility inventory / current source / intended GM presentation
+1 World maps and Search areas: era.rs::zone_open/zone_open_in, map.rs Change Map,
+  arealist.rs. Current installed-zone table and lobby bits filter normal browsing;
+  current physical zone stays visible, unknown zone IDs currently pass through.
+  Inventory these exceptions; do not silently hide a stranded player's current
+  location or call unknown entries reviewed. Proposed capability permits only
+  server-authorized later-zone browsing with installed map data/page; unknown map
+  remains unavailable. It does not spawn NPCs or approve a teleport/zone request.
+2 Missions/quests/Journal/type-search: era.rs mission_log_on/quest_area_on;
+  missions.rs, quests.rs, journal.rs, modern/journal.rs. Base logs/areas currently
+  filtered. Capability can remove client presentation filtering after contract
+  agreement, but does not add quests, mark completion or fabricate NPC offers.
+  RoV kept-subset ambiguity already reported; no current gate changed.
+3 Status, jobs, skills/spells and system menus: era.rs has/hidden/job_on/cap/
+  spell_closed, eralayout.rs, status.rs, searchmenu.rs, magic.rs, jobpanel.rs,
+  suggest.rs. Preserve chosen Trust/RoE exceptions. Any GM UI expansion must still
+  obey installed data/server state. Visibility is not permission to learn/cast,
+  raise level, bypass equipment restrictions or change the world's era cap.
+4 AH/items/recipes: ah_filter.rs, ah_era_public.tsv, crafting_log.rs and
+  synth_era_public.tsv. AH search protocol lacks character identity per platform
+  section3.4; category feed remains shared. Do not claim full GM AH browsing from
+  a local filter bypass. Crafting data table is base-only; unknown later recipes
+  must not be invented. Preserve owned inventory/storage/equipment and honest
+  item details; hiding inaccessible offers is not deleting/concealing held items.
+5 Teleport/HP/Survival/Waypoints: event-driven menu and hpmap.rs, map.rs and hudtop.rs
+  (actual destination scene preview); server owns lists/registration/cost/confirm.
+  Never forge expansion masks or destinations from ERA1. Keep existing HP and
+  Survival/0x114/live-action holds. Stage0 tracker feeds remain stage0 per platform.
+6 Quest/training/map markers and navigation: qtrack.rs, training.rs, autonav.rs,
+  modern map/journal/HUD. Capability does not establish availability, readiness,
+  destination/floor or traversability; require actual authoritative feeds/data.
+7 NPCs, mobs, loot and battlefields: server owns shared spawns, quest containers,
+  drops and entry rules. Platform explicitly leaves shared state era-gated; client
+  does not locally unhide/synthesize entities or call those zones fully playable.
+8 Assets: retain installed DATs unchanged. Show unavailable/missing-data feedback;
+  never delete or distribute game assets to enforce UI visibility.
+
+Proposed client contract and preparation
+- Default restricted; Forever only. Strict typed ERA1 parser in authenticated
+  game-session system-chat path, never arbitrary player tells/say/nameplate data.
+  Hide recognized machine payload from chat. Malformed/unsupported current feed
+  fails closed; no local toggle, credential, account flag or persisted grant.
+- Store only in current World/character session. Reset at EVERY zone/re-entry,
+  character selection, disconnect/relog and server switch. Accept delayed message
+  only if its receiving network-context generation, character and zone still
+  match. The ERA1 payload itself has no char/session ID; adapter must prove how
+  its packet lifecycle binds it, not invent identity from the JSON.
+- Platform r2 at9ced908 establishes revocation lifetime: gmlevel re-read from
+  chars at each login/zone-in; no current mid-session gmlevel writer. Clear at
+  every accepted0x00A/disconnect, and accept only after that boundary. No line
+  means hidden. Future gm!=1 immediately revokes. DB demotion takes effect next
+  zone/login, not by a timer. Server always enforces actual action permissions.
+- Proposed visible status: server-authorized GM content view, session-only; mark
+  unsupported/unavailable content honestly. No privilege/grant/editor control.
+- Test-only prototype release/prototypes/era_visibility.rs is UNWIRED: no module
+  declaration, parser, World/net hook, config, command or release path.10standalone
+  Rust testsPASS: absent capability, exact context, non-GM sibling, relog/new
+  generation, same-zone re-entry, zone switch/late packet, revoke/invalid, classic/
+  non-system input, stage-only denial, disconnect. Evidence
+  ~/.cache/forever-client-build/owner-20261106-gm-visibility/focused.log.
+  These prove the pure client model ONLY; not server permission isolation,
+  persistence/DB/relogin, parser authenticity or native UI/gameplay.
+
+Server tests and command compatibility remain platform-owned
+Its section3.6 names synthetic era_gm_e2e/session/xi-lua/xi-connect tests including
+same-account siblings/relog; results not independently rerun or claimed by client.
+Section4 reports207 scripts and about136 pre-refused missing-binding commands,
+with per-command safety/permission/audit table still a next step. Do not equate
+loading scripts with complete working GM parity or blindly enable destructive,
+world, another-character, server/security commands. Need exact current matrix,
+refusal/partial-side-effect tests, audit redaction and rollback limits from owner.
+
+Provisioning HOLD / exact-target gap
+No current authenticated account/character association was queried by this client
+lane. Platform section2 names an account and existing Blizz as a proposal/history;
+owner later reports GMBlizz in transition evidence. Therefore that document alone
+is NOT a fresh exact target or permission to create/overwrite/grant anything.
+Existing server integrator must read current identity/character rows and present
+exact server+account association, charID/name, new-vs-existing, current/proposed
+GM capabilities, current/proposed job levels (era cap vs absolute maximum), scope,
+preimage/restore and effect on persistent items/quests earned while privileged.
+Never reuse ordinary Blizz by assumption or grant at account scope. Demotion does
+not roll back items/quests/level changes automatically; report that explicitly.
+Smallest action-time confirmation only AFTER those facts: approve the exact named
+character ID/new creation action, capability level/set and exact job-level change
+on the named server, with stated consequences/rollback. Live code deployment that
+widens privileges/security also remains held. No such confirmation is requested
+prematurely here; code/model preparation and ordinary transition work continue.
+
+ERA1 r2 attribution audit — 2026-11-06, source-only; runtime remains UNWIRED
+Platform docs/forever-gm-and-era-visibility.md at9ced908, section ERA1 lifetime.
+Client source: client/net.rs::run/session increments sess per map session and
+uses one UDP socket across zones. Zone transition advances the key counter;
+net/map/session.rs::recv rejects wrong-key/checksum and non-new datagram/subpacket
+syncs. These provide transport separation, NOT proof that every delayed ERA1
+belongs to the intended zone generation. The existing stale_key_datagram test
+needs owned DLL data; it was not rerun for this documentation reconciliation.
+
+client/net.rs::NetEvent::Chat currently retains kind/attr/data/from/text only;
+its0x017 branch drops SubPacket.sync and does not attach sess/character/zone.
+RawIn carries sess for hook traffic; that does not automatically stamp Chat.
+ERA1 JSON itself has neither zone nor generation. Tagging it with whichever
+World generation exists when UI consumes it would assume the needed attribution.
+A future adapter must carry the validated receiving session context through
+queued/hooked decode, reject before current0x00A and reject stale contexts.
+
+Server forever_era_gm.lua timer re-checks eraVisible but captures no explicit
+zone-generation token. Need platform proof that stale timers/queued output are
+cancelled or bound to their originating session across zone/re-entry/relog. If
+an old callback can emit with the new session key/context, transport attribution
+alone cannot distinguish it; re-checking GM eligibility is not a generation proof.
+Do not infer age merely because a line arrives after a new0x00A: legitimate new
+zone ERA1 also arrives then. Resolve provenance with existing platform owner,
+then test real decoder ordering, delayed hooks/queue, same-zone re-entry, sibling
+relog, stale-key datagram, fresh post0x00A line and revocation before integration.
+
+Existing10 prototype tests remain pure-model evidence, not wire/adapter tests;
+no duplicate run or runtime/security/publication change in this reconciliation.
+Shared AH, parked entities, quest containers and stage0 feeds remain limited.
+Provisioning and GM visibility activation remain approval-held.
+
+Coordinator b9eb1eb88295c7a3 material receipt2026-11-06: platform reports ERA1
+requiresv3.59+; client mission-menu capability remains unwired/incomplete. Live
+later-zone NPC/mob population availability is not established by a GM UI flag.
+Current platform source includes default-off population work(d059f13), not a
+client/deployment authority. Existing r2 wire generation attribution question,
+per-character authority and provisioning/action-time security hold remain. No
+client-local override, account-wide flag, GM menu capability deployment, privilege
+grant or global future-content unlock was made. This source-only reconciliation
+does not change the completed51graphics artifact or existing publisher baton.
+
+Correction7ba78c8e551f3807: platform sealedv3.62 bde5f5d supersedes uninstalled
+v3.59–v3.61 because older kits could expand existingGM5 visibility. Era master
+switch defaultsOFF in3.62; keep current access. Earlier kit capability/version
+mentions are not installation advice/authorization. GM policy/menu/grant remains
+approval-held; client makes no privilege, account flag or global visibility change.
+
+Egress handoff reconciliation — source only, 2026-11-06
+Owner relay describes missing transfer isolation at platform c5a2127+. Treat it
+as an activation prerequisite, not permission to turn G1 on. A later read-only
+checkout inspection at platform1434cf4 finds additional source work: document
+008eb5b and session/era_gm.rs::egress_refused short-circuit when the master is OFF.
+The document now describes trade slot/exchange, delivery Set/Send/Reject/Get and
+party award guards, but this client lane has not tested or deployed them.
+
+The document still contains an older contradictory paragraph saying the rule
+applies with the switch OFF, plus old switch-off test names. Current helper and
+new activation paragraph instead preserve previous OFF behavior. Flag this to
+platform for reconciliation; do not silently interpret either as rollout approval.
+It also records a cold denylist-cache limitation at party awards and synthetic
+fixtures that preset the cache: complete egress isolation is not established by
+this read. Platform owns resolving/testing those paths and receiver identity,
+demotion, offline delivery and sibling isolation without item loss.
+
+Bazaar is documented as unsupported (no buy handlers), not a completed guarded
+feature. Discard is documented as destruction/recycle, not a world pickup route;
+client must not create a new transfer path. Shared drops/populations/AH browsing
+and later content remain limited. Server grant, G1 activation, population and
+security rollout remain held for separate action-time approval. No client UI
+filter substitutes for these server protections. No server edits, tests, item
+operations, live changes or new writer were made for this handoff.
+
+ERA1 send cleanup versus receive attribution — 2026-11-06
+Platform relay describes source reviewed at main3701458. That commit itself is
+RoV documentation, not a timer patch; treat it as a review baseline. Read-only
+session.rs::login confirms pending.clear(), then (with a Lua host) draining
+self.queued and releasing player timer callbacks without invoking them. NPC
+timers may be handed to the zone NPC queue; this is not a universal timer purge.
+This supports retirement of the old player's unsent ERA1 work. It cannot recall
+an already-sent UDP datagram. No timer/transport integration test was run here.
+
+Client source boundaries inspected:
+- client/net.rs::run increments sess for each map session; normal Outcome::Zone
+  sets old_key=None, advances key[16..20] by2 and queues Zoning before next session.
+- net/map/session.rs::recv decrypts/checks the payload and drops invalid checksum;
+  it rejects datagram and subpacket syncs not newer than last_in using wrapping
+  sequence comparison. With a distinct key this rejects old-zone datagrams;
+  within a sequence epoch it rejects older reordered packets after a newer one.
+  These filters alone do not identify a character or prove every epoch boundary.
+- Before the first accepted datagram, recv may adopt login.old_key if configured;
+  normal zone transitions clear that alternate, but initial login compatibility
+  needs separate coverage. Sequence state starts empty in a new MapSession.
+- RawIn/Decode retains sess; nonzero stale Decode is rejected, but Decode(0,...)
+  intentionally means current session. Hook-modified/injected input cannot be
+  silently treated as authenticated capability provenance.
+- NetEvent::Chat drops SubPacket.sync and carries no sess/character/zone; 0x017
+  is not currently guarded by zoned. A future capability adapter must enforce
+  accepted current0x00A and carry validated receive context, not stamp whichever
+  World happens to consume the message. Existing ERA1 model remains UNWIRED.
+
+Next bounded verification, owned by this client lane when integration is allowed:
+old-key ERA1 before/after new0x00A, same-key reordered sequences and wrap boundary,
+pre-zone chat, repeated0x00A, delayed hook Decode(old/current/0), relog/alternate
+key, sibling/account/realm switch and revocation. Verify exact transport/key
+lifetime with platform; don't infer all late lines stale (fresh ERA1 legitimately
+arrives after0x00A). Existing stale-key unit test is not an end-to-end capability
+proof and was not rerun for this source reconciliation. No runtime, server,
+security/grant, owner session or deployment changes.

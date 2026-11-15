@@ -1,0 +1,1 @@
+Original text-generated Heavens Tower material candidates. Preserve source geometry, palette and decorative bands. Owned DATs and scene comparisons remain private, outside this directory and release archives. Selected only after binding, scale/seam, normal and actual-render review. See PROVENANCE.json.

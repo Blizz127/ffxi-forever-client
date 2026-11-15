@@ -1,0 +1,23 @@
+Forever.35 — middle-click autorun (Forever only)
+
+A fresh middle press in the focused, unobstructed game view toggles ordinary
+autorun. Starting follows the camera's horizontal facing through normal movement
+and collision. Press again to stop. Holding/repeated press events and release do
+not toggle again. A click which cancels Auto Navigation is stop-only; release and
+make a new deliberate click before starting ordinary autorun.
+
+Middle no longer also grabs/orbits the camera in Forever. Right-button camera
+behavior and wheel zoom remain. Do not combine the autorun click with another held
+mouse button, modifiers or an existing camera grab. UI-consumed clicks, HUD/menu/
+map/text input, inactive focus, loading/zoning, unsafe/unavailable movement states
+and other scripted movement cannot start autorun. A valid stop click still works
+when movement readiness changes after starting. Existing Records of Eminence
+middle-page action and mod-consumed input retain priority. Keyboard/controller
+saved assignments are untouched; this writes no preference or layout fields.
+Regular/classic retains its existing middle-camera behavior and stays vana.15.
+
+Focused sequence/gating/camera-capture checks, both flavor compile checks,
+Forever Linux/Windows builds, offline Linux startup and Windows Wine CLI evidence
+are separate. No real account, live movement, owner-device input/restart or native
+Windows gameplay check. Existing sole publisher retains baton, .34 rollback.
+No server, source-push, access-policy or game-data distribution change.

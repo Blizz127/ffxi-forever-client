@@ -1,0 +1,54 @@
+Client flavors
+==============
+
+Regular FFXI uses classic; FFXI Forever uses forever. Never relabel one flavor's
+binary as the other. Development builds retain the full client by default.
+Choose a flavor explicitly for a release:
+
+  cargo build --release --no-default-features --features classic
+  cargo build --release --no-default-features --features forever
+
+The features are mutually exclusive. With no features, the client is classic.
+The classic executable excludes the Modern UI module (and its assets), Special,
+the EXP panel, Forever zone/spell tables, PlayOnline text replacements and the
+Forever authentication extension. A copied Forever configuration cannot enable
+them. The forever executable also checks the selected server at runtime.
+Shared movement/camera, controller, correctness fixes, texture filtering,
+anti-aliasing/sharpening and classic Extras remain shared. Classic excludes
+stylized lighting/effects even when an older or copied config requests them.
+Settings Apply/Cancel, display review and cursor-on-top are shared.
+See client-feature-audit.tsv for the owner-directed feature allocation.
+
+Inside the project's existing offline build containers, use:
+
+  release/build-flavor.sh classic linux
+  release/build-flavor.sh classic windows
+  release/build-flavor.sh forever linux
+  release/build-flavor.sh forever windows
+
+CARGO_TARGET_DIR may select an existing compatible cache. Each successful build
+copies its artifact to target/assets/<flavor>/ and writes a .build.json record
+with flavor, platform, source commit/tree and binary SHA256. The source must be
+committed and must remain unchanged throughout the build. Keep one writer and
+honor existing resource locks when running builds.
+
+Package locally after focused startup/feature checks:
+
+  release/package-drop.py classic 1.0.2-vana.N NEW_DROP_DIRECTORY --source-ref SOURCE_CANDIDATE
+  release/package-drop.py forever 1.0.2-forever.N NEW_DROP_DIRECTORY --source-ref SOURCE_CANDIDATE
+
+The packager verifies both build records, flavor/version, hashes and identical
+source trees before creating a new drop. Forever's N must match FOREVER_BUILD.
+DROP.json records flavor; SHA256SUMS covers the two archives. Packaging does not
+publish source, upload a release, change a channel or install on a player device.
+Hand the drop to the launcher's assigned publisher, which owns its flavor gate,
+player-availability checks and rollback. Existing owner holds still apply.
+
+Every future Forever feature must be compiled under the forever feature and
+gated at runtime by is_forever()/w.forever and modern_enabled()/w.modern where
+appropriate. Generic input fixes belong in both flavors.
+
+Owner rule (2026-11-04): default every pure fix or non-stylistic quality
+improvement to both flavours. Modern UI, the new lighting/effects look and
+Forever gameplay remain Forever-only. Regular publication requires 0 FFXI
+humans under the publisher's existing gate; never restart a protected player.

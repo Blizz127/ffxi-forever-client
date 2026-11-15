@@ -1,0 +1,127 @@
+Owner reproduction3aedc9c4af52dcf9 — Heavens Tower navigation, 2026-11-06
+
+Confirmed owner starting zone242; stage/map/running build unverified. Earlier52
+bearing and entrance fixes do not supply a missing Tower graph edge. Final52
+zone-info finds14RID regions, zero ordinary z* zone lines. Routes::load only
+loads ordinary zone-line pairs, so Tower cannot reach any remote objective.
+
+Primary local client event6062/41 (actor7ffffff0, offset01ec) runs portal/fade
+schedulers then event_end. Local server-script reference:
+[redacted-path]
+registers trigger1 cuboid[-1,-1,-35]..[1,1,-33], starts41 and onEventFinish
+setPos(0,-17,135,60,239). This copied source worktree has stale git metadata;
+file hash is recorded in evidence, not attributed to a guessed commit/live kit.
+Existing platform owner retains deployment/parity ownership. Client evidence
+proves event presence, server source provides destination; no live portal proof.
+
+53 design: add a typed manual Portal navigation result from242 to239, only when
+the requested remote destination has a known onward route from239 (or is239).
+Use source trigger center(0,0,-34) for arrow/compass location, with entrance-hall/
+stairs/use-manually instructions. Local objectives and no-target cases unchanged.
+Portal result NEVER grants walking, even if a cached approach saysClear; no
+event start, finish, teleport, network mutation or owner movement is performed.
+Inner objective steps2/3 continue via East116 to named z38az5c5/map1.
+
+Exact52 map-grid on Tower exit and default entry reportskey0/no map record;
+no Tower map page is invented. Same-zone map filtering remains fail closed.
+Elevated Inner step3 objective no-map limitation is separate and still open.
+
+Verification planned: four real mission step tuples from Tower, all-floor
+synthetic starts, all approach verdicts includingClear, local/missing/unknown
+targets; privateDAT Tower absence + Walls onward route + East entrance. Exact
+final binary startup/portal-arrow render and Wine CLI, package/flavour checks.
+No owner-device, native network route/trigger crossing or WindowsGUI proof.
+52 artifact/handoff immutable,51 Towerart unchanged,53 inherits both.
+
+Final verification/handoff — 2026-11-06T18:38:06Z
+Source8889c5ce864c897d438952f96eb6a389eac65f6f.40focusedPASS including2explicit
+privateDAT; classiccargo checkPASS. Actual local route242portal->239Walls->
+241Woods->116East->192easternInner. Both dist builds, exactLinuxstartup and
+portal56yalm render, WineCLI, archive/hash/flavour checksPASS. Render is a
+synthetic HUD fixture using production route lookup, not owner's live scene.
+The platform e2e.rs default source tree's TowerZone.lua has identical bytes to
+the referenced copy (SHAcbf758d24b6b3fc0f27c1d0532a12f787b6b5dc6a751b723253c14cc25f7bd69).
+No installed-server/native portal proof. DLL map-region signature confirms0
+Tower records, so no map fabricated.
+Drop[redacted-path]; DROP9ec92f3d864e5646bcc5ee21aafcfd58c2d81e42e100a49c2958aab271fb7f64.
+Handed once to existing native publisher after current registry routing check.
+No53Codexqueue/newworker/duplicatepublication. Receipt/readback still required;
+no live or owner-install claim. Evidence[redacted-path]
+
+Fresh owner feedback reconciliation — 2026-11-06 18:41Z
+Owner via sole FFXI host: "it doesn’t direct me anywhere just has ? now".
+Treat unresolved. Fresh zone/section, selected step, mode and running binary
+are unknown; do not reuse the historical Tower location as current evidence.
+Channel-only read18:41:26Z still50 SHA2112ac15f2f62b768c4550c7aaad08bab26599152d078be8eebaca56a6d1b425;
+no51/52/53receipt. This proves offered version, not owner's running process.
+
+Re-read exact50 source7780129: guidance returns unavailable before route lookup
+when the step2 East-entrance hint applies; otherwise HUD consumes Clear-only
+walking marker. Ordinary DAT graph also has no Tower portal edge. Prepared52
+and53 address these separate source defects. No claim fresh owner feedback tests
+those fixes until actual delivery/running-version evidence exists.
+
+Question mark decision boundary in current HUD:
+- No numeric range / "No local bearing": target position unavailable/suppressed;
+  detail distinguishes loading, Mog House, missing target, route or era block.
+- Personal waypoint title: Auto may prioritize a saved remote-zone pin; preserve
+  it, do not silently clear the player's pin or change selection.
+- Numeric range with ?: a position is known but heading projection failed
+  (for example a vertical/invalid horizontal camera basis); do not invent a
+  route or assume this is the same missing-exit case without observation.
+
+One existing-host request queued01a1b22c-1842-7e03-a560-bf8609ee179b asks for
+current zone and exact visible title/detail/range through the existing owner
+conversation, using already available observations first. Version only if already
+visible. No device probe, movement, restart, replay, duplicate QA or speculative
+runtime edit. Coordinator3aedc9c4af52dcf9 informed of current source/delivery state.
+Publisher53 once-only native handoff remains pending, not repeated. No new tests
+needed for this read-only reconciliation; prior53 checks remain as recorded.
+
+18:44Z host handoff reconciliation: README now reports owner inside Inner
+Horutoto, overriding the prior unknown-zone note for this latest report.
+Section/page, step, HUD detail and running binary remain unknown. Existing
+mission-specific53 checks cover map3 named West exit ->West->East->namedEast
+Inner entrance and map1 local objective; unknown sections remain fail closed.
+No new runtime change or duplicate QA/build is justified by the repeated50
+source correlation. Owner-native channel18:44:44Z still50/2112ac15;53 receipt
+absent. Existing publisher sent status information for already-handed53, not
+another dispatch. Host asked to avoid repeating resolvedzonequestion and use
+only alreadyavailable page/step/detail from the existing conversation. No device
+probe, owner movement, restart/replay or live route claim.
+
+Publisher routing correction — 2026-11-06 19:47 UTC
+The sole authorized publisher is Codex thread 01a1a3c6-1c89-73c1-912a-eb8ea8b64ed4.
+Launcher Claude e7946e5e-3bb9-41e4-97d4-5e447bcb07f6 is NOT the publisher.
+Earlier .53/.54 native inbox sends there were misroutes, not publisher handoffs;
+those historical receipts are retained, but any earlier publisher identity claim
+is superseded by this correction. Do not rerun the old handoff.py scripts.
+Independent read-only queue audit found .51/.52 present and .53/.54 absent.
+After checking unchanged DROP hashes and completed verification, queued once:
+.53: 01a1b266-afe6-73a1-be0b-c5ff00e5e6f2 (order31)
+.54: 01a1b266-b0f3-7570-98d3-3c19189b020e (order32)
+All preexisting queue entries and order/payloads verified unchanged afterward.
+No --resume, daemon, new publisher, deployment, device or player action.
+QUEUED IS NOT PUBLISHED. Publisher unloaded/occupied-host continuation remains
+unresolved. Last channel observation 19:42:39Z was .50; no .53/.54 receipt found.
+Publisher must reconcile current feed and predecessor rollback before activation.
+Evidence: [redacted-path]
+
+Owner clarification received after21:28 review: for this Inner Horutoto Windurst
+1-1 report, entry from EAST Sarutabaruta is confirmed by the player. The earlier
+western-section assumption is not evidence for this report; do not send the
+player through West. Keep separate Tower/outdoor-pin reports separate. Current
+coordinates, page, internal step and running binary remain unknown.
+Read-only source reconciliation: .54 mission_navigation uses the local objective
+for recognized map1; only map3 selects the named West exit. Unknown/other pages
+remain unavailable. Existing privateDAT test identifies East arrival and gate as
+map1, and rejects either arrival as a verified direct walk. Those tests were not
+rerun. In .50 the Clear-only objective marker can suppress bearing even in the
+correct eastern section; this is a source mechanism, not a confirmed live cause.
+.54 separates bearing from movement permission; its immutable drop and queued
+handoff are unchanged. No evidence yet of a live .54 failure. The known step3
+Gizmo map-projection ambiguity remains distinct. No new test/build/publication,
+owner/device/server action or route/door/floor guard relaxation. If diagnosis
+continues after delivery, use already available objective step, map page and HUD
+detail/range to distinguish missing location from heading projection; entry
+direction alone is not a current-coordinate or traversability proof.

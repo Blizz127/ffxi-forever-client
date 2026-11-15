@@ -1,0 +1,35 @@
+Forever.38 — original environmental texture preview (Forever only)
+
+Settings → Graphics → Environment Textures → Tower Preview adds new original
+stone slabs and masonry to selected Heavens Tower surfaces. Choose Forever
+Graphics → Enhanced as well, then Apply. The textures load when the zone next
+loads; re-enter the zone or relog voluntarily. Original restores installed art
+at the next zone load. No automatic restart, zone change or preference migration.
+The new choice defaults off and preserves existing saved graphics/customization.
+
+Two original text-generated material images replace 91 audited opaque bindings
+in the installed test fixture: 68 floor bindings and 23 masonry bindings. Source
+floor 128x256 becomes 887x1774; masonry 128x128 becomes 1254x1254, with mipmaps.
+The images were generated from text alone. No game textures were submitted to
+image generation and no source-derived DAT/texture pack is distributed.
+
+Exact stock-content matches only. Altered/custom textures, transparent uses,
+animated meshes, decorative atlases and other zones retain their installed art.
+Geometry, texture coordinates, collision, doors and original bump-map suffixes
+are preserved. The existing Enhanced lighting/effects are unchanged. This is a
+limited material preview, not a whole-zone/world remaster or a general UV fix.
+Other tower material bands and borders remain stock and visibly differ in detail.
+The initial irregular paving study is not included in the compiled preview.
+
+Focused settings Apply/Cancel/persistence/flavour checks, explicit owned-DAT
+binding/geometry checks, offline before/after floor/wall scenes and Original-mode
+render invariance are recorded with the release, followed by distribution builds
+and exact-binary local startup/render checks. In the development software renderer,
+zone texture allocation including mipmaps increased from1.5MB to18.3MB. This is not
+an owner-GPU performance measurement. No real account, live gameplay, owner-device
+input/restart or native Windows GUI test is claimed.
+
+Regular classic remains vana.15; enhanced environment code/assets are compiled
+out of classic. Existing sole launcher publisher, owner-native audience and .37
+rollback. No server restart/deploy, source push or access-policy change. Existing
+held door, Home Point/Survival, 0x114, source and device checks remain held.

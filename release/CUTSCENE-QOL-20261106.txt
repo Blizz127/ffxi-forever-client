@@ -1,0 +1,71 @@
+Owner request533553a5 — cutscene text/advance/skip QoL, 2026-11-06
+
+Sequence: after urgent actionable navigation/HP and early outdoor texture work.
+Baseline45 LIVE; this is a contract/source audit and queued implementation,
+not a completed feature or new launcher artifact. Root sole client writer.
+
+Observed current client capabilities
+- client/mod.rs:paginate/event_window renders whole wrapped pages immediately;
+  log receives each whole page. No progressive glyph reveal exists to accelerate.
+  Preserve Instant as current behavior; do not claim a new instant-text fix.
+- settings.rs Extras/Misc Text Auto-Advance: OFF(default),3,5,8 seconds;
+  config.auto_advance persisted through existing settings machinery.
+- event.rs:tick uses message.open and 60Hz ticks. User timed advance checks
+  no choice, only advances messages waiting for keys, and resets page timer.
+  Scene-authored auto_advance and auto_pick are separate VM behavior.
+- Enter/click advances or selects choices through the existing contract.
+- Escape guarded by State.cancellable and cinema/choice rules. Message cancel
+  calls Runtime.cancel_message; no-message cancel release2. event_vm wait_message
+  cancellation aborts with0x05B option0x40000000; choice cancel becomes0xfe.
+  This is not evidence for successful scene skip, reward preservation or resume.
+- Keep fixed60Hz VM/scheduler/actor/camera timing; do not speed simulation.
+
+Incremental implementation scope
+1. Clearly expose current Instant text behavior and faster page delays1/2seconds
+   alongside existing3/5/8 and manualOFF. Preserve saved choice/default.
+   A visible per-scene Auto/Pause/manual advance control can use this existing
+   page-close path, never choose an option. Resume starts a fresh reading delay,
+   rather than consuming accumulated paused time. Advance only a paginated,
+   displayed page; no catching up across several pages in one input/frame.
+2. Optional progressive text presentation is separate from VM progression.
+   If introduced, normal/fast/instant affects display only; first Advance reveals
+   the page, next advances. Existing Instant remains default. Do not delay or
+   forge mandatory script synchronization or reinterpret authored text waits.
+3. Supported Skip: use only established scene/server skip metadata/branch.
+   Confirm explicit request; show unsupported when no safe skip contract exists.
+   Preserve mandatory choices, server state/0x05B semantics and synchronization.
+   Native cancel must be labeled Cancel/Leave rather than claimed as successful
+   skip. No universal fast-forward, fake reward/completion or save mutation.
+
+Existing FFXIlead contract request queued01a1b0ad-298e-7182-b7cc-b88111055c3e:
+known skippable metadata/branch, choice restrictions, prior Escape-skip work,
+cancel vs successful completion, duplicate/end synchronization. Read-only only.
+No acknowledgement gate on independent presentation/state tests.
+
+Focused checks required before shipping
+- OFF/manual and1/2/3/5/8 timer boundaries; page reset; only one advance per action;
+  choices/input/cinema/transition restrictions; pause/resume timer reset;
+  repeated Enter/click/skip, cancel confirmation, interrupted/replaced scene,
+  server end/release and no extra finish/update/reward-bearing packets.
+- Skip support from actual known scene contract, unknown paths disabled;
+  no selecting mandatory choices or altering caller event result.
+- Exact actual-client offline dialog UI/replay with synthetic safe scene state,
+  confirm/cancel/mouse/keyboard and settings persistence; proper scene-end state.
+  Live supported skip/rewards remain unverified until existing safe QA path can
+  establish them; never test by moving/advancing the owner's character.
+- Focused both-flavour compatibility, build/startup and changed-feature smoke;
+  tested small client handoff to existing sole publisher with current+rollback
+  readback and receipt. Do not ship source-only or label queued work live.
+
+Adoulin Library references / transfer blocker
+Original screenshots: libfile_7e5c2831d5948191a528149bed55ac16 and
+libfile_0b10d6c233948191a2a8ec0c6c7cdd62. Generated concept:
+libfile_c150297f08988191bec05857c7e3e111. Concept is illustrative, not game pixels.
+Current session lacks Library skill/provider metadata/search/prepare_materialize
+and download tools. Local skill search found none; plugin discovery yielded no
+matching Library provider. No filenames/URLs/paths inferred; no files transferred
+or pixels inspected. Coordinator asked to supply through existing supported
+Library-enabled consumer route; verify real devbox paths/readability/hashes first.
+Keep list/search structured-result helper route and resolved-reference
+prepare_materialize route distinct if/when tools become available. No external
+uploads/new credentials/access changes. This does not block local source work.

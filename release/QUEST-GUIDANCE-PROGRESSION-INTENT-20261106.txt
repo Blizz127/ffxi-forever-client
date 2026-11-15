@@ -1,0 +1,29 @@
+2026-11-06 — owner progression intent3eadc2be0f37c8f9
+Help players find available quests, understand the next objective and locate the
+actual NPC/area, reducing confusion and party waiting alongside Trust/bot play.
+Preserve meaningful progression; client guidance is not a substitute for server
+pacing. No XP/rate/reward/level/quest/player-state changes are requested.
+
+Client acceptance: confirmed availability/readiness only, named objective and
+honest location/floor/entrance, M-map/minimap markers and Home Point preview,
+manual control and clear unsupported/blocked-route messaging. Unknown or missing
+feed, NPC position, map page, turn-in condition or safe route must remain unknown;
+counts, accepted quest targets and done/removal never imply readiness. Server
+still owns eligibility, combat, costs, rewards and progression. Do not promise
+all quests or safe full-path navigation from partial data.
+
+Existing implementation seams: client/qtrack.rs accepts current-zone authoritative
+QSA1/QST1 and clears indicators on zone/feed reset; actual NPC positions required.
+client/autonav.rs stops on blocked ground/boundaries and requires manual crossing
+and interaction. Current45 includes42map icons/44HPpreview; existing owner-path,
+live feeds/door/HP-expansion/0x114 and device limitations remain unverified.
+
+Pacing evidence coordination: existing platform/server lead supplies actual live
+contract/version and measured early-game/Trust-bot journey timing, separating
+finding/travel/waiting friction from combat/reward pace. Client measures/addresses
+UI guidance failures without XP multipliers, false quest completion or automation
+through unsafe doors. No new worker or live session test launched by this note.
+Priority stays urgent actionable nav/HP -> early outdoor ground/wall fidelity ->
+queued cutscene and gear conveniences, with small tested launcher increments.
+Baseline45 LIVE11:39:36Z, current+44rollback readbacks11:40:13Z; no newruntime
+change or release for this direction-only update. Single integrator/publisher.

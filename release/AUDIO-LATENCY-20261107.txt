@@ -1,0 +1,50 @@
+Owner923984543f12da6f: sounds delayed in regular FFXI and Forever. Existing regular
+lead owns its path; this client lead owns Forever source. No active audio settings,
+output enumeration/changes, test tones, movement, device probe or restart performed.
+
+Verified device evidence RELAYED by existing worker: .54 launched03:30:47 PID452253,
+Linux binary66,661,320bytes SHA4d0a8f8c1176d3043eafdd7ba4de60ccee8d4c64c1f223b08b212e46081494f9.
+Zone11603:31:11 [-231.945,-4.513,9.181]; Field Manual event0x3d03:34:14/17;
+zone19203:34:27 [437.101,-9.602,178.514]. No nav/target/refusal record in bounded
+800KB log. Eastern arrival confirmed. At that position step2 gate209.613 horizontal
+yalms, step3 gizmo83.157; either is Far (>64) IF selected. Not current-position or
+selected-step proof, no West detour. No audio emission/heard timestamps supplied.
+
+Source trace, same audio files as .54 (no audio edits in .55):
+- client/event.rs Effect::Message appends sounds, op0x5c/0x5d controls music;
+  client/mod.rs update_audio drains UI/music requests after egui; effect scheduler
+  routes SoundCmd through play_fx_sound. UI/game-thread stalls can delay submission.
+- audio/mod.rs Req channel is unbounded, one audio-load FIFO; all commands pass
+  through it. Music reads entire file per request; effect bytes cached by ID.
+  Read/decode delays can queue following sounds/control commands. Order protects
+  play/stop/volume semantics; do not blindly reorder or discard commands.
+- audio/mixer.rs render drains pending commands at callback start; Decoder::new
+  and Source frame decoding run on audio callback. Effects overlap via voices;
+  this is not a FIFO that waits for one entire effect to finish before next.
+- audio/output.rs uses default_output_config unchanged, callback discards CPAL
+  OutputCallbackInfo, buffer size negotiated by backend. Actual host is logged
+  at open (audio: HOST at RATE Hz), stream errors warn. No submission->read->mix
+  timestamps, callback lateness/buffer size/playback timestamps currently recorded.
+- Intentional music fade wait and sound ambient fade/grace semantics are distinct
+  from immediate UI/effect output latency. Do not remove legitimate scene timing.
+
+Strong source candidate if current Linux host is PulseAudio:
+crates/vana-client/Cargo.toml pins cpal0.18.2 with pulseaudio; pipewire is optional.
+~/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cpal-0.18.2/src/host/pulseaudio/mod.rs
+make_playback_buffer_attr: Default => default attrs; Fixed(N) =>2*N frames total
+and maximum, minimum request N, adjust_latency=true. Default leaves adjust false.
+~/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pulseaudio-0.3.2/src/protocol/serde/stream.rs
+BufferAttr::default target_length=u32::MAX. Its documentation says server default
+may be about2seconds, and interactive applications should request bounded latency.
+This is dependency documentation/source, NOT measured owner negotiated latency.
+Do not assert owner uses PulseAudio or experiences exactly2seconds without evidence.
+
+Next safe evidence: existing read-only observer extracts audio host/rate and
+stream warnings; if already available, backend negotiated buffer/latency, no new
+sink/probe/output or session modification. Correlate regular lead's actual client
+identity/output; source sharing applies to classic Vana only, not assumed retail.
+For future offline implementation, evaluate backend-supported bounded buffering
+with explicit fallback and callback/queue timing. Instrumentation must not block
+callback on file/log I/O or alter live settings; test silent fixtures first.
+No audio fix or native latency improvement claimed. .55 pinned navigation jobs
+remain separate. No duplicate audio writer or publisher.

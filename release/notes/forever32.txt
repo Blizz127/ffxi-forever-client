@@ -1,0 +1,40 @@
+Forever.32 — Auto Navigation and quest-giver books (Forever Modern only)
+
+Special, beside Solo Mode and Auto Rotation, now has Auto Navigation and Quest
+Giver Books. Auto Navigation is an explicit session-only action, never restored
+on login. If the tracker is off, the first pick enables it without moving; choose
+a mission/quest/available entry, then pick Auto Navigation again. Existing focus,
+map pins, arrow mode, placements and other saved settings are preserved.
+
+Movement follows ONE straight local leg toward the selected server objective or
+known DAT zone exit, through ordinary autorun and collision physics. Bounded
+lookahead refuses missing floors, drops/steps and blocked routes. It stops for
+keyboard/mouse presses (including consumed input), gamepad buttons/sticks, focus
+changes, menus/text, combat/casting, invalid ground, connection delay, zone/target
+changes, another mod's movement/action, no progress for1.5s or a90s timeout. It
+stops within3 yalms and never interacts, fights, accepts/completes a quest, opens
+a door or deliberately crosses a zone line. A new leg requires another start.
+The arrow temporarily shows the selected objective while navigating, then returns
+to its saved source/visibility. This is supervised local steering, NOT full
+pathfinding: walk around walls, choose stairs, cross exits and interact manually.
+
+Small original open-parchment books with blue crystal seals appear above visible
+NPCs only from server-confirmed QST1 kind a availability, or ready next-mission
+kind n/st1. They use the existing depth-tested nameplate pass and obey visibility.
+Rank-gated n/st2 and accepted quest targets do not imply availability. Current-zone
+and fresh-after-zoning confirmation is required; multipart entries are atomic,
+done/off/unloaded responses clear stale entries. Quest Giver Books is a saved
+toggle, on by default for Forever Modern; it can subscribe independently of the
+tracker HUD. Explicit saved false remains false. Classic has no feature/settings.
+
+Server contract: ffxi-platform docs/forever-qst1-feed.md (cd364e2, local). The feed
+caps available quests at8 and omits unsupported/unknown/legacy starts; no book is
+NOT proof that no quest exists. Server-reported conditions can change: Refresh
+requests current data. Current live server coverage/version is requested from
+its existing lead; no server update or live-data check is claimed by this client.
+
+Focused offline parser/ordering/multipart/removal/zone-freshness, movement-decision,
+corridor, timeout/manual-cancel, menu and saved-setting checks; owned-DAT route
+checks and synthetic UI renders are recorded separately. No owner-device input,
+forced restart, real login, live-game navigation or native Windows GUI check.
+Existing sole publisher, owner-native channel and .31 rollback retained.

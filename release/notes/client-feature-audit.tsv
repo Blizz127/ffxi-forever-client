@@ -1,0 +1,29 @@
+Feature	Scope	Audit result
+Door click area and generic NPC interaction fixes	classic+forever	Shared; 4089967 retained. Live Orastery retest remains held.
+First-person, numpad direction and combat-menu input separation	classic+forever	Shared; e6ab92d retained, no backport outstanding.
+Comfort/frame pacing, stable cap, Reduce Motion, startup cap handling	classic+forever	Already in Vana.6/7; retained in next classic. Device comfort not yet verified.
+Cursor above windows, tooltips and dialogs	classic+forever	Final cursor pass now shared; previously Forever-gated.
+Mouse buttons, lists, Accept/Cancel and Yes/No	classic+forever	Shared classic handlers retained; settings footer and rename Accept/Cancel added. Modern-only panel fixes stay within their renderer.
+Settings Apply/OK/Cancel and 15-second display revert	classic+forever	Now shared; classic no longer changes settings before Apply. Extras retain their existing immediate toggles.
+M area-map toggle with text-field and key-conflict protection	classic+forever	Now shared; no gameplay feed or map ownership bypass.
+Stability, startup, caching and performance fixes	classic+forever	Shared by default; no automatic High/Ultra preset.
+16x anisotropic filtering, mipmaps, texture/font quality	classic+forever	Already shared; 16x/mips default on.
+Optional FXAA, supersampling and restrained sharpening	classic+forever	Non-stylistic quality controls shared; presets do not enable classic lighting effects.
+Character grounding/contact shadow and CPU actor lighting metadata fixes	classic+forever	Vana.7/Forever.15 metadata fixes retained; Vana.12/Forever.23 align projected and fallback contact footprints. Stock lighting preserved.
+Scene sRGB texture/framebuffer conversion	classic+forever	Vana.12/Forever.23 exact shared transfer including dark tones and clear colour; original encoded-space lighting retained. Artistic tone grade remains Forever-only.
+Modern UI, layout, Journal/HUD and its presentation fixes	forever-only	Compile/runtime gated. Shared cursor/input fixes are separately available to classic.
+Enhanced graphics profile, sun shadows, per-pixel lamp upgrade, river finish	forever-only	Compiled under forever; runtime is_forever/Enhanced gates.
+Bloom, tone mapping, saturation grading, AO, added height fog/night fill, Real lamp lights	forever-only	Classic rows hidden and effective rendering settings sanitized, including legacy/copied config and High/Ultra presets.
+New local zone export/HD workflow	forever-only	Existing generic Mods/texture-pack support remains shared; no generated or redistributed game data.
+Forever WoW-style default mouse turn and its inversion preference	forever-only	Earlier explicit Forever scope retained; classic retail-direction configuration unchanged.
+Era hiding: zones, AH categories/items, spell tables, base title theme	forever-only	Classic retains regular FFXI data/wording/areas.
+Show usable AH toggle	forever-only	Forever gameplay feature; stacks with era hiding.
+Training menu and optional HUD/feed	forever-only	Compile/runtime gated; no classic feed requests.
+Home Point markers/feed and destination preview enhancement	forever-only	Current-zone markers gated; destination/0x114 and expansion-mask live checks remain held.
+Modern EXP bar and Special menu	forever-only	Excluded from classic; existing delivery scope unchanged.
+Forever wording and restricted chat-tab presentation	forever-only	Classic retains retail wording and regular chat choices.
+Cross-game Banshee messaging	classic+forever	Shared composer/conversation view; FFXI inbox polling forced off for server delivery; private Name1 tells. Rollout requires accounts chat API and launcher social.chat token handoff.
+Crafting Log gameplay window	forever-only	Forever compile/runtime and Modern UI gates. Craft/level/search, main-inventory allocation, skill floor, key item and Rare checks; normal 0x096 request path.
+Forever era exception retaining Records of Eminence	forever-only	Forever-era exception intentionally retained by owner; classic retail availability unchanged.
+Quest and mission helper, numbered markers and minimap guidance	forever-only	Opt-in Modern HUD/Journal/settings and QST1; compiled out of classic; QSA giver/turn-in icons later.
+Escape game menu, confirmation and character-select return	classic+forever	Shared actions and keyboard/controller/mouse input. Classic uses stock frames; Modern skin compiled only in Forever. Departure waits for the server; sign-in prompts/denials preserved.

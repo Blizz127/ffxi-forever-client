@@ -1,0 +1,42 @@
+Banshee messages (classic VanaClient and FFXI Forever)
+
+The launcher may hand over a friends_feed object in VANA_LOGIN_FILE without game
+credentials. It supplies url, token_file, scope and inbox_tells. One social.chat
+token serves the friend snapshot, sends, conversations and inbox. The client only
+reads the launcher's token file; a JSON scope in that file takes precedence after
+refresh or rollback. A social.read token keeps friends available but disables chat.
+When supplied, this feed takes precedence over the game-server profile friend list.
+
+Tell and Send Message on a Banshee friend open the same composer, even for a friend
+who is offline or playing another game. Enter or Send / Retry sends; Escape or
+Cancel closes. The composer keeps a stable client_id when retrying an unconfirmed
+send. Editing the body creates a new message identity. A successful send says Sent;
+it does not promise delivery or a read receipt. Messages allow 1000 characters,
+or 200 for a bot. Display conversion does not change the outgoing Unicode body.
+
+View Messages loads the existing conversation and marks it read through the API.
+Previous/Next page through displayed lines; More fetches the next service page.
+The service remains the message store: the client does not save this conversation.
+
+FFXI uses server-delivered bridge tells from the start. Both client flavours force
+inbox_tells=false at the FFXI friends boundary, including old handoffs that say
+true. The generic transport still supports inbox_tells=true for games without
+server delivery; its initial cursor/bootstrap and poller remain tested separately.
+Send and View Messages remain available with inbox disabled.
+
+Incoming bridge tells use the server's reserved alias: a 4..14 character ASCII
+alphanumeric account name followed by digit 1. They render once in tell colour,
+ASCII-wrapped to 150 bytes including the sender, without diagnostic logging, raw
+or chat Lua hooks/caches, or saved chat history. Blacklist comparison uses the full
+bridge alias so Bryce1 is distinct from the real character Bryce. This is private
+display classification, not authority to send as or route messages to an alias.
+
+Tell and Send Message keep the supported API composer. Native /tell alias routing
+is not part of this increment (the inspected server still marks it unsupported).
+A rejected /tell Name1 or /tell <r> reply prints a fixed direction to Friends >
+Send Message before Lua/ordinary error handling can expose the message body.
+The step1 API UI does not implement or change the server's !bt/!r command path.
+
+Offline fixture checks do not verify live delivery. Rollout requires the accounts
+chat API and launcher social.chat handoff first. Existing game/player release gates
+still apply. Native Windows GUI and owner-device/live chat playtests are separate.

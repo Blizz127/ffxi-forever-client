@@ -1,0 +1,9 @@
+Forever Crafting Log
+
+Open Synthesis > Crafting Log in Forever Modern UI. Filter by craft and ten-level band; click Search or press F to enter a result-name search. Select a recipe for crystal/ingredient available counts, skill floors and result tiers. Gold recipes meet the currently known inventory, skill, key-item and Rare-result requirements. The server remains authoritative.
+
+Click Synthesize or press Enter on the selected recipe to make one. Allocation is rechecked at activation; only unlocked, unequipped main-inventory stacks count. Repeated item ids consume multiple units, including across stacks. A crystal stack cannot also supply ingredients. Uses the existing 36-byte 0x096 sender in ascending TSV order with unused entries zeroed. The button waits at least 15 seconds and for the outstanding request/animation to clear. Existing server refusal/result handling is preserved. No bulk or automatic synthesis is added.
+
+Escape leaves search first, then returns to Synthesis. Back is clickable. Classic compiles out this catalog/window; Forever with Modern UI disabled keeps its existing manual synthesis menus.
+
+Catalog snapshot: 1004 recipes, public ids only. Names come from the player's installed DATs. Data provenance and hash are in synth_era_public.source.json beside the catalog. This snapshot does not establish deployment of the server's era fixes. No live crafting, owner-device check or server canary is implied by the offline checks.

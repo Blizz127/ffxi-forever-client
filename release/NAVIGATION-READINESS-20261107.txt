@@ -1,0 +1,40 @@
+Owner report82199e6d76c44e86: Start Navigation greyed out after .54 feed release.
+Exact running binary, character zone/page/current target and disabled reason are
+not established. Separate existing device worker owns read-only observations.
+Do not conflate publication with installation or ask for repeated mode switching.
+
+Source .54 decision path:
+- modern/navigation.rs rejects a non-rearmed manual-input gesture, or Pin source.
+- autonav::start_reason rejects disabled preference, blocked input, unavailable
+  world state, menus/chat/mouselook/other movement, missing walking marker,
+  and already-near objective.
+- walking marker needs Clear cached direct approach (<=64yalms, continuous floor,
+  no wall/closed door/zone trigger), then Start revalidates the approach.
+- Tower manual portal and mission entrance hints never authorize automatic walking.
+- .54 bearings remain visible independently; they are not routing/pathfinding.
+Reason is underneath Start inside Details/controls, not on the compact face.
+
+Confirmed diagnostic defect: unrelated world failures all said Close menus and
+stop other movement. .55 reports area readiness, event, KO/motion/control lock,
+cast, mount, hidden UI, logout, movement effects, missing collision ground and
+stale server data distinctly; menu/chat/mouselook/other movement are distinct too.
+Disabled button hover provides the explanation or points to the route detail.
+This does NOT fix a proven false-disable or add automatic route planning.
+Every prior eligibility predicate, input rearming, 64yalm bound, route cache,
+final Start probe, moving-corridor/door/floor/trigger guard remains in force.
+No player/device action, preference change, quest/save mutation or server action.
+
+Pinned runtime/build source2ca0366; production6074cb1. Separate cfg(test)-only
+egui harness correction ee2ea7b; diff and initial compiler error retained.
+Evidence [redacted-path]
+Classic compile PASS; focused tests, Linux/Windows builds/smokes in progress.
+Only publish after all checks and exact-artifact inspection through existing
+sole guarded publisher, retain actual .54 rollback; no classic release.
+Owner report remains unconfirmed until existing observation provides actual
+running version, disabled text, selected target and current zone/map context.
+
+2026-11-07 correction2a710904afb63e47: existing device worker confirms owner .54
+manifest installed03:30:42.432308Z, game-mode updated03:30:48 and native-client
+log active. Use .54 as affected baseline; stale .50 is no longer the working
+hypothesis for this report. Exact zone/objective/disabled reason still pending
+from that same read-only worker. No duplicate device probe or interaction.

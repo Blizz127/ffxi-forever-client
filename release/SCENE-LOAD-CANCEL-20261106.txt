@@ -1,0 +1,18 @@
+Candidate Forever48 / classic19: unavailable scene cancel FINISH
+
+When DAT loading fails or the event script is absent, the existing fallback sent
+0x05B FINISH option0. That could choose the first menu branch, purchase or warp.
+The fallback now uses the existing cancellation value0x40000000, preserving event
+identity, full CPU/GPU readiness gate, one-shot pending-event consumption and
+black/control recovery. Generic fix in both flavours; no settings migration.
+
+This is NOT a no-completion abort. Platform55daa0b confirms onEventFinish still
+runs; opening/zone-in scripts may advance even for cancellation. No universal
+no-save/no-reward effect is claimed. No server contract, timeout, mandatory choice
+on a playable scene, 0x052 handling or live character state is changed here.
+
+Focused acceptance: unavailable-scene fallback through wire encoder, no premature
+finish, black recovery, existing VM/cancel/resource and classic exclusion checks;
+exact distribution startup/headless opening parity. Final evidence and publication
+belong in owner-20261106-release48. No native owner replay or missing-DAT injection
+against real characters. Does not claim the standing-flash/BCNM journey cured.

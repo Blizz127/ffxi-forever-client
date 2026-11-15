@@ -1,0 +1,19 @@
+{
+  "utc": "2026-11-06T09:59:36.237182+00:00",
+  "status": "Original unbound next-material study, excluded from pinned43 source and all runtime bindings",
+  "file": "woods-grass-v1.png",
+  "sha256": "041a6fb714ffab5b7ae170dfffac97e70c801370268d632b93addac4b4fc1e52",
+  "width": 1254,
+  "height": 1254,
+  "alpha_range": [
+    255,
+    255
+  ],
+  "source": "Built-in image_gen, text-only original generation; no game/reference images",
+  "prompt_file": "woods-grass-v1.prompt.txt",
+  "limits": [
+    "No in-game integration or validated seams/bump/palette/performance",
+    "Stock owned-scene images and source-derived textures remain private",
+    "Requested512x512, actual dimensions recorded here"
+  ]
+}

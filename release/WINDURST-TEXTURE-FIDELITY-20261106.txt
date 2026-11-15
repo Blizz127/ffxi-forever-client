@@ -1,0 +1,110 @@
+Windurst texture fidelity — owner clarification c172fd29cc78bc44, 2026-11-06
+
+Goal: preserve recognizable FFXI art, palette, buildings, vegetation and geometry.
+Improve ground/wall clarity, believable detail scale and continuous transitions.
+Correction533553a5: the two owner screenshots are ADOULIN, not Windurst.
+Their pixels have NOT been supplied to this client lane. They illustrate desired
+fidelity only; do not use them to infer any Windurst material mapping.
+A separate generated concept is inspiration only, not a shipped/client screenshot.
+No duplicate concept or artist lane is started by this plan.
+
+Reconciled baseline
+- Current owner-native client1.0.7-forever.45, source ec142b1, LIVE11:39:36Z;
+  current/full packages and44rollback verified11:40:13Z. Classic17 unchanged.
+- The older38 Tower preview is already integrated;43 added limited Woods masonry,
+  both remain in45. No redo/republication of those increments.
+- environment.rs binds Tower242 w05_yk1/w05_kb2 and Woods241 t_win06d only.
+  Exact stock fingerprints, opted-in Enhanced preview, installed custom art wins.
+- Renderer already provides generated mipmaps, trilinear filtering and configured
+  anisotropy1..16 (render/mod.rs:mip_sampler;render/upload.rs;render/mipgen.rs).
+  Actual owner's filtering settings and compression/material choice are unknown.
+- Unbound woods-grass-v1 is only an original-art study. Its edge discontinuity
+  audit does not prove seamlessness. Do not bind it or call it a finished upgrade.
+- Urgent actionable navigation regressions retain priority; rounded/all-open
+  Horutoto traces do not clear collision/door/zone-transition safety limits.
+
+First scene/material set, bounded before city-wide work
+1. Woods241: flat wi_misr01_1 part1, t_win07d, key95da3585601f6730,
+   stock128x128. Placement[-20,0,20], bounds[-32,-2.5,12]..[-20,-2.5,24].
+   Existing stock camera eye[-26,-8,10], target[-26,-2.5,18], noon has been
+   rendered and was re-inspected for this plan. Ground looks coarse/blurred;
+   this alone does not isolate filtering vs source/UV cause.
+2. Adjacent t_win00d part0 transition on the same mesh. Resolve triangle-edge
+   adjacency, shared atlas/alpha and bump behavior before changing the patch.
+   t_win07d has119 part bindings including57 blended/noneligible uses; preserve
+   those and all plants/props. A whole-texture replacement would be overbroad.
+3. Outdoor bank/wall audit: t_win09d512x256 is a candidate layered earth/rock
+   atlas. The owner's pale cliff is in Adoulin and is NOT evidence for this
+   Windurst material. Identify an actual Windurst camera/mesh before a wall fix. Preserve atlas
+   bands/ornament and plant geometry; do not stretch a generic stone tile over it.
+
+Diagnosis and implementation order
+- Lock camera, resolution, hour/weather, render settings and source fingerprint.
+- Extract read-only per-triangle world/UV derivatives: texels per world unit,
+  directional anisotropy, degenerate UVs and boundary discontinuities. AABB/UV
+  span estimates alone are insufficient to prove stretched mapping.
+- Compare original texture level0/compressed upload and sampled mip levels at
+  near, grazing and distant views. Check actual bound texture/normal suffix,
+  sRGB and alpha semantics. Use targeted variants, changing one factor at a time.
+- Fix a demonstrated mapping/filtering defect first. Keep such generic quality
+  fixes eligible for both flavours after separate focused compatibility checks.
+- If source detail is limiting, add one original, style-matched ground material
+  with faithful macro colors/scale and seamless small detail. Retain exact mesh
+  targeting and matching transition/normal behavior. No new lighting direction,
+  architecture/vegetation replacement or borrowed/redistributed game pixels.
+- Do not inherit old bump relief blindly or flatten all neighboring normals.
+
+Focused evidence and performance
+- Same-camera A/B images at near and grazing angles plus distant mip/edge review;
+  inspect repeated tiles, transition seam, alpha fringes, normal orientation and
+  recognizable palette. Original/custom-mod path remains byte/content unchanged.
+- Focused binding, off/default/saved settings, custom-art precedence, geometry/UV,
+  neighboring bump/alpha and classic exclusion checks. Exact production Linux
+  startup/scene smoke and Windows build/CLI; no owner-device/live-session action.
+- Same-resolution warmed paired runs, draw counts, texture allocation and frame
+  times. Existing available renderer is llvmpipe CPU, not a physical GPU:
+  report software times and allocation only, never hardware FPS/VRAM claims.
+  Previous43 Woods allocation4.1->12.5MB and847draws unchanged are historical
+  measurements, not the future ground budget or performance-gain evidence.
+- Start one512-square candidate (about1.33MiB RGBA8 including full mip chain),
+  increase only if visual evidence warrants it; report actual retained stock,
+  candidate and any normal allocations. Do not imply this theoretical estimate
+  equals measured GPU residency.
+
+Next actual launcher deliverable / rollback
+- Next graphics increment: an opt-in Woods ground/transition preview or the
+  smaller proven UV/filtering correction, after diagnosis and focused proof.
+  Candidate next slot46 only if no higher-priority validated navigation fix
+  needs it; version assigned at pin. No46 artifact exists from this plan.
+- New outdoor preview remains off by default; existing Tower/Woods choices must
+  not silently opt users in. Apply/Cancel preserved; no forced zone reload.
+  Original restores stock on the next voluntary load. Previous client/channel
+  and packages retained by sole publisher; existing45 is the current baseline.
+- Ship a small passing increment immediately through existing sole publisher;
+  record exact version, activationUTC, hashes/current+rollback readback. Plan or
+  generated concept is not delivery. Owned DAT/renders remain private.
+
+Evidence paths
+- crates/vana-client/src/environment.rs and render/{mod,upload,mipgen}.rs
+- assets/material-studies/20261106-windurst/{README.txt,PROVENANCE.json}
+- ~/.cache/forever-client-build/owner-20261106-windurst-inventory-helper/
+  ground-followup.json, inventory.json, GROUND-NEXT.txt
+- ~/.cache/forever-client-build/owner-20261106-windurst-graphics-proof/
+  woods-grass-stock-inspection.json, offline/woods-grass-stock.png,
+  unbound-grass-edge-audit.json
+- ~/.cache/forever-client-build/owner-20261106-release43/woods-measurement.json
+- ~/.cache/forever-client-build/owner-20261106-release45/verification-forever.json
+
+No new runtime code/assets/tests/build/deployment in this plan-only checkpoint.
+Existing sole writer, publisher baton, public-source/data provenance, device,
+active-player, door/HP/Survival/0x114/server and access holds remain intact.
+
+2026-11-06 follow-up (supersedes old version-slot estimates above):
+Current verified release49, next UI-discovery increment50 pinned7780129. No new
+outdoor texture is packaged in50. Triangle metadata at helper17df88a and private
+owner-20261106-ground-uv-audit establishes uniform32texels/worldunit on the explicit
+t_win07d patch, no directional stretch;8sharededges connect t_win00d. This narrows
+next diagnosis to actual sampling/source detail and transition continuity. It does
+not justify changing city-wide UVs or binding the unvalidated grass study. Retain
+stock/custom-art behavior and compare near/grazing/distant views before any new
+opt-in ground candidate. See WEATHER-VISUAL-BASELINE-20261106.txt for measurements.

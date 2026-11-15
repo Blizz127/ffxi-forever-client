@@ -1,0 +1,192 @@
+Client contribution to platform docs/forever-transitions.md
+=========================================================
+Owner: existing Forever client integrator /root. Platform owns the shared document
+and server implementation. This fragment is offered for incorporation, not a second
+writer in the platform tree. Evidence read 2026-11-06; source trace, not native proof.
+
+Pinned client: 16a4513d513906f4a9c9bb3373ca9c306b8a7636, Forever 1.0.7-forever.47.
+Current platform source inspected: 56c37651c4f03065abddad18dbfba43c59200852.
+Neither platform HEAD nor its documented test assertions establish the deployed kit.
+47 is live with verified 46 rollback; classic 18 unchanged. No republish requested.
+
+1. Reconcile the original T1 hypothesis
+--------------------------------------
+session.rs::event_end queues complete_eventend output after onEventFinish and
+apply_script_pos. However, the datagram handler calls process_zone_request before
+reply construction. For an accepted cross-zone destination, that method clears
+self.pending and replaces it with the 0x00B alone. Therefore inspecting event_end
+in isolation is insufficient: current source does NOT send that queued 0x052 in
+the old-zone reply. Closed/missing endpoint and script-error paths differ and must
+be traced separately. This does not prove the installed server matches this source.
+Also, client mode 1 is an update acknowledgement, not inherently a control release.
+
+2. Client lifecycle and readiness
+--------------------------------
+client/mod.rs::NetEvent::Zoning arms zonefade immediately, even when ZoneIn is in
+the same event drain. ZoneIn discards old pending/live events, resets screen,
+controls and autorun, then holds black and queues the login event carried by 0x00A.
+Do not require a separate 0x032/034 for an owed opening scene.
+
+client/event.rs::can_prepare_event allows CPU script preparation and actor requests
+while GPU streaming continues. zone_ready requires matching installed CPU/GPU
+resources, settled state and no zoning_since. SendResRdy shares the resource gate,
+but MUST NOT wait for actors: the acknowledgement may prompt those actor packets.
+VM begin additionally requires bound actors/models. begin sets control_lock.
+Screen/script fade and zonefade are separate; resource ACK or actors-ready alone
+does not establish the first displayed scene frame or restoration of input.
+
+client/event.rs::release / event_vm.rs::Runtime::release:
+- mode 0 clears control_lock and marks a running event released/cancellable;
+- mode 1 clears VM wait_update; mode 3 clears VM input_wait;
+- mode 2 cancels only a matching running VM event;
+- when no VM exists, modes 1/2/3 clear control_lock without clearing event_pending;
+- mode 4 clears the fishing latch only.
+This pre-VM behavior needs a deterministic packet-order regression. It is not proof
+of the owner's native symptom. Platform reports no current Forever mode-2 sender.
+
+Missing/malformed DAT currently reaches the no-script fallback after resource-ready:
+release black, send FINISH option 0/mode 0, clear lock. Idle VM timeout uses cancel
+0x40000000. Neither is a no-completion abort: server onEventFinish may alter state
+even for cancel, and option 0 may select the first choice. Do not change/replay this
+against a real character or call replacement of option 0 intrinsically safe.
+
+3. Paired timing record (required for measured acceptance)
+--------------------------------------------------------
+Record artifact hashes, server installed-kit receipt, DAT/config identity and an
+existing authorized fixture identifier. Use monotonic times within each process;
+retain UTC anchors and packet sequence/direction for cross-process correlation.
+Never subtract unsynchronized wall clocks to claim latency. Metadata only; exclude
+credentials, chat text, event parameter contents and owner character state.
+
+Stages, each with event/zone and session-generation identity where available:
+ A client FINISH enqueue AND actual c2s 0x05B send
+ B server receive, handler completion, accepted zone request and reply construction
+ C client s2c 0x052 receive/dispatch (mode/id), or explicit absence in complete capture
+ D server 0x00B send; client receipt and Zoning/hold activation
+ E destination login, s2c 0x00A receive/dispatch including owed-event identity
+ F CPU install / GPU ready / resource ACK enqueue+send
+ G event queued / DAT prepared / CHARREQ sent / actor replies / actors ready
+ H VM constructed and first tick / first scene frame and fade state
+ I final FINISH and reply / pending+live event empty / control and camera restored
+
+Existing logs cover zone-in, resource ACK enqueue, GPU-ready, event queued/prepared,
+actor request/ready, and release dispatch. 'actors ready' is inside begin before
+Runtime construction; it is NOT a first-frame timestamp. The existing allowlisted
+extract-stages.py must leave absent stages UNKNOWN. It cannot prove wire send,
+generation, control ownership or rendered frame state from these lines alone.
+Do not dump raw event-start log lines into reports: those include params.
+
+Compare matched before/after fixture, cache state and rendering setup. Report actual
+stage durations and stalls, not a nominal 400 ms datagram estimate or simulated
+script-frame count as wall-clock time. Missing instrumentation/capture is a gap.
+
+4. Reproducible scenario boundaries shared with platform
+------------------------------------------------------
+Windurst: platform selects the exact pre-Zilart event/finish -> cross-zone setPos ->
+onZoneIn scene fixture and expected writes. Client correlates A-I without inventing
+an event id. Include same-zone teleport and missing-endpoint/error alternatives.
+Current docs' Allegiance Changer and Shadow Lord traces are not a Windurst native run.
+
+Opening: existing authorized fixture only, no new/reset GMBlizz/Blizz. Client has
+owned-DAT Bastok 234/1,235/7,236/1 headless parity and actor-prefetch checks; platform
+documents Windurst Waters531/Woods367/Port305. These do not substitute for native
+zone-in, black hold, first-scene-frame and post-scene input/camera proof.
+
+Era BCNM: existing platform Shadow Lord fixture covers entry32000, choice/update,
+start, phase32004, win32001, possible chain7, exit. Correlate position ACK separately
+from update ACK, enemies/start timing and client-authored exit motion. No automatic
+server teleport is promised by leaveBattlefield. Do not infer all BCNMs from one.
+
+For each: success plus disconnect/relog, retry/duplicate input, interruption,
+missing actors/DAT and error path. Platform owns save/reward assertions; client
+owns input/camera/fade and no stale-event resumption. Cancel is not presumed inert.
+No owner movement, reset, rewards or live packet injection to manufacture evidence.
+
+5. Disjoint verification lane and next measurable milestone
+----------------------------------------------------------
+Unclaimed in inspected ownership records: pre-VM release/failure-outcome matrix.
+Root remains sole writer; existing idle special_delivery_audit is a proposed
+read-only executor, NOT dispatched. Exact frozen file/output boundaries are in:
+~/.cache/forever-client-build/owner-20261106-transition-release-matrix/LANE.txt.
+No build, source edits, publication, server/device/account action or new worker.
+Deliver same/wrong-id mode0/1/2/3 across pending CPU/GPU, pending actors, running,
+completed and replacement events, plus disconnect/missing-DAT test specifications.
+Server outcome predicates remain platform-owned; do not duplicate that lane.
+
+Next native milestone: one paired existing-fixture trace with installed server
+identity and A-I coverage, identifying the first actual failing stage. Current
+missing dependency is that safe fixture/resource owner and deployed-kit evidence,
+not a routine coordinator acknowledgement. Existing source checks remain useful
+independently; no claim that the native standing flash has been eliminated.
+
+Candidate follow-up 2026-11-06: pinned eedf836 (Forever48/classic19) replaces the
+missing-script option0 FINISH with cancel0x40000000 after full resource readiness.
+The paragraph above describes live47 at audit time; no other release/pending/VM
+semantics changed.45Forever+46classic focused checks passed, allfour distributions
+and exactLinuxstartup/headlessBastokparity/WineCLI/package/flavour passed. Handed
+once to existingpublisher; not live until receipt. Still not no-completion abort
+or native standing-flash acceptance. See owner-20261106-release48 evidence.
+
+Platform incorporation/fixture reconciliation — 2026-11-06
+-------------------------------------------------------
+Platform28af8f7 docs/forever-transitions.md section7 incorporates this fragment
+with explicit47-era source scope; client fragment remains client authority.
+Version correction: eedf836 shipped Forever48/classic19; currentverified50 carries
+missing_script_finish CANCEL0x40000000 after resource readiness. The option0
+sentence insection7 is historical47 behavior, not current50. Both values still
+invoke server onEventFinish; cancellation is NOT inert or a no-completion abort.
+48publication/readback evidence: owner-20261106-release48/publication/forever and
+classic. No new runtime behavior is introduced by this reconciliation.
+
+San d'Oria existing fixture: e2e/transition_trace_e2e.rs allegiance_world/play_chain,
+Beriphaule(Northern San d'Oria)606option1 changesnation/gil and selects a city;
+Port owed500 rides0x00A. Accepted cross-zone process_zone_request replies0x00B
+alone; old-zone0x052 control-release hypothesis remains unsupported.
+
+Windurst helper is already integrated locally at5d6e78b, not a new client worker:
+reports/2026-11-07-windurst-transition-fixture/README.md andtraces.
+Rakano-Marukano HeavensTower242,10002option1; destination pick table:
+1 Port240/305,mode0x83,no update;
+2 Waters238/531,mode0x93,one UPDATE option0 ->0x05C+0x052mode1;
+3 Woods241/367,mode0x93,no update.
+All carry owedscene in0x00A. Mode1 here acknowledges UPDATE; it is not proof of
+premature input release. The fixture has no same-zone branch; missing-endpoint
+and allinterrupt variants are not established by these three success paths.
+Report says18passed/0failed transition_trace, including4newWindurst tests and
+followed/relogged/cancelled write equality. Client owner read source/report only,
+did not rerun server tests. Harness datagrams0.3s apart, Waters update roundtrip27
+is artificial backlog timing, not native latency. The report flags oldSandy
+not_seen vsnotSeen assertion as vacuous; do not cite it as persistence proof.
+
+This fixture changes nation, gil, homepoint and grants a coupon even when the
+owedscene is cancelled. It is NOT authority to run onBlizz/GMBlizz or create/reset
+live data. NativeA-I milestone still needs installedserver identity/receipt and
+existing authorized disposablefixture/resource ownership; no owner move/replay/
+relog/reward/deviceaction or serverdeployment. Platform owns write assertions and
+helper; client owns readiness/GPU/actor/fade/control timestamps. Do not duplicate
+fixture implementation or represent these traces as a native success.
+
+Kit identity reconciliation — 2026-11-06
+--------------------------------------
+Platform report reports/2026-11-07-kit-identity/README.md started at c18512c
+and is now updated at b64e835 with the Windurst fixture. Local read-only SHA256
+checks match both reported MANIFEST.json files:
+- Last reported installed baseline v3.47: source16dbbd2, kit40d53cd;
+  f78c5d3fe619a282a097afa359957e17d838839f1d8c781bb05de6c499649c5d.
+- Sealed candidate v3.62: sourcebde5f5d60c1a58b5ad07f64770259f8315f64775,
+  kit2e965e0; c838cd7d2de5d10e547ea2ce3fadf2cb07c002549f2f29cb6fa6d48d0648f1e4.
+These hashes identify devbox manifests, NOT live containers, installed artifacts
+or native QA. Platform's 76/76 loaded-kit result is reported, not client-rerun.
+
+Required comparison defaults are era GM visibility0, empty FOREVER_CONTENT
+(LSB Lua NPC content), spawn guard0, population sockets0. The report excludes
+v3.59–3.61 and any GM-era switch ON/grant/GM-menu rollout; existing approval and
+installer/data/player/resource holds remain. No kit was installed by this lane.
+
+Windurst5d6e78b and its three destination/owed-scene rows are now included in the
+identity report. San d'Oria's formerly vacuous not_seen assertion was corrected
+to notSeen in2847f9f (source read confirmed). The earlier caution describes the
+old test; do not continue labelling the corrected source as vacuous. No server
+tests repeated here and no native acceptance inferred. The next paired trace
+still requires an installed-kit receipt plus the existing authorized disposable
+fixture and resource ownership. Client source/renderer evidence remains separate.

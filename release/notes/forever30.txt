@@ -1,0 +1,22 @@
+Forever.30 — owner HUD layout defaults and a smaller navigation arrow
+
+New or reset Modern panel layouts follow the owner screenshot: chat and location
+at lower left, party/EXP at lower right, job helper (or Wide Scan) beside the party,
+minimap upper right, mission/quest tracker below it, guidance at top center.
+The default chat width is about half the screen, constrained to leave the job
+helper and party room. The unsaved tracker keeps below the minimap. Unsaved
+casting/countdown panels yield below a visible navigation panel.
+
+The navigation arrow defaults to 50% (half the previous glyph width and height).
+Its range/objective text remains readable at its existing size. Settings > Extras
+> Maps > Navigation Arrow Size offers 50%, 75%, 100%, 125%, 150%.
+
+Existing saved panel placements, sizes and explicit navigation-arrow scale are
+preserved. To opt into the arrangement on an existing character, use Interface
+> Panel Places > Reset and Apply; select 50% under Navigation Arrow Size and
+Apply for the smaller arrow. A saved 100% remains 100% until changed. No automatic
+reset or migration of the owner's active profile occurs. Optional tracker and
+other panel visibility preferences are unchanged.
+
+Forever Modern only. Classic has no changed UI behavior or new drop. No game
+assets, account data, owner-device input or forced game restart are included.

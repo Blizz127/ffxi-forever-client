@@ -1,0 +1,34 @@
+Forever tracker convenience and active-objective defaults (queued next drop)
+
+L toggles the remembered Quest Tracker setting when Forever Modern UI and Modern
+controls are active and the field has the keys. It replaces only the unchanged
+compact keyboard's default L camera-right action in that context; its stock menu
+navigation keeps priority while a window has focus. It does not
+also turn the camera. Text entry, a focused window, events, Key Assignment,
+modifiers and custom bare-L assignments take precedence. Ctrl/Alt+L still opens
+linkshell chat; arrow and controller camera input remain available. Original and
+Legacy controls keep their L behavior. Classic compiles this shortcut out.
+
+Settings Apply, Journal, L and Hide tracker share the same enable/subscription
+state. Enabling requests !qtrack on followed by !qtrack: the inspected server's
+automatic burst includes at most ten quests, while the explicit refresh returns
+all supported accepted quests. This is a one-time transition, not a polling loop.
+The bounded client capacity rises from 32 to 512 complete objectives (the inspected
+server data has 266 quest specs and 48 mission specs; at most one current mission
+per nation log). The current nation's mission gets initial guidance focus. Other
+received objectives start checked too. Click an objective name to follow it; its
+separate checkbox controls its details and map markers. Unchecked names remain
+available to re-enable. Map, list and minimap numbering use the same entry order.
+
+Explicit focus and checkboxes survive refresh, hide/show and zone changes within
+this character session. Entries themselves clear at those boundaries and only
+return from complete authoritative feed messages. Completion/removal clears the
+entry and its choices. Objective choices are not saved across logout; the global
+enabled setting is saved. Missing positions or unsupported quests produce no
+invented step or arrow. Existing route/floor/map-ownership limitations remain.
+
+Read-only server source inspection covers Windurst's 66 quest specs and 16 nation
+mission ids, plus the other base quest logs/nations. This does not certify live
+server coverage, live feed delivery, mission progression or owner-device behavior.
+No server/account/device changes; door, HP/Survival, 0x114, release/player and source
+holds are unchanged. This source increment has not been dispatched or published.

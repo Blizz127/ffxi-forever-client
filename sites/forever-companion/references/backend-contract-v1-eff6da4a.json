@@ -1,0 +1,77 @@
+{
+  "contract": "ffxi-forever-companion-backend-v1",
+  "utc": "2026-11-11T21:55:46.325653+00:00",
+  "source": "eff6da4a1d2923139fe0192fa9f53fdcad1379dc",
+  "recipient_owner": "01a1cb97-c84c-7f12-b28c-9ce832211011",
+  "task": "0fcbfa0421bc",
+  "status": "IMPLEMENTED DISABLED SOURCE; HTTP/auth/native operations NOT ENABLED",
+  "supersedes": "Only proposed read-to-BFF field mappings and global market route semantics in REMOTE_API.md. Preserves original1074 command/Snapshot/Receipt wire shapes, existing browser work, all /fb intakes and holds.",
+  "action": "Reconcile the prepared browser/BFF adapter and fake-transport tests to these mappings after any active work. Keep actual connected mode and real requests disabled until the backend and existing owner gates are fulfilled. No server intake/restart/credentials/schema action requested.",
+  "files_owned_by_recipient": "All [redacted-path] files remain with the recipient. Platform did not edit them.",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/v1/session",
+      "core": "ReadRequest::Session -> ReadResponse::Session {characters:[{character_id,name}]}",
+      "bff": "Keep existing {authenticated,realm,csrf_token,characters:[{id,name}],capabilities}. Map character_id to id. Authentication/CSRF originate only from verified BFF session. Native characters alone are not proof. Core maximum32 characters; missing verifier/provider stays unavailable."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/characters/:id/snapshot",
+      "core": "ReadRequest::Snapshot -> ReadResponse::Snapshot {snapshot:existing Snapshot}",
+      "bff": "Unwrap snapshot; convert observed_at Unix seconds to validated ISO8601 UTC for existing remote.js. Preserve all other existing Snapshot fields. Current own human Session only, no saved/offline response in this increment. Invalid timestamp conversion is unavailable, never zero."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/characters/:id/recipes",
+      "core": "ReadRequest::Recipes -> ReadResponse::Recipes {catalog}",
+      "bff": "Unwrap catalog. recipe_id/crystal_id; ingredients ordered ItemCount list; results four Option<ItemCount> normal/HQ1/HQ2/HQ3; skills whole-level craft-code map; key_item optional u16. Catalog character_id/revision/observed_at/era/craft_cap. Convert timestamp as above. Native recipe table/policy, not either client/server TSV."
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auction/items/:id?stack=0|1&character_id=:character",
+      "core": "ReadRequest::Market {character_id,item_id,stack} -> ReadResponse::Market {market}",
+      "bff": "Require own character selector/current Session. Existing auctionItem must accept characterId and scope it. Unwrap market; stock is stack_listings when stack=true, otherwise single_listings; these count listings, never individual item units. Preserve newest-ten native oldest-first sale history and convert sold_at/observed_at Unix seconds to ISO8601. No current asks or atomic quote."
+    }
+  ],
+  "capabilities": "All real capabilities remain false/unavailable now. Future BFF may advertise read capabilities only after actual identity/realm/native providers and endpoints exist. craft/bid remain false until durable native engine custody/transaction and installation prerequisites pass. Source linkage or harness passes do not grant access.",
+  "revision": "Core read revision is read:<trusted_map_instance>:<generation>:<nonwrapping_observation>, advisory observation identity only. Never enable mutation just because this nonce equals expected_revision. Future server mutation must bind/revalidate complete native decision state; wrapping inv.rev alone is insufficient.",
+  "mutation_contract": "Original1074 browser bodies unchanged: UUIDv4lowercase operation_id + expected_revision plus recipe_id for craft or item_id/stack/offered_gil for bid; char in route. Browser never supplies account_id, internal envelope, claims, material slots, result or game state. Owner-bound Receipt states unchanged. Unknown outcome stays running/pending_reconciliation. Internal scope/authority currently cannot be minted in production.",
+  "queue_implementation": "Canonical bytes/digest, account-scoped replay preserving original expiry,256 total/8 perchar pending,4096 retained identity cap without pruning, exact claim/currentSession generation, known-commit permission, NotCommitted-only retry, unknown non-replay and exact receipt reconciliation. Borrowed MySQL repository plus proposal-only DDL; no realSQL test or active map pump.",
+  "native_operations": "No production bid AtomicEngine. Craft explicitly refuses one-shot execution; actual start/material reservation/~16s completion/skillup phases and durable custody remain to implement. Native AH zone/commerce gates unchanged. No offline lease or bot pseudo-session.",
+  "verification": [
+    {
+      "source": "253309bbe3bf8ed7c79d048f113d9a5a80cae2c0",
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0,
+      "scope": "5 fake read-boundary and4 native search fake-store checks",
+      "receipt_sha256": "bd1c327fa968d6464880f0a186477b35a27795bc3240e7063a566390d9582acd"
+    },
+    {
+      "source": "eff6da4a1d2923139fe0192fa9f53fdcad1379dc",
+      "passed": 24,
+      "failed": 0,
+      "ignored": 0,
+      "scope": "8 canonical and16 queue fake-transaction checks",
+      "receipt_sha256": "42ee94d688890334c6f6ff4202ab15712066c59bf139b6a5acd445e092c18032"
+    }
+  ],
+  "not_run": [
+    "12 composed native map projection/catalog/SQL-codec/shared-connection checks",
+    "actual MySQL concurrency/durability",
+    "real identity/HTTP/map pump",
+    "native craft/AH engine operations",
+    "retail client login/gameplay",
+    "full startup/live installation"
+  ],
+  "existing_auth_facts": "Read-only accounts source has ffxi-forever admin/game-grant policy; game/zcure join-ticket audiences do not establish companion audience. Do not call native credential endpoint, reuse launcher/DIT/session secrets, mint grants or change trust/permissions.",
+  "remaining_owner_gates": [
+    "Actual identity/grant audience/key/permission/trust decisions and activation",
+    "Live schema/permissions/install/source/device restrictions",
+    "7dd2 no-restart and active-player protections",
+    "Matching DIT stamped adapter and integrated Build1 smoke; real retail route/test identity"
+  ],
+  "implementation_authority": "Reversible source/test implementation, mapping, scheduling and focused checks may proceed without routine coordinator approval. This packet adds no real permission or release authorization.",
+  "fb_status": "Completedrc61/current source baseline7 passed. rc68 source28ac adds R108 once plus pending Restrole fix; in-flight nativeattempt2/image preserved. Live last observedrc8 lacks native/fb. Existing server intake not resent."
+}

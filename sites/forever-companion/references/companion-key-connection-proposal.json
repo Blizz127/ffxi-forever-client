@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "kind": "proposed-companion-personal-access-key-connection",
+  "status": "PROPOSAL ONLY; NOT IMPLEMENTED",
+  "source_only": true,
+  "owner_preference": "A named per-device API-style key, created on the Banshee account page from a phone or PC.",
+  "scope": "Connection proposal only. No native wire, account source, schema, grant, installed service or live capability changes.",
+  "personal_access_key": {
+    "issuer": "Banshee accounts, after authenticated account-page approval",
+    "status": "NOT IMPLEMENTED",
+    "device_label": "User-chosen name for identifying and revoking this device's key.",
+    "secret_handling": "Show the secret once. The issuer retains only its verifier/hash and non-secret key metadata, never recoverable key plaintext.",
+    "audience": "ffxi-forever-companion, matching the existing proposed native companion audience; personal-access-key wire format remains unassigned.",
+    "authority": "The server binds the key to the authenticated Banshee subject and an established provisioned native realm/account. It independently checks current entitlement, account status and character ownership for each request. Browser-supplied names, account IDs and character IDs never establish ownership.",
+    "native_format": "UNASSIGNED; this proposal chooses no native token format.",
+    "ttl": "UNASSIGNED; this proposal chooses no key or child-session lifetime.",
+    "prohibited_reuse": "Never derive from or accept launcher sessions, game passwords, FFXI launch tokens, WoW launch grants or social tokens as companion keys."
+  },
+  "routes": {
+    "account_key_issue": {
+      "path": null,
+      "status": "NOT IMPLEMENTED; issuer route is unassigned",
+      "purpose": "Authenticated Banshee account page creates a named per-device companion key and shows its secret once."
+    },
+    "anonymous_bootstrap": {
+      "method": "GET",
+      "path": "/api/v1/session",
+      "status": "NOT IMPLEMENTED as a real authenticated BFF endpoint",
+      "purpose": "Establish an anonymous same-origin browser session and CSRF bootstrap before key exchange."
+    },
+    "key_exchange": {
+      "method": "POST",
+      "path": "/api/v1/session/key",
+      "status": "NOT IMPLEMENTED",
+      "request": {
+        "key": "<secret supplied for this initial exchange only>"
+      },
+      "requirements": "Same origin, anonymous session and valid CSRF proof. Validate the companion-only key and current server-side account binding before creating a child session.",
+      "success": "204 with an opaque HttpOnly Secure SameSite session cookie; no key or account bearer returned to browser JavaScript.",
+      "cookie": "NOT IMPLEMENTED; cookie name, SameSite value and lifetime remain unassigned.",
+      "ambiguous_result": "Do not automatically retry the exchange. Session discovery may establish whether a session exists; never silently resubmit the key."
+    },
+    "session_discovery": {
+      "method": "GET",
+      "path": "/api/v1/session",
+      "status": "NOT IMPLEMENTED as a real authenticated BFF endpoint",
+      "purpose": "After the 204, discover the verified session and own selectable characters using the cookie; preserve existing authenticated/realm/csrf_token/characters/capabilities response shapes."
+    },
+    "account_key_revoke": {
+      "path": null,
+      "status": "NOT IMPLEMENTED; revoke route is unassigned",
+      "purpose": "Authenticated account owner revokes a key by its non-secret key ID; its child sessions become invalid."
+    },
+    "session_logout": {
+      "method": "POST",
+      "path": "/api/v1/session/logout",
+      "status": "NOT IMPLEMENTED as a real BFF endpoint",
+      "purpose": "Revoke the current child session and clear its browser cookie; retain CSRF protection."
+    }
+  },
+  "session_and_secret_rules": [
+    "Tie every child session to the key ID and authenticated subject. Enforce key revocation and current entitlement/account/character checks server-side.",
+    "Use the key only for initial exchange. Never place it in a URL, browser storage, persisted app settings, logs, analytics or error payloads; discard exchange plaintext after use.",
+    "Keep the opaque child-session credential in the HttpOnly cookie, with same-origin and CSRF checks; session discovery does not return it as JSON."
+  ],
+  "capabilities": {
+    "snapshot": false,
+    "recipes": false,
+    "auction": false,
+    "craft": false,
+    "bid": false
+  },
+  "capability_policy": "All five existing capabilities remain separately controlled and currently disabled. A valid key or session enables none by itself; actual native providers, engine custody and readiness must be established separately. Real companion rollout follows /fb readiness.",
+  "source_evidence": {
+    "accounts_worktree": "[redacted-path]",
+    "accounts_commit": "19ab035f506e2e8baa2e0f5dfa2b47824aa4ab61",
+    "references": [
+      {
+        "path": "deploy/banshee-accounts/server.py",
+        "line": 859,
+        "finding": "Existing device approval yields an ordinary Banshee bearer session; it is the alternative flow, not this proposed key issuer."
+      },
+      {
+        "path": "deploy/banshee-accounts/server.py",
+        "line": 993,
+        "finding": "/me returns provisioned flags, without native account IDs or owned-character authority."
+      },
+      {
+        "path": "deploy/banshee-accounts/identity.py",
+        "line": 153,
+        "finding": "Existing client token scopes are social.read and social.chat only."
+      },
+      {
+        "path": "deploy/banshee-accounts/server.py",
+        "line": 1462,
+        "finding": "FFXI Forever launch-token serves the native client lock, not companion access."
+      },
+      {
+        "path": "deploy/banshee-accounts/server.py",
+        "line": 2490,
+        "finding": "Current accounts authentication is bearer-based; no companion cookie exchange is present."
+      },
+      {
+        "path": "deploy/banshee-accounts/server.py",
+        "line": 3315,
+        "finding": "Configured shared launch grants build only the WoW forever profile."
+      }
+    ],
+    "absence": "Read-only inspection of server.py, identity.py, backends.py and launch_grants.py found no Forever Companion key issuer, audience, exchange, cookie or revoke implementation. This is local source evidence, not installed-service proof."
+  },
+  "live_changes": "NONE; no key issued, credential read, live call, account/schema/auth change or capability activation."
+}

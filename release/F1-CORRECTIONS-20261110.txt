@@ -1,0 +1,75 @@
+F1 brightness Defaults correction92 — locally delivered 2026-11-10T10:34:28.879971+00:00
+
+Source e3d6ac1d853238981c081ee4ddf53e5e91668e27; helper57474e10. Category Defaults
+uses DEFAULT_ENHANCED_EXPOSURE only for Forever+Enhanced. ONE regression PASS
+covers staging, Cancel, Apply/JSON persistence, Original1.00 reset and regular
+server preservation. The actual Modern mouse/keyboard Defaults paths reach this
+function by source tracing; live input remains unrun. Both dist/startup/Wine
+checks PASS. Exact startup and brightness PNG directly viewed. IMPORTANT fixture
+scope: modern-shot's own Original config displays1.00x, independent of isolated
+Enhanced0.95 startup config. Static menu confirms layout/help; test proves0.95
+reset. Original overbroad smoke description is preserved alongside correction.
+No rebuilt/repeated old binaries/tests or new full-suite/device/server/save action.
+Stage [redacted-path]
+DROP b57fd04e1e1d5587098ecb63bda765259da621eb3cf32819f93809a83f0cd80a
+Linux d4fa53218f8b48674eb1b7f3dc547c87996f242272b29682af00bf29a0403e60
+Windows 8e190b05ee452940d1f445a3ef78c6c7eaeb5ca2dc1cfdd6569f18d1e7f692b7
+Backup [redacted-path]
+All archive/license/flavor/stage/full-backup checks PASS. ONE existing-route intake
+via834a502dda5d, pending82-91 only superseded; QA/publication unconfirmed. All92
+jobs complete. F5 held on actual consumer adoption evidence. Continue source at
+private/int92-20261110; never replay92 or completed84 below.
+
+Historical84 active snapshot follows;84 completed long ago (see AGENTS.md).
+It is retained as evidence and does not authorize restarting any84 job.
+
+F1 corrective release84 — active sole integrator checkpoint
+
+Numbering is RESOLVED by coordinator relay7b3f7a719959e57c.82 stays immutable as
+dispatched02:55:39Z;83 stays the art-border build289892f5, already packaged and
+handed once.84 supersedes ONLY pending82/83 when its actual intake is sent, never
+an in-flight or published transaction. No old drops/staging/backups/intakes changed.
+
+Frozen84 source95ec786422db01f77fb916100b2d509f7e7286fb,
+treeb5608e7c07d3318abd9ff5fd0c3a10e54059007e, branchprivate/f1-recovery84-20261110,
+[redacted-path] is an ancestor. All five correction
+commits through5581eae7 cherry-picked cleanly; corrective source files are byte-
+identical to the tested correction branch and Woods source matches frozen83.
+Evidence: owner-20261110-release84/integration-source-check.json under build cache.
+
+Corrections: visible EscOptions Settings request; retained95SDR/HDR-off default
+and slider; authoritative teleport/ZoneIn/WPOS transient reset; in-place Raise/
+Reraise reset; expected navigation-exit handover; unique load tickets and map/zone
+identity; event-bound pose relocation; stale native training-panel invalidation
+without saved progress reset; passive native event confirmation hooks requiring
+actual installed accept/cancel lines, with unrelated/refusal traffic preserved.
+Owner screenshots show PortWindurst map/arrow but stale TrainingRegime panel;
+the main quest tracker is collapsed, so these are separate QA concerns.
+
+All16distinct focused corrections checks PASS:13atdf65a4f0,2at54c6fea4,
+1at5581eae7,0fail/ignored; Classic compile PASS for each checkpoint. Last result
+03:43:15Z. Exact source-content proof carries those checks into84. No level-sync
+or full-suite repeat. No actual gameplay or owner-device reproduction claimed.
+
+Two84distribution builds active, Linux privateDLSS and Windows withoutDLSS,
+using separate warm caches,3CPU quota/2compilejobs each after measured12%idle.
+One detached watch-smokes.py owns exact artifact startup, synthetic GameMenu/
+brightness widgets and WineCLI once builds succeed. No duplicate builds/checks.
+Scripts package-verified.py, stage-and-prepare-intake.py and send-intake.py are
+prepared, syntax-checked, NOT yet run. Manual new84image inspection is required
+before packaging. Do not claim a candidate, widget render or intake as live.
+Active evidence: [redacted-path]
+
+OPEN GameQA gates: actual Esc > Options opens settings; OuterHorutoto death/home
+point restores fresh destination navigation; SurvivalGuide completes. Same/cross-
+zone warp and in-place revival reset checks remain gameplay QA. Synthetic widgets
+do not exercise the Esc transition. Existing play input driver needs login for
+that path; no new login/device action is authorized or performed here.
+
+82publication receipt was checked once through existing intake/publisher paths;
+only intake records were found. Receipt requested via existing coordinator route,
+not a publish/restart instruction. This does not prove82unpublished. No receipt
+polling/ACKwait;84builds proceed. Publisher reconciles actual transaction and keeps
+current channel/both full rollback packages. Need actual activation/readback before
+any live claim. Owner-native only, no server/data/progress/device/credential/push
+or public actions. Later art inputs stay authoring-only behind this priority work.

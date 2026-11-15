@@ -1,0 +1,48 @@
+{
+  "date_utc": "2026-11-06T06:13:16.911522+00:00",
+  "assets": [
+    {
+      "file": "limestone-masonry-v1.png",
+      "sha256": "2c987ce399758dbf8acfbaf9df830327bfa084bf0988f131f1b71527dd56be7f",
+      "width": 1254,
+      "height": 1254,
+      "source": "Built-in image_gen, text-only original generation; no source game image supplied",
+      "prompt_file": "limestone-masonry-v1.prompt.txt",
+      "candidate": true,
+      "edge_rgb_mean_absolute_difference": {
+        "horizontal": 10.023125996810208,
+        "vertical": 10.393673577884103
+      },
+      "limits": "Edge statistics are not proof of seamless tiling; inspect repeated surfaces in offline render."
+    },
+    {
+      "file": "limestone-paving-v1.png",
+      "sha256": "9daa2660c32fe4e6ceac3129585d79272d1ab332230afd9bb4cc0957b6240c25",
+      "width": 1254,
+      "height": 1254,
+      "source": "Built-in image_gen, text-only original generation; no source game image supplied",
+      "prompt_file": "limestone-paving-v1.prompt.txt",
+      "candidate": true,
+      "edge_rgb_mean_absolute_difference": {
+        "horizontal": 9.351674641148325,
+        "vertical": 10.761562998405104
+      },
+      "limits": "Edge statistics are not proof of seamless tiling; inspect repeated surfaces in offline render."
+    },
+    {
+      "file": "limestone-slabs-v1.png",
+      "sha256": "04ab312ba36b75fa9c57362c084ba2b3f81582e3c5c1d102100bdd81fb512822",
+      "width": 887,
+      "height": 1774,
+      "source": "Built-in image_gen, text-only original generation; no source game image supplied",
+      "prompt_file": "limestone-slabs-v1.prompt.txt",
+      "candidate": true,
+      "edge_rgb_mean_absolute_difference": {
+        "horizontal": 7.461668545659527,
+        "vertical": 12.968808718526871
+      },
+      "limits": "Edge statistics are not proof of seamless tiling; inspect repeated surfaces in offline render."
+    }
+  ],
+  "status": "Candidate studies, not a live graphics release"
+}

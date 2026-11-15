@@ -1,0 +1,26 @@
+Forever.25 — queued client fixes
+
+- Map settings keep the full Original / Centered / Follow Mouse choices inside
+  their frame. Existing map and waypoint behavior is preserved.
+- L toggles the Forever Modern tracker when field input has focus. Typing,
+  modifiers, focused menus and custom key assignments retain their controls.
+- Received active objectives start checked; the current nation mission gets
+  default focus. Explicit selection and hidden-objective choices survive zoning
+  and refresh within the character session. Enabling requests the full feed.
+- Server system feeds stamped with the recipient's name are consumed correctly:
+  Home Point, Training and quest protocol lines no longer fall into chat.
+- The server's next-mission entry is shown distinctly from accepted progress,
+  with atomic split rank-points instructions and existing map/minimap guidance.
+- An opt-in local Windurst texture pilot reconstructs eligible opaque surface
+  atlases from the user's own install. It does not invent HD detail, change UVs,
+  enable itself or include game assets in this client package. See
+  docs/enhanced-graphics.md. Pack rebuilding validates aspect ratio, refreshes
+  changed PNG caches and refuses writes into the original install.
+
+The .24 live QA run verified login through clean server logout and exposed the
+system-feed bug. It did not test this drop. Next-mission guidance requires a
+server that emits it. No new live run, Windows GUI or owner-device test is claimed.
+
+Local candidate only until the existing publisher's actual delivery gates are
+satisfied. The owner-only signer-policy decision remains separate from this build.
+Regular Vana's published version, all server/device holds and rollback stay intact.

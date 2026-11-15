@@ -1,0 +1,41 @@
+Forever area-map presentation and personal waypoint — owner task ed805cff7911
+
+Scope: Forever flavour on a Forever server. Classic behavior is unchanged.
+Based on the preserved v1.0.5 upstream merge (0220cce); no public source push.
+
+Forever Extras now stages its preferences with Apply/OK and Cancel, matching
+main Settings. Regular Extras keeps its existing behavior. Under Extras > Maps:
+- M Map Placement: Original, Centered (default), Follow Mouse.
+- Size: 40–90% of the shorter screen side; default 80%.
+- Standing map opacity: 20–100%, default 80%.
+- Moving map opacity: 10–100%, default 25%. Markers remain readable.
+- Track Player: on by default; updates the live marker and centers the map.
+- Waypoint Pins: on by default; can be hidden without losing the session pin.
+
+Follow Mouse places the panel beside the cursor while the character moves,
+clamped to the screen. It freezes while stopped or clicking so it is usable.
+It never steers the player or moves the system pointer. Player tracking is a
+separate option. Left-drag pans and pauses tracking until the existing recenter
+key is used or the map is reopened. Wheel over the new canvas zooms. Movement
+keys/stick do not also pan the new canvas. Original keeps its prior controls.
+
+M/ESC, map ownership/data, stored zoom, marker files, scans, Change Map, and
+HP/quest markers remain. Marker editing/scans/map lists temporarily use the
+original canvas. Event/warp/primer maps keep their original controls. The
+Ctrl/Alt+O overlay and its saved opacity are separate and untouched.
+
+Right-click an owned area map to set or replace one cyan waypoint. Right-click
+the pin or click Clear waypoint to clear it. The pin stores zone, map page and
+world position; it survives zoning, not logout/restart. On the matching minimap
+page it appears as a marker or edge direction pointer. Other zones/floors do not
+show a misleading direction: the Modern minimap names the other zone/page.
+There is no auto-travel, routefinding, cross-zone exit guidance or server feed.
+The minimap must be enabled; it retains its existing hide-while-main-map-open
+behavior. Clear waypoint is available when viewing the pin's map page.
+
+Verification evidence is recorded outside the source tree at:
+[redacted-path]
+Offline checks are not owner-device, native-Windows GUI, live gameplay, or
+hardware comfort/performance tests. Door, HP/Survival expansion-mask, 0x114,
+public-source and publisher/player gates remain as held. Owner-private drop
+handoff only; publisher retains eligibility, rollback and actual publication.

@@ -1,0 +1,258 @@
+Owner task relay6fb433a65152d70c — modern shared lighting source handoff
+Prepared2026-11-10 00:02Z by the existing sole FFXI client integrator.
+
+Source of truth
+
+Public/non-NGX implementation:6216fa161a8a3faa14a1449657ad0fd16337befe
+  [redacted-path]
+Private implementation with DLSS:17aed4918395f84ad658e2063e58bcaf0a8d5865
+  [redacted-path] (frozen release79)
+Both are local source references, not claims of live release or source publication.
+The initial owner feed77 used48c3eab7; that source DOES NOT include render/hdr.rs.
+
+Exact36-file map, SHA256, git blob and last-changing commit per file:
+[redacted-path]
+SHA256758d28766ac3eabc4ed922bcc9f39079bf7c3752e94e3a89fa02a0a5d5a05263
+Paths below are relative to crates/vana-client/src at the pinned source above.
+
+Modern stack available now
+
+- Cascaded directional shadows: render/forever_sun.rs and render/sunshadow.wgsl;
+  cascade feature832c8a0a1a15ff5f1f57996e19dc2362b651a3e2. The receiver matrices,
+  cascades and allocation are candidates for sharing; FFXI zone/actor casters,
+  bindings and culling remain host adapters. render/sunshadow.rs is the upstream
+  character-shadow path, and render/shadow.rs is not the cascade implementation.
+- AO: render/postdepth.rs + render/ambientshare.rs for the enhanced ambient-only
+  AO path; render/ssao.rs for the upstream basic SSAO pass. Preserve their distinct
+  roles and upstream provenance rather than representing them as one new pass.
+- Bloom/filmic tone curve/FXAA/sharpen/saturation: render/post.rs. Current scene
+  target is encoded8-bit SDR; bloom/tone calculations linearize where documented.
+- HDR presentation: render/hdr.rs, corrected implementation0e11a0208e39b86080b256d89b56e5fff558b54a.
+  Default OFF. Converts the final SDR frame to scRGB Rgba16Float with configured
+  paper white. It does NOT create a floating-point scene or HDR highlight headroom.
+  Real HDR display behavior remains unrun locally; do not label this full HDR lighting.
+- Height/layered fog, shafts and volumetric fog: render/postdepth.rs,
+  render/fogramp.rs and render/lightgrade.rs. Preserve array/cascade sampling fix
+  e24ed4784ea74c1f4f45eefa22e140a869e18376; the earlier pre-cascade volume binding
+  caused a real startup/render panic and must not be revived.
+- Dynamic point/lamp lights: client/lamps.rs, render/lampshadow.rs,
+  render/zone.wgsl and render/mod.rs. Four local lamp-shadow layers, scene/actor
+  associations and FFXI world units are host semantics, not portable defaults.
+- FSR1/FSR2: render/fsr.rs, render/fsr2.rs, render/fsr2.wgsl; temporal.rs,
+  temporal_pass.rs and reactive.rs supply jitter, motion and reactive inputs.
+  Public FSR2 implementation6696416387c857b24ce7d853603f2aa1f5992519 is included.
+- DLSS PRIVATE ONLY: render/dlss_pass.rs, ngx.rs, ngx_sys_linux.rs,
+  ngx_sys_windows.rs and crates/vana-client/build.rs/native integration. Preserve
+  private feature/SDK/runtime boundaries. A bundled NGX library alone does not
+  enable DLSS in a non-DLSS executable. Do not move these into a public crate.
+- Options/presets: config.rs, client/settings.rs, client/settings/win.rs,
+  client/modern/config.rs and client/modern/options.rs. Share neutral descriptors,
+  staging and preset policy; each host retains its actual UI and saved schema.
+
+Already extracted, do not repeat
+
+46914fc8 pins21 shader sources/assembled strings. d1beb1dc2f7106a5433d191a876a179ea39efc58
+introduces crates/forever-gfx-core with Far View and pure temporal math, glam0.34.1
+only. These are in6216fa16 and private17aed491. No shared GPU-pass crate exists yet.
+Existing step1 evidence has38/38 unchanged before/after files, including a true
+Original control. Do not rerun that large matrix by default. Current79 focused
+checks24/0/0 and exact-source classic compile PASS; dist/startup pipeline remains
+active. Neither a source inventory nor a crate commit is an adoption build.
+
+Portable boundaries and adoption order
+
+1. Reuse the pinned source inventory immediately; no second lighting copy.
+2. After current release handoff, extract neutral settings/CPU math and GPU
+   context/passes in small separate changes. The prior plan is a reference,
+   not authority to run full suites or require routine advisor approval.
+3. Vanilla Forever adopts first, then WotLK on benilla-wotlk, then FFXI. Existing
+   project integrators own those source/build changes; this lead does not write
+   into their live trees or start another renderer writer. Confirm their actual
+   backend before choosing direct wgpu reuse versus an explicit adapter.
+4. Each client retains its own current Original appearance; Enhanced is opt-in
+   behavior governed by its own settings. Never copy FFXI presets over another
+   client's saved settings or reinterpret its existing Original preset.
+5. Each adoption step produces one numbered client build, archive path and full
+   SHA256 after focused build/startup/changed-feature checks. Devbox relays to
+   Game QA/Banshee under the existing route; no public release or direct publishing.
+
+Key contracts: current passes assume wgpu30/glam0.34, gamma-encoded SDR input,
+Depth32Float with non-reversed0..1 depth and Y-down FFXI world coordinates. Other
+hosts must supply explicit color/depth/world-unit conventions. Zero/default
+settings must retain the existing Original path. Scene casters, motion vectors,
+weather/time mapping, dynamic light selection and actual menu drawing stay with
+the host. Preserve allocation failure/OOM handling, alpha and shader bindings.
+No source-derived game assets are part of this handoff. AMD/SMAA/font notices
+travel with reused code/assets; DLSS source/runtime remains private.
+
+Resolved private-channel sequencing hold — relay e74565dd94a2201d
+
+Coordinator decision recorded2026-11-09 20:05CT, received2026-11-10: the prior
+lead's step2+ / second-review hold is LIFTED for private/owner-native work only.
+The coordinator confirms it was not an owner pause, records its review as the
+second review, and accepts private78/source11ada774 served by channel60ca0fd6
+with both full archives matched01:15Z as satisfying the publication condition.
+This supersedes the historical pending-hold statements retained below.
+
+Resume GPU-context/post/depth/DLSS extraction in small focused steps. Adoption
+order remains Vanilla, then WotLK, then FFXI, with each existing project writer
+and one integrator. Existing81 Woods builds are already active and remain frozen;
+shared-renderer adoption requires a later numbered private build, not mutation of81.
+Game QA and sole Banshee publisher gates are unchanged. No public publication,
+DLSS public source/runtime, server restart, player/owner-device, credentials,
+access changes or source pushes are authorized. No routine approval/ACK wait.
+
+FFXI stays client-only. No server restart, player reset, owner-device change,
+credential/access change, source push or new level-sync test is authorized here.
+
+Verified host constraints and independent S01 preparation — 2026-11-10
+
+The existing read-only auditor inspected the active pinned sources (not the stale
+~/dev/benilla and ~/dev/benilla-wotlk root clones). No other lane was modified:
+
+- Vanilla: [redacted-path]
+  sourcebca3d64d42358c327eef162a92d5ebb4bc67a924; Rust/Bevy0.18.1, wgpu27.
+- WotLK: [redacted-path]
+  source755d5a47b937e9f1842397a9e16a966b93dabdcc; Rust/Bevy0.18.1, wgpu27.0.1.
+- Canonical benilla-graphics-core59f826339646c55302d515b5a69e355d699cae80
+  already owns shared options/selection logic with SYNC-MANIFEST.json and its
+  check-graphics-core-sync.py mirror contract. Do not create a second options core.
+- WotLK already has an FSR1 host adapter in world_fsr1.rs/shaders/fsr1.wgsl. It
+  consumes raw gamma RGB in Rgba16Float after FXAA and before glow/UI; a float
+  texture is not evidence of linear HDR. It lacks moving/skinned-object temporal
+  vectors; camera-only reconstruction cannot establish FSR2/DLSS correctness.
+- Its licensed Intel ASSAO modules/provenance are a richer separate AO source;
+  keep ASSAO distinct from generic modern_ao and from incomplete C++ references.
+- The retained C++ WotLK tree is reference/fallback, not an adoption destination.
+  Its captured tone table and proprietary/decompiled/data inputs are not shared
+  source donors. See wotlk-forever/docs/RUST_GRAPHICS_PORT_PLAN_20261109.md for
+  actual source manifests, retained cast-readable-first order and channel holds.
+
+Independent additive preparation, no held renderer move:
+  source865219500cf13d1f3127700a6f3c155f1d0fea2a
+  [redacted-path]
+  build ID shared-gfx-core-s01 (LIBRARY/SOURCE KIT, not a client release)
+  crates/forever-gfx-core/src/host.rs exposes column-major f32-array wrappers
+  around existing jitter/static-surface reprojection math, avoiding public glam
+  type conflicts. Existing temporal/farview implementation, Cargo.lock and all
+  vana-client code are byte-unchanged. No FFXI call site adopts the new API.
+
+Focused release-library build and5tests PASS/0failed/0ignored. They check column
+orientation, perspective clip-W jitter, zero-jitter bit preservation and pixel/Y
+motion convention, plus the existing two core checks. No new GPU/client startup,
+FFXI distribution build, gameplay or level-sync run was needed or performed.
+Source kit (no game assets, GPU/SDK runtime, or private DLSS source):
+[redacted-path]
+SHA256d893c53279e9714db102ebca1d117b345422a0cc0289614ec40835beaab23ba8
+RESULT.json beside it pins the compiled rlib/test log/member hashes. Archive
+readback PASS. This is preparatory interoperability, not lighting adoption or a
+playable build. Do not send this source kit to Banshee as a launcher package.
+Vanilla/WotLK/FFXI adoption order remains; the saved GPU extraction restriction
+was subsequently resolved for private work by relay e74565dd94a2201d above.
+
+CI coverage checkpoint — 2026-11-10 00:26Z
+
+44ded5047226f8576936e9d1f912f2c5220215b9 on the same host-api worktree adds
+explicit -p vana-client -p forever-gfx-core to existing CI clippy/test commands.
+default-members/build command are unchanged. This closes the step1 report's
+known omission without a GPU move or any client rendering change. Only ci.yml
+differs from86521950; S01 library/source kit and its5test proof remain unchanged.
+Focused core release clippy --all-targets and offline package-selection check
+PASS. Full client CI was not run; no repeated graphics/level-sync tests or push.
+Evidence owner-20261109-shared-lighting/ci-core-coverage/RESULT.json under cache.
+
+Private79 completed both dist builds/smokes and one QA/publisher intake00:09Z.
+It is not confirmed published; fresh00:25Z owner feed observation remains77.
+Historical status at00:26Z (superseded by relay e74565dd94a2201d):
+No concrete answer yet to the previously reported step2+ publication/sequencing
+restriction. No later extraction step resumed. Existing read-only auditor found
+potential numeric color-grading reuse in lightgrade.rs (sun/ambient/haze/sky),
+but no independent lighting implementation clearly outside that broad hold.
+Keep this as a future candidate: the donor uses power2.2 encoded colors, not
+linear HDR or standard sRGB transfer; zone profiles, weather/clock and saved
+settings remain host-owned. This finding is not authority to extract it now.
+
+New feed evidence — 2026-11-10 01:15Z
+
+Owner-native manifest observed01:14:07Z now advertises private78/source11ada774,
+which includes the sliders/HDR/private-DLSS work. Full remote Linux/Windows78
+archives independently match the manifest and frozen local78 at01:15:02Z.
+Evidence owner-20261110-release80/publication/observed78-package-readback/RESULT.json.
+Manifest publishedAt01:10:33.641271Z is not an independent activation receipt;
+no hardware/gameplay claim follows. Private80 art refinement has completed its
+local checks and one QA/Banshee intake, but80publication remains unconfirmed.
+This evidence was reported; coordinator relay e74565dd94a2201d explicitly cleared
+the remaining private-channel restriction. Vanilla/WotLK/FFXI order is unchanged.
+
+Private shared lighting S02 — completed source handoff, 2026-11-10
+
+After hold clearance, inspected active consumer sources to avoid duplicate work:
+Vanilla already has its own reversed-depth cascades and shared options/AO adapter;
+WotLK already has FSR1 and separate image-quality/default-restoration builds.
+Do not replace these or pass wgpu30 handles into Bevy/wgpu27. First usable shared
+lighting component is CPU sunlight/ambient grading with [f32;3] input/output.
+
+Source658afd5befabe5bc29a60ff280f867bebb910bae, private/shared-lighting-s02-20261110,
+[redacted-path] Existing core gains
+src/lighting.rs and LIGHTING-API.txt. No new options schema, FFXI profiles/time,
+GPU/SDK/NGX data or host saved settings. Core8 focused tests PASS;256 deterministic
+colour/parameter samples match the actual donor arithmetic bit-for-bit with
+FFXI's glam0.34.1. Default/identity preserves Original input bits. Power2.2 encoded
+RGB approximation is explicit, not exact sRGB or linear HDR. No client/GPU run.
+
+Source kit (library only, NOT a launcher release):
+[redacted-path]
+SHA2568ec9b99b2ba639688d8189d8190286a28dd6c4a17c5edf805475ccd2da7b84d0
+Archive member/hash readback PASS; RESULT.json pins source/proof/limitations.
+Vana-client and Cargo.lock byte-unchanged from44ded504; no FFXI callsite adopted.
+
+ONE actionable source intake for the existing Vanilla integrator sent through
+coordinator replye74565dd94a2201d, marker/receipt in that evidence directory.
+Supersedes S01 library intake for this lighting target only; existing options/AO/
+FSR work and active builds are untouched. Vanilla keeps its own Enhanced/Original,
+colour convention, time/weather and underwater/interior semantics. Its numbered
+private build/startup/scene evidence is the real next adoption dependency, then
+WotLK, then FFXI. Do not resend or wait for coordinator acknowledgement. GPU-context/
+post/depth/DLSS work is unheld backlog; no FFXI adoption before the consumer order.
+Existing private81 Woods builds remain frozen and independent of this source kit.
+
+2026-11-10 F1 priority exception: owner relay9db39b0fd1f0f630 explicitly starts
+FFXI F1 now, before the older after-W2 dependency. Private82/source5c8c7871
+extracts tonemap/bloom WGSL and HDR transfer math plus brightness slider; GPU
+resources/surfaces/prefs stay host. Existing private-only clearancee745 remains;
+all other gates unchanged. See AGENTS active F1 and owner-20261110-release82.
+No other client's work is launched or taken over. Reference screenshot pending.
+
+F1 private82 sealed and ONE QA/Banshee build intake submitted 2026-11-10T02:55:39.007319+00:00.
+Source/build5c8c7871, test-only correction0d5c0112; both builds, focused checks,
+classic compile, exact neutral/Original equality and fresh/saved migration PASS.
+Staged [redacted-path]; full evidence [redacted-path]
+No QA/publication claim. F1 source donation already reported once, archive4392e638;
+preserve V1 presets52c1cdde additively (F1 kit omits that newer module).
+F2 source restriction/preflight recorded; no F2 code/build dispatched.
+
+F2-F4 additive source donation complete — 2026-11-10 07:50Z
+
+Exact87 donor8ae5460b13cd24d53504d74a433344bfe4eb009e supplies eight new
+files only: shadow/AO/fog modules, two WGSL fragments, three API notes. Separate
+MODULES.txt requests three declarations in the existing consumer lib.rs. No
+replacement Cargo/lib/presets/settings; preserve V1 presets52c1cdde and WotLK
+FSR1/local exposure, provenance/licenses and host depth/time/weather adapters.
+
+Kit [redacted-path]
+SHA256 d93cef50ad2288bfdcf5c6f346c962f9b199b2927dd460ecf7d3286063d5cb1b
+Archive/Git payload readback and isolated F1/V1 additive patch checks PASS;
+all previous files and all9 preset files retained. Existing core19, F2client11,
+F3client12, F4client18 and exact87 parity/startup evidence reused, not rerun.
+No consumer compilation/shader/scene/adoption proof. Structural preparation first
+stopped on an expected8 versus actual9 preset-file count; source bytes matched,
+count corrected and original stop recorded. No archive existed before that fix.
+
+ONE supplemental source intake reported through coordinator8f7c00a85e7c4306;
+RESULT.json and exclusive dispatch marker/receipt in that evidence directory.
+Supplements existing F1 kit4392e638, superseding only no-F2-F4-kit status; never
+replay F1 or replace an in-flight consumer adoption. Route is existing Vanilla
+integrator only, no second worker/WotLK intake and no acknowledgement wait.
+This is source only, NOT a launcher artifact. F5 remains dependent on actual
+Vanilla then WotLK sun/ambient build/startup/scene proof; kit availability does
+not satisfy that dependency. Existing88 own client builds continue independently.

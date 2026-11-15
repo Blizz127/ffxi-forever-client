@@ -1,0 +1,33 @@
+Forever.37 — explicit Auto Navigation Start/Stop controls (Forever only)
+
+Special → Auto Navigation now enables/disables the feature without starting a
+movement leg. The choice is remembered client-side, off for older configurations.
+Enabling also enables the required tracker, preserving the selected objective.
+Loading a saved enabled choice never resumes movement. Disabling stops an active
+Auto Navigation leg, without canceling unrelated ordinary autorun.
+
+With navigation enabled, the objective arrow panel shows Start Navigation while
+stopped and Stop Navigation while moving. Start is disabled with an explanation
+when the selected objective has no verified local approach, another window/input
+or movement owns control, or the panel is displaying a personal waypoint. Select
+Objective to navigate to the tracked quest; a personal pin never silently starts
+movement toward a different quest. Explicit Hide/Pin preferences are preserved;
+restore a hidden arrow through Settings → Extras → Maps → Navigation Arrow.
+
+Any manual input still stops movement. The stopping gesture remains consumed
+through press, hold and release; a later idle frame and a fresh deliberate Start
+activation are required before movement can resume. Mouse, keyboard/controller
+button activation use the existing UI controls. No automatic restart on arrival,
+obstacle, zoning, focus change, objective change, login, enable or settings load.
+
+The .36 Horutoto gate's East-Sarutabaruta entrance hint and conservative full-local-
+approach checks remain: <=64 yalms, floor continuity and target-floor agreement,
+current collision/closed doors and zone boundaries. Unknown, long or blocked routes
+remain manual. This is not full pathfinding, automatic door opening or zoning.
+
+Focused control/state/preference/gesture and existing route-safety checks, both
+flavour compile checks, final Linux/Windows builds and offline UI/startup evidence
+are recorded with the release. No real account, live navigation/gameplay, owner
+input/restart or native Windows GUI test. Regular remains vana.15. Existing sole
+publisher, private owner-native route and .36 rollback; no server, source push,
+access-policy, game data or local texture pack distribution change.

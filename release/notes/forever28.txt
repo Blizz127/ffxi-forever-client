@@ -1,0 +1,28 @@
+Forever.28 — navigation arrow and mouse-look recovery
+
+Forever Modern UI:
+- A movable arrow near the top center points toward the selected tracked
+  objective, its next known zone exit, or a personal map waypoint. Horizontal
+  distance is shown in FFXI yalms. Gold means objective; cyan means personal pin.
+- Auto follows a personal pin first, then the selected objective. Choose
+  Objective or Pin explicitly, hide the arrow, or clear a pin using its buttons.
+  Settings > Extras > Maps remembers Off/Objective/Waypoint/Auto and 75–150%
+  arrow size. Panel position uses the existing saved Modern UI layout.
+- Existing saved map settings, map coordinates, markers and panning remain.
+  Remote personal pins are retained but have no invented local bearing. Mission
+  guidance uses known zone exits. Nearby is a direction hint, not completion,
+  pathfinding or a promise of floor/access. No new server feed is needed.
+
+Both classic and Forever:
+- Locked and confined mouse-look use raw motion; confined mode no longer warps
+  the pointer continuously and feeds synthetic movement back into the camera.
+- Failed OS capture falls back to ordinary pointer movement. Map/event takeover
+  releases camera capture while retaining map drag coordinates. An old held
+  gesture cannot restart camera capture after closing the map.
+- Escape cancels a stuck camera gesture before its existing menu duties.
+  Focus changes and mod-consumed button releases also release camera ownership.
+
+Owner reports the stuck pointer without opening menus. The map conflict and
+confined-motion feedback are concrete source defects, but reproducing the exact
+owner-device trigger and native Windows gameplay remains an owner playtest.
+The arrow is Forever-only; the generic mouse fixes also ship in the classic drop.

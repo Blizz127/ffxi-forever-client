@@ -1,0 +1,29 @@
+Windurst Woods masonry preview — candidate 1.0.7-forever.43
+
+Forever only, off by default, separate from the existing Tower preview. Settings:
+Graphics > Windurst Woods Textures > Masonry Preview. Requires Enhanced graphics.
+Apply/Cancel behavior is preserved. Changes take effect on a voluntary next zone
+load; this does not reload a playing client. Original restores stock on next load.
+Old saved Tower choices do not enable Woods. Regular/classic behavior unchanged.
+
+One text-generated original material, exact stock content fingerprint, three
+static opaque mesh parts at five placements around the residential entrance.
+Original recognizable architecture, geometry, UVs and all other materials stay.
+Installed custom art wins. No owned-install pixels/pack are redistributed. Prompt
+and provenance accompany source; game-derived renders/inventory remain private.
+The new stone uses a neutral normal instead of unrelated stock mortar relief;
+other mesh parts retain their existing bump lighting. No sculpted relief map,
+universal stretched-UV fix, whole-city
+texture overhaul or hardware performance claim.
+
+Includes the .42 map-icon and .41 selected exit-location changes. Auto navigation
+still requires a verified short local approach; distant/wrong-section/blocked
+routes, doors and zone crossing remain manual. No full Horutoto route claim.
+
+Release requires focused settings/classic-exclusion and owned binding checks,
+exact same-camera before/after review, measured texture allocation/software frame
+cost, both distribution builds and startup smokes, package/flavour/hash checks,
+then existing sole publisher receipt and current/rollback readback. At this source
+checkpoint these candidate checks are pending, not passed or live.
+Preserve source/public push, door, HP/Survival, 0x114, device/player and server
+holds. No owner device, real account, forced restart or live gameplay test.

@@ -1,0 +1,718 @@
+//! UDP session with a zone (map) server.
+//!
+//! Datagram: 28-byte header (u16 our sequence, u16 last server sequence seen, u32 time at 8),
+//! then sub-packets. Except for the first 0x00A, sub-packets are compressed, followed by the
+//! compressed size in bits (u32) and an MD5 of both, and everything after the header is
+//! Blowfish-encrypted in whole 8-byte blocks.
+
+use super::blowfish::Blowfish;
+use super::compress::Codec;
+use anyhow::{Result, bail};
+use md5::{Digest, Md5};
+use std::net::{SocketAddr, UdpSocket};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
+
+const HEADER: usize = 28;
+
+#[derive(Debug, Clone)]
+pub struct SubPacket {
+    pub id: u16,
+    pub sync: u16,
+    /// Whole sub-packet, including its 4-byte header.
+    pub data: Vec<u8>,
+}
+
+impl SubPacket {
+    pub fn u8(&self, o: usize) -> u8 {
+        self.data.get(o).copied().unwrap_or(0)
+    }
+    pub fn u16(&self, o: usize) -> u16 {
+        u16::from_le_bytes([self.u8(o), self.u8(o + 1)])
+    }
+    pub fn u32(&self, o: usize) -> u32 {
+        u32::from_le_bytes([self.u8(o), self.u8(o + 1), self.u8(o + 2), self.u8(o + 3)])
+    }
+    pub fn f32(&self, o: usize) -> f32 {
+        f32::from_bits(self.u32(o))
+    }
+    pub fn str(&self, o: usize, len: usize) -> String {
+        let end = (o + len).min(self.data.len());
+        let bytes = &self.data[o.min(end)..end];
+        let bytes = &bytes[..bytes.iter().position(|&b| b == 0).unwrap_or(bytes.len())];
+        // The game's text is Shift-JIS (with its own glyph pairs and auto-translate blocks).
+        crate::dat::font::decode_sjis(bytes)
+    }
+}
+
+/// Builds one sub-packet; the body is padded to the 4-byte unit the size field counts in.
+pub fn build(id: u16, body: &[u8]) -> Vec<u8> {
+    let len = (4 + body.len()).div_ceil(4) * 4;
+    let mut p = vec![0u8; len];
+    p[..2].copy_from_slice(&(id & 0x1FF | ((len / 4) as u16) << 9).to_le_bytes());
+    p[4..4 + body.len()].copy_from_slice(body);
+    p
+}
+
+fn now() -> u32 {
+    SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_secs() as u32).unwrap_or(0)
+}
+
+pub struct MapSession {
+    sock: UdpSocket,
+    cipher: Blowfish,
+    /// The key the cipher was made from, for 0x00A's ticket, and the 20 bytes hashed for it.
+    key: [u8; 16],
+    key20: [u8; 20],
+    /// A second key (MapLogin::old_key) tried while no datagram has been read; the first to pass with it makes it ours.
+    alt: Option<(Blowfish, [u8; 20])>,
+    codec: Codec,
+    seq: u16,
+    server_seq: u16,
+    /// Datagram bytes sent / received on this session, for the Network window.
+    pub bytes_out: u64,
+    pub bytes_in: u64,
+    /// Corrupt datagram diagnostics.
+    pub bad_in: u64,
+    bad_run: u32,
+    /// Sub-packets not yet acked, with the datagram each first went out in (FUN_100fac80 resends them in every datagram
+    /// until the server's ack, header u16 @2, reaches it). None: queued but not sent yet; it takes the sequence of the
+    /// datagram it first fits in, as retail, since a server skips a sub-packet whose sync isn't newer than the last
+    /// datagram it handled.
+    unacked: Vec<(Option<u16>, Vec<u8>)>,
+    server_ack: u16,
+    /// Datagrams dropped for a failed checksum (`recv`).
+    bad: u32,
+    /// Header sequence of the last datagram handled; none before the first.
+    last_in: Option<u16>,
+    /// Datagrams logged so far each way (the first few of a session are logged).
+    logged: (u32, u32),
+    /// From the zone-in (s2c 0x00A u32 @0x94 / @0x98): every later datagram's header carries it (FUN_100fa9f0).
+    cert: Option<[u32; 2]>,
+    /// The header clock (DAT_10492e10): seconds and ms at an instant, set by the zone-in and every 30th datagram.
+    clock: Option<(u32, u32, std::time::Instant)>,
+    /// Receive diagnostics (counts only, logged every 10 s): what reached the socket and what was read.
+    diag: RecvDiag,
+}
+
+/// Counts of the datagrams this session received in a window: no payloads, addresses or names, only counts, sizes,
+/// the largest gap between arrivals and a few sub-packet ids (zone-in/out and the entity updates), so a log can tell a
+/// datagram that never arrived from one that arrived and could not be read.
+#[derive(Default, Debug, Clone, PartialEq)]
+pub struct RecvDiag {
+    pub raw: u32,
+    pub bytes: u64,
+    pub empty: u32,
+    pub checksum: u32,
+    pub decompress: u32,
+    pub stale: u32,
+    pub decoded: u32,
+    pub op_00a: u32,
+    pub op_00b: u32,
+    pub op_00d: u32,
+    pub op_00e: u32,
+    pub max_gap_ms: u64,
+    last_arrival: Option<std::time::Instant>,
+    since: Option<std::time::Instant>,
+}
+
+/// The diagnostics window.
+pub const DIAG_WINDOW: Duration = Duration::from_secs(10);
+
+impl RecvDiag {
+    /// A datagram reached the socket at `now`.
+    pub fn arrived(&mut self, n: usize, now: std::time::Instant) {
+        if let Some(last) = self.last_arrival {
+            self.max_gap_ms = self.max_gap_ms.max(now.saturating_duration_since(last).as_millis() as u64);
+        }
+        self.last_arrival = Some(now);
+        self.raw += 1;
+        self.bytes += n as u64;
+    }
+
+    /// A read datagram's sub-packet ids.
+    pub fn subs(&mut self, ids: impl Iterator<Item = u16>) {
+        self.decoded += 1;
+        for id in ids {
+            match id {
+                0x00A => self.op_00a += 1,
+                0x00B => self.op_00b += 1,
+                0x00D => self.op_00d += 1,
+                0x00E => self.op_00e += 1,
+                _ => {}
+            }
+        }
+    }
+
+    /// The window's line once it is over and saw anything (then the counts restart); None otherwise.
+    pub fn flush(&mut self, now: std::time::Instant) -> Option<String> {
+        let since = *self.since.get_or_insert(now);
+        if now.saturating_duration_since(since) < DIAG_WINDOW {
+            return None;
+        }
+        let line = (self.raw > 0).then(|| {
+            format!(
+                "map in stats ({}s): received {} ({} bytes), empty {}, checksum {}, decompress {}, stale {}, read {}; \
+                 0x00A {}, 0x00B {}, 0x00D {}, 0x00E {}; largest gap {} ms",
+                DIAG_WINDOW.as_secs(),
+                self.raw,
+                self.bytes,
+                self.empty,
+                self.checksum,
+                self.decompress,
+                self.stale,
+                self.decoded,
+                self.op_00a,
+                self.op_00b,
+                self.op_00d,
+                self.op_00e,
+                self.max_gap_ms
+            )
+        });
+        let last = self.last_arrival;
+        *self = RecvDiag { last_arrival: last, since: Some(now), ..Default::default() };
+        line
+    }
+}
+
+const LOG_DATAGRAMS: u32 = 40;
+/// Unreadable datagrams in a row that end the session: past this it is a wrong key or a broken link, not noise.
+const BAD_RUN_LIMIT: u32 = 50;
+
+/// The sub-packets' ids and syncs, for the log.
+fn sub_ids(plain: &[u8]) -> String {
+    let mut out = Vec::new();
+    let mut at = 0;
+    while at + 4 <= plain.len() {
+        let word = u16::from_le_bytes([plain[at], plain[at + 1]]);
+        let len = ((word >> 9) as usize) * 4;
+        if len == 0 {
+            break;
+        }
+        out.push(format!("{:03X}/{}", word & 0x1ff, u16::from_le_bytes([plain[at + 2], plain[at + 3]])));
+        at += len;
+    }
+    out.join(" ")
+}
+
+/// Datagrams failing their checksum before the first good one that are dropped as a previous session's, before the
+/// session gives up on its key.
+const BAD_BEFORE_FIRST: u32 = 8;
+
+/// FUN_100dc430: the socket binds to 54090, then 50 more tries 0x100 apart (a u16, so it wraps), at every connection; a
+/// zone change comes from the same port, which LSB's older map servers key the session by.
+pub(crate) fn bind_socket() -> Result<UdpSocket> {
+    let mut port = 54090u16;
+    for _ in 0..=50 {
+        if let Ok(s) = UdpSocket::bind(("0.0.0.0", port)) {
+            return Ok(s);
+        }
+        port = port.wrapping_add(0x100);
+    }
+    bail!("no local UDP port for the zone server: 54090 and the 50 after it 256 apart are all taken")
+}
+
+/// FUN_100fac80's raw payload limit.
+const MAX_PAYLOAD: usize = 4000;
+
+impl MapSession {
+    pub fn connect(server: SocketAddr, key: &[u8; 20], codec: Codec) -> Result<Self> {
+        Self::with_socket(bind_socket()?, server, key, codec)
+    }
+
+    /// On a socket the game keeps for its whole run, as FFXiMain does: zone changes reach the next server from the
+    /// same local port, so a server keying sessions on the client's address sees one client (inferred from retail's
+    /// single socket; LSB-style servers otherwise make a second session per zone change).
+    pub fn with_socket(sock: UdpSocket, server: SocketAddr, key: &[u8; 20], codec: Codec) -> Result<Self> {
+        sock.connect(server)?;
+        log::info!("map: {server} from local port {}", sock.local_addr()?.port());
+        Ok(Self {
+            sock,
+            cipher: Blowfish::for_session_key(key),
+            key: super::blowfish::session_key(key),
+            key20: *key,
+            alt: None,
+            codec,
+            seq: 0,
+            server_seq: 0,
+            bytes_out: 0,
+            bytes_in: 0,
+            bad_in: 0,
+            diag: RecvDiag::default(),
+            bad_run: 0,
+            unacked: Vec::new(),
+            server_ack: 0,
+            bad: 0,
+            last_in: None,
+            logged: (0, 0),
+            cert: None,
+            clock: None,
+        })
+    }
+
+    /// Also tries `alt` until a datagram has been read.
+    pub fn or_key(mut self, alt: Option<[u8; 20]>) -> Self {
+        self.alt = alt.map(|k| (Blowfish::for_session_key(&k), k));
+        self
+    }
+
+    /// The 20 bytes behind the cipher in use, stepped by the caller for the next zone.
+    pub fn key20(&self) -> [u8; 20] {
+        self.key20
+    }
+
+    /// @0 our sequence, @2 the last server datagram handled, @4 / @8 the clock's ms and seconds; after the zone-in
+    /// @0x0C = 1 and the zone-in's two words @0x10 / @0x14 (FUN_100fa9f0, FUN_100fdbf0).
+    fn header(&mut self) -> Vec<u8> {
+        self.seq = self.seq.wrapping_add(1);
+        let mut h = vec![0u8; HEADER];
+        h[..2].copy_from_slice(&self.seq.to_le_bytes());
+        h[2..4].copy_from_slice(&self.server_seq.to_le_bytes());
+        let (secs, ms) = match self.clock {
+            Some((s, m, at)) => {
+                let t = m as u64 + at.elapsed().as_millis() as u64;
+                (s.wrapping_add((t / 1000) as u32), (t % 1000) as u32)
+            }
+            None => (now(), 0),
+        };
+        h[4..8].copy_from_slice(&ms.to_le_bytes());
+        h[8..12].copy_from_slice(&secs.to_le_bytes());
+        h
+    }
+
+    /// The zone-in (s2c 0x00A, LAB_100facf0): its two words for every later header, its clock (@0x38 seconds, @0x34
+    /// ms, FUN_100dc150).
+    pub fn zoned_in(&mut self, p: &SubPacket) {
+        self.cert = Some([p.u32(0x94), p.u32(0x98)]);
+        self.clock = Some((p.u32(0x38), p.u32(0x34), std::time::Instant::now()));
+        log::info!("map: zone-in, header words {:08x} {:08x}", p.u32(0x94), p.u32(0x98));
+    }
+
+    fn stamp(&self, packets: &[Vec<u8>]) -> Vec<u8> {
+        let mut body = Vec::new();
+        for p in packets {
+            let mut p = p.clone();
+            p[2..4].copy_from_slice(&self.seq.to_le_bytes());
+            body.extend_from_slice(&p);
+        }
+        body
+    }
+
+    /// The opening 0x00A goes out unencrypted and uncompressed; `attempt` @6 is DAT_104df920: 0 at first, then 2, or 3
+    /// once a datagram was read (FUN_100fa940).
+    pub fn send_login(&mut self, char_id: u32, char_name: &str, account: &str, attempt: u16) -> Result<()> {
+        let mut body = vec![0u8; 88];
+        body[2..4].copy_from_slice(&attempt.to_le_bytes());
+        body[8..12].copy_from_slice(&char_id.to_le_bytes());
+        let put = |b: &mut [u8], at: usize, s: &str| {
+            let s = &s.as_bytes()[..s.len().min(14)];
+            b[at..at + s.len()].copy_from_slice(s);
+        };
+        put(&mut body, 30, char_name);
+        put(&mut body, 45, account);
+        // The ticket @0x40: MD5(the account's 15 bytes ‖ the Blowfish key) (FUN_100fba40 -> FUN_100dd800).
+        let mut h = Md5::new();
+        h.update(&body[45..60]);
+        h.update(self.key);
+        body[60..76].copy_from_slice(&h.finalize());
+        body[80..84].copy_from_slice(b"WIN\0");
+        // The language (FFXi.dll's map of polcore 0x1A5: 0 ja, 1 en, 2 de, 3 fr), then SYS\info02.bin's
+        // {01 01} after a normal start (FUN_102532c0).
+        body[84..86].copy_from_slice(&1u16.to_le_bytes());
+        body[86..88].copy_from_slice(&0x0101u16.to_le_bytes());
+        // LoginPacketCheck: byte sum of everything from MyIP (packet offset 8) on.
+        body[0] = body[4..].iter().fold(0u8, |a, &b| a.wrapping_add(b));
+        let packet = build(0x00A, &body);
+
+        let mut dgram = self.header();
+        dgram.extend_from_slice(&self.stamp(&[packet]));
+        log::info!("map out (login): header {} [{}]", hex::encode(&dgram[..HEADER]), sub_ids(&dgram[HEADER..]));
+        let digest = Md5::digest(&dgram[HEADER..]);
+        dgram.extend_from_slice(&digest);
+        self.sock.send(&dgram)?;
+        Ok(())
+    }
+
+    /// One datagram: the new sub-packets plus every earlier one the server has not acked; a new 0x015 replaces
+    /// a queued one (retail rewrites its single 0x015 slot).
+    pub fn send(&mut self, packets: &[Vec<u8>]) -> Result<()> {
+        let mut dgram = self.header();
+        let (seq, ack) = (self.seq, self.server_ack);
+        self.unacked.retain(|(s, _)| s.is_none_or(|s| ack.wrapping_sub(s) >= 0x8000));
+        let id = |p: &[u8]| u16::from_le_bytes([p[0], p[1]]) & 0x1ff;
+        if packets.iter().any(|p| id(p) == 0x015) {
+            self.unacked.retain(|(_, p)| id(p) != 0x015);
+        }
+        self.unacked.extend(packets.iter().map(|p| (None, p.clone())));
+        let mut raw = Vec::new();
+        for (sent, p) in &mut self.unacked {
+            if raw.len() + p.len() > MAX_PAYLOAD {
+                break;
+            }
+            if sent.is_none() {
+                p[2..4].copy_from_slice(&seq.to_le_bytes());
+                *sent = Some(seq);
+            }
+            raw.extend_from_slice(p);
+        }
+        if let Some([a, b]) = self.cert {
+            dgram[0x0C] = 1;
+            dgram[0x10..0x14].copy_from_slice(&a.to_le_bytes());
+            dgram[0x14..0x18].copy_from_slice(&b.to_le_bytes());
+        }
+        if self.logged.1 < LOG_DATAGRAMS {
+            self.logged.1 += 1;
+            log::info!("map out: header {} [{}]", hex::encode(&dgram[..HEADER]), sub_ids(&raw));
+        }
+        let (mut body, bits) = self.codec.compress(&raw);
+        body.extend_from_slice(&bits.to_le_bytes());
+        let digest = Md5::digest(&body);
+        body.extend_from_slice(&digest);
+        self.cipher.encrypt(&mut body);
+        dgram.extend_from_slice(&body);
+        self.sock.send(&dgram)?;
+        self.bytes_out += dgram.len() as u64;
+        Ok(())
+    }
+
+    /// Drops a datagram that can't be read: counted, logged (the first few), and an error only after BAD_RUN_LIMIT in a
+    /// row.
+    fn bad_datagram(&mut self, n: usize, why: &str) -> Result<Option<Vec<SubPacket>>> {
+        self.bad_in += 1;
+        self.bad_run += 1;
+        if self.bad_in <= LOG_DATAGRAMS as u64 {
+            log::warn!("map in: dropped a {n}-byte datagram that {why}");
+        }
+        if self.bad_run >= BAD_RUN_LIMIT {
+            bail!("{BAD_RUN_LIMIT} datagrams in a row could not be read; the last {why}");
+        }
+        Ok(None)
+    }
+
+    /// Waits for one datagram and unpacks its sub-packets.
+    pub fn recv(&mut self, timeout: Duration) -> Result<Option<Vec<SubPacket>>> {
+        if let Some(line) = self.diag.flush(std::time::Instant::now()) {
+            log::info!("{line}");
+        }
+        self.sock.set_read_timeout(Some(timeout))?;
+        let mut buf = vec![0u8; 4096];
+        let n = match self.sock.recv(&mut buf) {
+            Ok(n) => {
+                self.diag.arrived(n, std::time::Instant::now());
+                n
+            }
+            Err(e) if matches!(e.kind(), std::io::ErrorKind::WouldBlock | std::io::ErrorKind::TimedOut) => {
+                return Ok(None);
+            }
+            Err(e) => return Err(e.into()),
+        };
+        // LSB sends an empty datagram when nothing is queued (send_parse sets the size to 0). It carries nothing, so
+        // it counts as no answer: dropped, and the login keeps retrying *(inf: retail drops it)*.
+        if n < HEADER + 20 {
+            self.diag.empty += 1;
+            log::debug!("dropped a {n}-byte datagram");
+            return Ok(None);
+        }
+        let mut dgram = buf[..n].to_vec();
+        self.cipher.decrypt(&mut dgram[HEADER..]);
+        let sealed = |d: &[u8]| {
+            let (data, digest) = d[HEADER..].split_at(d.len() - HEADER - 16);
+            Md5::digest(data).as_slice() == digest
+        };
+        if !sealed(&dgram)
+            && self.last_in.is_none()
+            && let Some((cipher, _)) = &self.alt
+        {
+            let mut again = buf[..n].to_vec();
+            cipher.decrypt(&mut again[HEADER..]);
+            if sealed(&again) {
+                log::info!("map: the server keys this session with the loader's zero value (LSB's older login)");
+                let (cipher, k) = self.alt.take().unwrap();
+                (self.cipher, self.key, self.key20, dgram) = (cipher, super::blowfish::session_key(&k), k, again);
+            }
+        }
+        let (data, digest) = dgram[HEADER..].split_at(n - HEADER - 16);
+        // A datagram that fails its checksum or doesn't decompress (corrupt, cut short, not the server's) is dropped
+        // and counts as no answer; LSB resends what we haven't acked. Only a run of them ends the session.
+        if Md5::digest(data).as_slice() != digest {
+            // Ours: the run keeps one socket (with_socket), so a late datagram of the previous zone's session (its
+            // key) can still arrive; it is dropped. Only a session that never gets a good one is a wrong key.
+            self.bad += 1;
+            self.diag.checksum += 1;
+            self.bad_in += 1;
+            if self.last_in.is_none() && self.bad > BAD_BEFORE_FIRST {
+                bail!("datagram failed its checksum (wrong session key?)");
+            }
+            log::warn!("dropped a datagram that failed its checksum ({} so far, a previous session's?)", self.bad);
+            return Ok(None);
+        }
+        let bits = u32::from_le_bytes(data[data.len() - 4..].try_into().unwrap());
+        let plain = match self.codec.decompress(&data[..data.len() - 4], bits) {
+            Ok(p) => p,
+            Err(e) => {
+                self.diag.decompress += 1;
+                return self.bad_datagram(n, &format!("did not decompress: {e:#}"));
+            }
+        };
+        self.bad_run = 0;
+        // FUN_100f76b0 counts a datagram's bytes (FUN_100f9b90) only once FUN_100dad80 has read it.
+        self.bytes_in += n as u64;
+        // FUN_100f76b0: a datagram not newer than the last one handled is dropped (counted), and so is a sub-packet
+        // whose sync is not newer; only an accepted datagram moves the stored sequence and ack.
+        let seq = u16::from_le_bytes([dgram[0], dgram[1]]);
+        if self.logged.0 < LOG_DATAGRAMS {
+            self.logged.0 += 1;
+            log::info!("map in: header {} [{}]", hex::encode(&dgram[..HEADER]), sub_ids(&plain));
+        }
+        let newer = |s: u16| self.last_in.is_none_or(|last| last.wrapping_sub(s) >= 0x8000);
+        if !newer(seq) {
+            // LSB resends its last datagram when our ack lags (map_networking.cpp parse).
+            log::debug!("dropped resent datagram {seq}");
+            self.diag.stale += 1;
+            return Ok(Some(Vec::new()));
+        }
+
+        let mut out = Vec::new();
+        let mut at = 0;
+        while at + 4 <= plain.len() {
+            let word = u16::from_le_bytes([plain[at], plain[at + 1]]);
+            let len = ((word >> 9) as usize) * 4;
+            if len == 0 || at + len > plain.len() {
+                break;
+            }
+            let sync = u16::from_le_bytes([plain[at + 2], plain[at + 3]]);
+            if newer(sync) {
+                out.push(SubPacket { id: word & 0x1FF, sync, data: plain[at..at + len].to_vec() });
+            }
+            at += len;
+        }
+        self.diag.subs(out.iter().map(|p| p.id));
+        self.server_seq = seq;
+        self.server_ack = u16::from_le_bytes([dgram[2], dgram[3]]);
+        self.last_in = Some(seq);
+        // Every 30th datagram re-syncs the clock to the server's header (FUN_100fbd10; ours without the drift limit).
+        if seq % 30 == 0 && self.clock.is_some() {
+            let at = |o: usize| u32::from_le_bytes(dgram[o..o + 4].try_into().unwrap());
+            self.clock = Some((at(8), at(4), std::time::Instant::now()));
+        }
+        Ok(Some(out))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Set FFXI_MAIN_DLL to run: a datagram under another key (the previous zone's, on the shared socket) is dropped,
+    /// and the session goes on with the next good one.
+    #[test]
+    fn stale_key_datagram_is_dropped() {
+        let Ok(dll) = std::env::var("FFXI_MAIN_DLL") else { return };
+        let codec = Codec::from_ffximain(&std::fs::read(dll).unwrap()).unwrap();
+        let server = UdpSocket::bind("127.0.0.1:0").unwrap();
+        let mut s = MapSession::connect(server.local_addr().unwrap(), &[7u8; 20], codec.clone()).unwrap();
+        let dgram = |key: [u8; 20], seq: u16| {
+            let cipher = Blowfish::for_session_key(&key);
+            let mut sub = build(0x029, &[0u8; 24]);
+            sub[2..4].copy_from_slice(&seq.to_le_bytes());
+            let (mut body, bits) = codec.compress(&sub);
+            body.extend_from_slice(&bits.to_le_bytes());
+            let digest = Md5::digest(&body);
+            body.extend_from_slice(&digest);
+            cipher.encrypt(&mut body);
+            let mut d = vec![0u8; HEADER];
+            d[..2].copy_from_slice(&seq.to_le_bytes());
+            d.extend_from_slice(&body);
+            d
+        };
+        let to = s.sock.local_addr().unwrap();
+        server.send_to(&dgram([9u8; 20], 3), to).unwrap();
+        server.send_to(&dgram([7u8; 20], 5), to).unwrap();
+        assert!(s.recv(Duration::from_secs(1)).unwrap().is_none());
+        assert_eq!(s.recv(Duration::from_secs(1)).unwrap().unwrap().len(), 1);
+        // After a good one, stale datagrams never end the session.
+        for seq in 6..20 {
+            server.send_to(&dgram([9u8; 20], seq), to).unwrap();
+            assert!(s.recv(Duration::from_secs(1)).unwrap().is_none());
+        }
+    }
+
+    /// Set FFXI_MAIN_DLL to run: sub-packets that don't fit a datagram wait unstamped and take the sequence of the
+    /// datagram they first go out in; an ack never drops one not sent yet.
+    #[test]
+    fn overflow_is_stamped_when_first_sent() {
+        let Ok(dll) = std::env::var("FFXI_MAIN_DLL") else { return };
+        let codec = Codec::from_ffximain(&std::fs::read(dll).unwrap()).unwrap();
+        let server = UdpSocket::bind("127.0.0.1:0").unwrap();
+        let mut s = MapSession::connect(server.local_addr().unwrap(), &[7u8; 20], codec).unwrap();
+        let big: Vec<Vec<u8>> = (0..12).map(|_| build(0x0B6, &[0u8; 400])).collect();
+        s.send(&big).unwrap();
+        let first = s.seq;
+        let stamped = s.unacked.iter().filter(|(sent, _)| *sent == Some(first)).count();
+        assert!(stamped > 0 && stamped < 12, "{stamped}");
+        assert!(s.unacked.iter().skip(stamped).all(|(sent, _)| sent.is_none()));
+        // The server acks the first datagram: its sub-packets go, the unsent ones stay and go out next, stamped anew.
+        s.server_ack = first;
+        s.send(&[]).unwrap();
+        let second = s.seq;
+        assert_eq!(s.unacked.len(), 12 - stamped);
+        assert!(s.unacked.iter().all(|(sent, p)| *sent == Some(second) && p[2..4] == second.to_le_bytes()));
+    }
+
+    /// Set FFXI_MAIN_DLL to run: a resent datagram (same header sequence) and an older one carry nothing.
+    #[test]
+    fn resent_datagram_dropped() {
+        let Ok(dll) = std::env::var("FFXI_MAIN_DLL") else { return };
+        let codec = Codec::from_ffximain(&std::fs::read(dll).unwrap()).unwrap();
+        let key = [7u8; 20];
+        let server = UdpSocket::bind("127.0.0.1:0").unwrap();
+        let mut s = MapSession::connect(server.local_addr().unwrap(), &key, codec.clone()).unwrap();
+        let cipher = Blowfish::for_session_key(&key);
+        let dgram = |seq: u16| {
+            let mut sub = build(0x029, &[0u8; 24]);
+            sub[2..4].copy_from_slice(&seq.to_le_bytes());
+            let (mut body, bits) = codec.compress(&sub);
+            body.extend_from_slice(&bits.to_le_bytes());
+            let digest = Md5::digest(&body);
+            body.extend_from_slice(&digest);
+            cipher.encrypt(&mut body);
+            let mut d = vec![0u8; HEADER];
+            d[..2].copy_from_slice(&seq.to_le_bytes());
+            d.extend_from_slice(&body);
+            d
+        };
+        let to = s.sock.local_addr().unwrap();
+        for seq in [5, 5, 4, 6] {
+            server.send_to(&dgram(seq), to).unwrap();
+        }
+        let got: Vec<usize> = (0..4).map(|_| s.recv(Duration::from_secs(1)).unwrap().unwrap().len()).collect();
+        assert_eq!(got, [1, 0, 0, 1]);
+        assert_eq!(s.server_seq, 6);
+    }
+
+    /// A codec of plain 8-bit codes (each byte its own code), so the test needs no FFXiMain.dll.
+    fn plain_codec() -> Codec {
+        let mut table = vec![0u8; 2048];
+        for b in 0..=255u8 {
+            let i = (b as i8 as i32 + 0x80) as usize;
+            table[i * 4..i * 4 + 4].copy_from_slice(&(b as u32).to_le_bytes());
+            table[(i + 0x100) * 4..(i + 0x100) * 4 + 4].copy_from_slice(&8u32.to_le_bytes());
+        }
+        Codec::from_table(&table).unwrap()
+    }
+
+    /// A datagram that fails its checksum or doesn't decompress is dropped, not the session; a run of them ends it.
+    #[test]
+    fn bad_datagram_dropped() {
+        let codec = plain_codec();
+        let key = [7u8; 20];
+        let server = UdpSocket::bind("127.0.0.1:0").unwrap();
+        let mut s = MapSession::connect(server.local_addr().unwrap(), &key, codec.clone()).unwrap();
+        let cipher = Blowfish::for_session_key(&key);
+        // `body` sealed (bits, MD5) and encrypted behind a header with `seq`.
+        let seal = |seq: u16, mut body: Vec<u8>, bits: u32| {
+            body.extend_from_slice(&bits.to_le_bytes());
+            let digest = Md5::digest(&body);
+            body.extend_from_slice(&digest);
+            cipher.encrypt(&mut body);
+            let mut d = vec![0u8; HEADER];
+            d[..2].copy_from_slice(&seq.to_le_bytes());
+            d.extend_from_slice(&body);
+            d
+        };
+        let good = |seq: u16| {
+            let mut sub = build(0x029, &[0u8; 24]);
+            sub[2..4].copy_from_slice(&seq.to_le_bytes());
+            let (body, bits) = codec.compress(&sub);
+            seal(seq, body, bits)
+        };
+        let to = s.sock.local_addr().unwrap();
+        let mut corrupt = good(5);
+        corrupt[HEADER + 3] ^= 0x40;
+        // Passes its checksum but has no leading 0x01.
+        let undecodable = seal(5, vec![2u8; 24], 8 + 24 * 8);
+        for d in [&corrupt, &undecodable, &good(5)] {
+            server.send_to(d, to).unwrap();
+        }
+        let t = Duration::from_secs(1);
+        assert!(s.recv(t).unwrap().is_none());
+        assert!(s.recv(t).unwrap().is_none());
+        assert_eq!(s.recv(t).unwrap().unwrap().len(), 1);
+        assert_eq!((s.server_seq, s.bad_in), (5, 2));
+        // A good datagram resets the run of undecodable packets. Checksum failures
+        // after a good packet can be old-zone traffic on our shared socket; those
+        // intentionally remain tolerated (stale_key_datagram_is_dropped).
+        for _ in 0..BAD_RUN_LIMIT - 1 {
+            server.send_to(&undecodable, to).unwrap();
+            assert!(s.recv(t).unwrap().is_none());
+        }
+        server.send_to(&undecodable, to).unwrap();
+        assert!(s.recv(t).is_err());
+    }
+
+    /// The older key is taken when the first datagram passes only with it, and never once a datagram was read.
+    #[test]
+    fn old_key_taken_before_the_first_read() {
+        let codec = plain_codec();
+        let (ours, old) = ([7u8; 20], [0u8; 20]);
+        let dgram = |key: &[u8; 20], seq: u16| {
+            let mut sub = build(0x029, &[0u8; 24]);
+            sub[2..4].copy_from_slice(&seq.to_le_bytes());
+            let (mut body, bits) = codec.compress(&sub);
+            body.extend_from_slice(&bits.to_le_bytes());
+            let digest = Md5::digest(&body);
+            body.extend_from_slice(&digest);
+            Blowfish::for_session_key(key).encrypt(&mut body);
+            let mut d = vec![0u8; HEADER];
+            d[..2].copy_from_slice(&seq.to_le_bytes());
+            d.extend_from_slice(&body);
+            d
+        };
+        let t = Duration::from_secs(1);
+        let server = UdpSocket::bind("127.0.0.1:0").unwrap();
+        let mut s = MapSession::connect(server.local_addr().unwrap(), &ours, codec.clone()).unwrap().or_key(Some(old));
+        let to = s.sock.local_addr().unwrap();
+        server.send_to(&dgram(&old, 1), to).unwrap();
+        assert_eq!(s.recv(t).unwrap().unwrap().len(), 1);
+        assert_eq!((s.key20(), s.key), (old, crate::net::map::blowfish::session_key(&old)));
+        server.send_to(&dgram(&ours, 2), to).unwrap();
+        assert!(s.recv(t).unwrap().is_none());
+        // Ours read first: the older key is never tried after it.
+        let mut s = MapSession::connect(server.local_addr().unwrap(), &ours, codec.clone()).unwrap().or_key(Some(old));
+        let to = s.sock.local_addr().unwrap();
+        server.send_to(&dgram(&ours, 1), to).unwrap();
+        server.send_to(&dgram(&old, 2), to).unwrap();
+        assert_eq!(s.recv(t).unwrap().unwrap().len(), 1);
+        assert!(s.recv(t).unwrap().is_none());
+        assert_eq!(s.key20(), ours);
+    }
+}
+
+#[cfg(test)]
+mod recv_diag_tests {
+    use super::*;
+    use std::time::Instant;
+
+    #[test]
+    fn counts_flush_every_window_and_only_with_traffic() {
+        let t0 = Instant::now();
+        let mut d = RecvDiag::default();
+        assert_eq!(d.flush(t0), None, "the first call opens the window");
+        d.arrived(600, t0 + Duration::from_millis(100));
+        d.arrived(400, t0 + Duration::from_millis(3100));
+        d.subs([0x00E, 0x00E, 0x00D, 0x01F].into_iter());
+        d.checksum += 1;
+        assert_eq!(d.flush(t0 + Duration::from_secs(5)), None, "not before the window ends");
+        let line = d.flush(t0 + DIAG_WINDOW).expect("a window with traffic logs a line");
+        assert!(
+            line.contains("received 2 (1000 bytes)") && line.contains("checksum 1") && line.contains("read 1"),
+            "{line}"
+        );
+        assert!(line.contains("0x00D 1, 0x00E 2") && line.contains("largest gap 3000 ms"), "{line}");
+        // The counts restart; a silent window logs nothing.
+        assert_eq!((d.raw, d.op_00e, d.max_gap_ms), (0, 0, 0));
+        assert_eq!(d.flush(t0 + DIAG_WINDOW * 2), None);
+        // The gap spans windows: the next arrival measures from the last one before the flush.
+        d.arrived(100, t0 + DIAG_WINDOW * 2 + Duration::from_secs(1));
+        assert_eq!(d.max_gap_ms, 17_900, "from the 3.1 s arrival to the one at 21 s");
+    }
+}

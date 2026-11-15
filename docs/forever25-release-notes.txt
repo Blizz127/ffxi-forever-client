@@ -1,0 +1,24 @@
+FFXI Forever 1.0.5-forever.25 — prepared, not published
+
+- Map settings now fit the Original, Centered and Follow Mouse choices inside
+  their frame. Existing map controls and waypoint pins are preserved.
+- Press L to show or hide the Modern quest tracker. Typing, focused menus,
+  modifiers and custom bindings keep their controls.
+- Active objectives start selected, with the current nation mission focused.
+  Your explicit selections and hidden objectives survive refresh and zoning
+  within the character session.
+- Home Point, Training and quest updates are recognized when the server stamps
+  them with your character name, keeping their protocol text out of chat.
+- Next-mission guidance is labeled separately from accepted progress, including
+  multipart rank-points instructions. This needs the corresponding server feed.
+- An optional Windurst texture pilot rebuilds eligible opaque surface atlases
+  locally from your own install. It stays off until chosen, keeps the original
+  game files, and includes no game assets or invented HD detail in this download.
+
+Local Linux/Windows builds, package checks, Linux startup and tracker/settings
+renders passed. Windows CLI checks passed under Wine. Owner-device playtesting,
+native Windows GUI and a .25 live game session have not been run.
+
+The candidate is ready for the existing publisher's offline preparation. Delivery
+is still subject to the actual owner-only signer/access prerequisite. This is
+not a publication receipt; regular FFXI's published Vana client is unchanged.

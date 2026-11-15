@@ -1,0 +1,38 @@
+Shared grounding and scene colour — Vana.12 / Forever.23
+
+Both flavours use the same contact-shadow footprint on collision geometry and
+on the fallback flat quad. Previously the projected blob had half the diameter;
+small actors could lose most of their visible grounding, and switching shadow
+paths changed the footprint. This is a shared quality adjustment to the original
+blob, not a new lighting style. Strength, height fade, depth testing, receiver
+geometry and the user's Shadows Off choice are unchanged.
+
+Character, scenery and sky shaders now use the exact piecewise sRGB transfer
+at texture/framebuffer boundaries, including clear colour. Hardware sRGB texture
+decoding was previously undone with a gamma-2.2 approximation, changing authored
+dark colours before the lighting calculation. Legacy D3D8 lighting still runs
+in its authored encoded colour space. Actor-specific weather/area light values
+remain intact; no global character-brightness reduction or classic filmic grade.
+Transfer reference: https://www.w3.org/TR/css-color-4/#color-conversion-code
+
+The earlier CPU actor lighting-metadata fix, comfort/frame pacing defaults,
+16x filtering/mipmaps and optional edge AA remain. Enhanced sun shadows, lamp
+lighting, AO, bloom, tone grade, atmosphere and water remain Forever-only and
+toggleable. Locally generated HD textures are a later pilot; no game data is
+included in either drop. No replacement engine.
+
+Focused validation: a GPU check compares all 256 grey levels with actual sRGB
+texture decoding; offline character-select renders cover a small daytime actor
+and a full-height night actor. Release records contain actual build/check results.
+Offline generic models do not reproduce the owner's exact equipment or device.
+Software rendering is not a frame-pacing or comfort measurement. Owner playtest,
+native Windows GUI and live gameplay remain separate checks.
+
+Owner playtest: compare feet/ground contact at character select and in a zone;
+check dark clothing, scenery and sky together at day/night; try Shadows Off and
+normal shadow settings. Check comfort at the retained 60 or 30 FPS cap. Report
+scene, settings and screenshot for any new colour or shadow artifacts.
+
+Regular publication retains the publisher's zero-FFXI-human gate and rollback.
+Door live retest, HP/Survival expansion-mask and destination 0x114 checks, and
+public-source publication remain held. This increment does not resume them.

@@ -1,0 +1,32 @@
+Forever.33 — distinct confirmed quest indicators (Forever Modern only)
+
+Special -> Quest Indicators retains the existing quest_giver_markers saved setting
+and default. Available quests use the original open parchment book with blue
+crystal; ready-to-turn-in quests use a rolled parchment scroll with an emerald
+seal/check. Shape and colour both differ. An NPC that has both confirmed states
+shows both side by side, in the existing visible/depth-tested nameplate layer.
+No extra clicking, movement or automatic interaction; Auto Navigation unchanged.
+
+Availability retains QST1 a and ready next-mission n/st1 support. Turn-in readiness
+requires the explicitly specified QSA1 current-zone snapshot:
+QSA1 {"z":230,"a":[17719437],"r":[17719438]}
+Both arrays are required; complete current-zone snapshots replace the old arrays.
+An empty r clears turn-in readiness. a covers available quests; existing n/st1
+mission-giver indicators remain separate. Trusted system-source checks apply.
+Only complete <=150-byte messages are supported, with bounded nonzero NPC ids.
+Unknown versions, extra fields, malformed/delta/multipart messages, and messages
+for another zone are ignored atomically. Zone/reset/refresh/feed-off clears state.
+Unknown readiness gets no icon. NPC targets, text, counts, proximity and QST1 done
+are NOT readiness evidence; done means an entry is removed.
+
+The original owner QSA1 contract reserved this feed; local server QST1 docs still
+lack a deployed authoritative turn-in implementation. Existing FFXI lead was asked
+to confirm/update its data in the existing lane. Client support does not establish
+live server coverage. Until the server emits confirmed readiness, no ready icon
+appears. No complete quest coverage or server deployment is claimed.
+
+Focused parser/readiness/clearing/source integration and menu checks; exact-binary
+startup and indicator previews, Windows Wine CLI and archive/flavour/hash evidence
+are recorded separately. No owner-device input/restart, real login, live NPC/gameplay
+or native Windows GUI test. Classic stays vana.15, existing publisher baton and .32
+rollback retained. No game data or local texture pack is distributed.

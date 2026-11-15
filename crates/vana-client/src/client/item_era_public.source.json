@@ -1,0 +1,14 @@
+{
+  "source_repo": "ffxi-platform",
+  "source_branch": "eragatesA",
+  "source_path": "server/devstack/forever-data/item_era_public.tsv",
+  "source_path_last_commit": "6abfe9e43bf1307eee5e639dc2c79fc798303b6d",
+  "source_branch_head": "57ca3e3c5837efac14d4aa4686c06be3d84f0987",
+  "source_blob": "c77aa2f39496a7b16f2c38a7514adddea3a6fda5",
+  "source_sha256": "75761984f7b30b8813bfe200506ba3782bdd8db483c44645ab23baf32a38bea6",
+  "generator": "tools/item_era_public.py (platform)",
+  "rows": 23512,
+  "sha256": "2291ba523f73ba5a301d9d873a025bcdb6a3f270b441ca492a432290bf1c8281",
+  "transform": "columns itemid, era, level, stage0 only (the name and review columns dropped: ids and tags only, names come from the player's DATs); level = max(equip_level, N of a source of scroll_level:N), so the 91 scroll hidden_level rows keep their gate; rows and order otherwise unchanged",
+  "stage": "stage 0 (RESTRICT_CONTENT on, MAX_LEVEL 60, no ENABLE_<tag>)"
+}

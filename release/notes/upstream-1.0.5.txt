@@ -1,0 +1,38 @@
+Upstream reconciliation: v1.0.5
+
+Upstream: lenonk/vana-client, master 30082fe62db126d08363ba94bc164385b13f21e5.
+Previous upstream: a2f1cfe103f778bc18e0c45724950652960b542f.
+Fork parent: 148bb658eba46e090b22d3f3fdf09c700b3bbac4.
+Both classic and forever use this merge; no fork history was reset or rebased.
+
+Preserved intentional fork behavior:
+- Separate compiled classic/forever features and runtime Forever gates.
+- Comfort defaults, first-person/numpad fixes, controller/OSK routing, mouse support,
+  staged settings, Escape menu, cursor ordering and map binding.
+- Launcher social token/scope refresh, feed-only login, server-delivered tells,
+  message-text privacy and UI chat actions in both flavours.
+- Forever era filters, Show Usable, Training, Home Points, quest helper, Crafting Log,
+  Special menu, EXP bar, Journal fixes and the explicit Records of Eminence exception.
+- Shared quality/contact shadows/sRGB fixes and optional Forever Enhanced rendering.
+
+Conflict decisions:
+- Keep rotation weapon-skill priority, MP reserves and the full uncapped candidate list;
+  combine upstream resistance/weather choices and spell-family submenus.
+- Keep the fork controller mapper as the single input producer. Combine upstream
+  camera-key sense with the separate analog camera stick; do not process a pad twice.
+- Keep native authentication denials authoritative. Report upstream loader-version
+  hints, but do not retry credentials or account commands with another loader version.
+- Retain the map socket across zoning, deferred packet stamping and stale-zone packet
+  tolerance; add upstream fixed-port allocation and old-key fallback.
+- Use separate renderer objects for Lua post-processing and built-in quality effects.
+- Preserve client settings across upstream config round trips. Invalid config backups
+  are exclusive, private and non-overwriting; failed recovery blocks saving.
+- Exclude private bridge tells from upstream's new raw-packet diagnostic cache too.
+- Client binary updates remain launcher-owned: upstream downloads have no classic/
+  forever identity and must not replace a flavour build. DAT patch safety remains.
+- Unmanaged Linux desktop copies/entries use separate flavour identities; managed
+  launcher runs do not install a second executable.
+
+Validation and publication are recorded with the integration evidence. This merge
+alone does not authorize a source push, device install, server test or channel change.
+Existing owner holds and already dispatched drops remain unchanged.

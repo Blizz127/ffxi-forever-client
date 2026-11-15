@@ -1,0 +1,18 @@
+Forever.29 — safer local texture generation
+
+Integrates Windurst support commit a4db5b1 without replacing the existing
+navigation, input, map, tracker or graphics changes.
+
+- Texture-pack generation now returns failure and names the affected file when
+  a stock DAT cannot be read or parsed, or an output directory/file cannot be
+  written. These errors previously could be silently skipped as successful.
+- The Forever zone texture exporter refuses output inside the original game
+  installation, including paths resolved through symlinks.
+- Missing replacement PNGs intentionally keep stock textures. Existing completed
+  outputs remain available for resuming; failed multi-file runs may retain earlier
+  successful outputs. Enable a local pack only after the command succeeds.
+
+This updates the generation tools, not the game's installed art. No generated
+texture, original DAT, account data or local pack is included in the release.
+Nothing is enabled or installed on the owner's device. The shared packer fix
+also applies to classic; the zone-export command remains Forever-only.

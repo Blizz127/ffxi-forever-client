@@ -1,0 +1,15 @@
+{
+  "utc": "2026-11-06T09:34:21.368619+00:00",
+  "status": "Original unbound study; no runtime replacement or publication yet",
+  "file": "woods-masonry-v1.png",
+  "sha256": "53c3f3d45a2fad5ed3c827baef5c04214ac09695e008297aa5533c4a5aa3a207",
+  "width": 887,
+  "height": 1774,
+  "source": "Built-in image_gen, text-only original generation; no game/reference image supplied",
+  "prompt_file": "woods-masonry-v1.prompt.txt",
+  "limits": [
+    "Requested512x1024; actual generated dimensions recorded above",
+    "No seamless tiling, UV band alignment or bump correctness claim before scene audit",
+    "Game-derived textures and private comparison renders excluded from source/release assets"
+  ]
+}

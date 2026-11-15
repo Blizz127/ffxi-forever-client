@@ -1,0 +1,131 @@
+Transition critical path — owner f49091abc13ad0c6, reconciled2026-11-06
+
+Owners: client root01a1a26d-7a04-7313-830c-8b5f71cc35c9; existing server/runtime
+integrator01a1a529-7771-7041-81bb-9765b9aa1141; platform transition/content owner
+Claude5cfb7582-81a5-4e73-b452-727e9dcbe7f6 at [redacted-path]
+(live native identity verified2026-11-06; coordinated directly once).
+Sole launcher publisher01a1a3c6. No new lead/tester/server writer. Texture, gear
+and cutscene QoL follow this path and do not delay it.
+
+First observed owner failure: newly created GMBlizz Bastok opening eventually
+plays after showing the character standing. Not a permanently missing scene.
+Do not reset/replay this character. Exact current native cause is unproven.
+
+Shared contract: platform docs/forever-transitions.md at4083883 (read only from
+client lane). Mandatory login scene in first0x00A; cross-zone reply0x00B; queued
+actor requests0x016; client resourceACK0x01A/0x14; choice/update0x05C; eventfinish
+0x05B; release0x052; server owns quest/save/reward/BCNM outcomes. Earlier missing
+initial event/old-zone release hypotheses are disproven by platform evidence.
+Client preserves same-zone event area/file-zone resolution and authored waits.
+
+Already shipped, do not redo:4556d54 shared CPU+GPU resource readiness in40/17,
+now45/17. Historical24 native log had ACK1.136seconds beforeGPUready; focused
+resource/event/VM checks passed. This is NOT proof the ownerflash is gone.
+Server4083883 actorreplypriority has source14/374/108 checks reported, modeled
+2.4–2.8second backlog at assumed400ms intervals; no deployment/native proof in
+current client handoff. Need actual serverkit/hash/receipt before live comparison.
+
+Next client increment a13b87c (46/18 candidate)
+Matching CPUscene installed -> load event blocks/request missing bound actors
+while staticGPUupload proceeds. GPUresource-ready remains required forVMstart,
+ACK and existingmissing-script fallback. Actors/models separately gateVMstart,
+neverACK (avoid circular wait). Existing cancellation/end/black/control guards
+remain. New script-prepared elapsed/resource-ready log + existing request,
+GPUready and actors-ready logs permit stage correlation without message contents.
+Focused checks and bothplatform builds underway, no current live claim.
+
+Reproducible acceptance matrix, same client/server/DAT/config per comparison
+A. Ordinary zone without event: load,ack,fade/control; no phantom event hold.
+B. Bastok opening234/1,235/7,236/1: first0x00A event ->CPUinstalled ->firstCHARREQ
+   ->actorreply/modelready/GPUready ->firstVM/camera ->authoredfade ->finish.
+   No visible/control-released intermediate field; measure actual draw/fade state.
+C. Windurst finish ->cross-zone ->owedscene and same-zone event-area transition;
+   preserve packet order, control/camera and no stale oldzone actors/resources.
+D. BCNM entrance32000/menu/choice ->start/spawns ->phase32004 ->win32001 ->
+   missionchain/exit. Preserve mandatory choice, mobspawn/update and scene-driven
+   exit; don't equate leaveBattlefield with teleport. Save/reward assertions from
+   server owner; client records commands and restoration, never edits outcomes.
+E. Mid-load disconnect/relog, missing/failed DAT/model/GPU, late/duplicate actors,
+   retry, scene replacement, cancel/interrupt, repeated finish/release. Report
+   failure clearly; no arbitrary success timer, unbounded hidden world, new auto
+   completion or reward duplication. Existing missing-script fallback is a legacy
+   limitation, not a newly invented safe-success contract.
+
+Evidence levels and next measurable milestone
+1. Focused offline phase-order tests: prefetch after matchingCPU and beforeGPU,
+   one request/index/retrywindow, actor-arrival/modelwait and no prematureACK/VM.
+   OwnedBastokbinding checks must actually open fixture (not skip-success).
+2. Exact builtclient startup/scene render and bothflavour checks; record manifests,
+   source and archive hashes. Useful passing increment ships via existing sole
+   publisher, Forever nohuman gate, classic freshzero-human gate; retain rollback.
+3. Authorized nativeQA capture only when currentexistingfixture/server path and
+   resource ownership established. Capture packet intervals,0x00A/CHARREQ/replies,
+   CPU/GPU,firstVM,fade/control timestamps, error/timeout and drawnframe evidence.
+   Compare same conditions before/after. No oldcanary rerun/newaccount/GM grant,
+   owner movement/reset/forcedlogout or hiddenlive server action.
+4. Ownerdevice/native Windows and completeBCNM/monster flows remain unverified
+   until actual proof. No universal flawless/completion percentage claim.
+
+Current deliveredbaseline45 (11:39:36Z) with44rollback verified11:40:13Z;
+classic17.37/38 alreadydelivered/superseded; pinnedartifacts untouched.
+
+Focused checkpoint 2026-11-06 12:03Z
+Both flavours PASS: Forever45/classic46 focused checks, zero failures. Groups:
+resource3, event20, owned-Bastok1, VM21; classic additionally settings exclusion1.
+The explicit owned-DAT check opens all three Bastok files and requests21/7/15
+bound actors respectively. Three headless45 baseline VM scripts finish with
+5240/1997/6318 simulated frames. These are script-frame counts, not load-time
+measurements; candidate exact-output comparisons await distribution completion.
+Four distribution builds and one sequential smoke watcher remain in flight.
+
+Additional source-only recovery audit, not new shipped fixes:
+- to_login replaces the World with a fresh login phase, clearing pending/live
+  events with it; existing launcher reconnect is bounded to3 attempts at10s.
+- ZoneIn resets event, pending event, screen, controls, autorun and actor state,
+  then arms login-black before queueing an owed scene. The final world render
+  multiplies screen fade with zone fade. Source evidence is not a frame capture.
+- Existing missing-script fallback sends EventEnd option0 after resource-ready.
+  Existing idle-event timeout cancels after10s. Neither is expanded by46. A safe
+  recovery redesign needs the explicit server finish/abort contract; never call
+  these universal successful scene completion or silently accelerate them.
+- A mode2 release received while only pending currently clears control but is
+  not forwarded into a VM (there is none). Whether the server can legitimately
+  send it in that phase needs contract evidence before changing semantics.
+- Current platform transition_trace_e2e contains a first-visit ShadowLord
+  mob:delStatusEffectSilent Unimplemented finding AND asserts fight entry works.
+  It is a spawn-script error, not proof of a failed transition. Existing server
+  integrator was asked to reconcile current status; no server edits/tests/live
+  claims by this client writer.
+
+Delivered2026-11-06:46 LIVE12:23:01Z,18 LIVE12:19:35Z, same pinned a13b87c.
+Independent current46+45rollback fullarchivesPASS12:24:36Z; current18+17rollback
+fullarchivesPASS12:21:31Z. All fourdist/exactLinuxrenders/WineCLI/flavour/archive
+checksPASS; allthreeBastok headlessscripts identicalto45 inbothflavours.
+No native standingflash/BCNM/failure recovery proof or serverdeployment claimed.
+See owner-20261106-release46 verification-{forever,classic}.json and publication/.
+Next measurable milestone remains same-client/server paired native stage trace,
+subject to established existingQAfixture/ownership and deployedserver identity;
+not an owner/coordinator approval gate for independent eligible client work.
+
+2026-11-06 follow-up: relay04bc88dd592fa30c/55daa0b server contract received.
+No server no-completion abort; cancel FINISH0x40000000 still invokes onEventFinish,
+and openings may advance on any finish. Do not mistake replacing option0 for a
+proved no-state-change recovery. Root retains implementation; server-specific
+outcome checks remain platform-owned. Pre-VM mode2 supported by LSB ordering,
+current Forever production sender absent per lead. Exact native cause unproven.
+Unclaimed bounded verification lane identified (not dispatched):
+owner-20261106-transition-release-matrix/LANE.txt under private build cache.
+Suggested existing idle helper special_delivery_audit, source-readonly against
+frozen16a4513; outputs only matrix/findings/testcase spec in that cache directory.
+No source/test writes, build, server/device/account/packet injection or newworker.
+Root next integration decision uses pending-release lifecycle and failed-scene
+outcome cases; native installed-kit/fixture ownership remains separate dependency.
+47LIVE13:21:14Z with46rollbackverified;37/38alreadydelivered, no repeat release.
+
+2026-11-06 fixture reconciliation: platform28af8f7 section7 acceptedclientfragment;
+5d6e78b nowcontains Windurst10002->Port305/Waters531(+UPDATE)/Woods367 harness,
+report18/0 not client-rerun/nativeproof. Clientcontract nowrecords precise cases,
+state-changing cancel, artificial0.3s timings and historical47option0 vs shipped
+48+cancel distinction. No duplicate helper. Nativeinstalledkit/disposablefixture
+resource identity remains dependency; no ownerreplay/reset/move/login or server
+change. See TRANSITION-CLIENT-CONTRACT finalsection andplatformfixtureREADME.

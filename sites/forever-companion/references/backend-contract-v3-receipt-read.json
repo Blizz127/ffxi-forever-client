@@ -1,0 +1,92 @@
+{
+  "schema_version": 3,
+  "name": "ffxi-forever-companion-backend-v3-receipt-read",
+  "status": "SOURCE CONTRACT ONLY; NOT CONNECTED OR ACTIVATED",
+  "utc": "2026-11-12T17:37:33.521307+00:00",
+  "source": "33a94fe13205915afb257e7ecc35de0ab79f5e45",
+  "companion_tree": "fdb41224e1e6236716134af868e50a341241aab0",
+  "owner_task": "0fcbfa0421bc",
+  "recipient_thread": "01a1cb97-c84c-7f12-b28c-9ce832211011",
+  "supersedes": "Only absence of dedicated operation-receipt mapping in v2. Original v1 browser mutation/Snapshot/Receipt and consumed v2 obs1 mapping retained; no original intake replay.",
+  "request": {
+    "kind": "receipt",
+    "operation_id": "11111111-1111-4111-8111-111111111111"
+  },
+  "response": {
+    "kind": "receipt",
+    "receipt": {
+      "operation_id": "11111111-1111-4111-8111-111111111111",
+      "character_id": 42,
+      "state": "running",
+      "code": "pending_reconciliation"
+    }
+  },
+  "entrypoint": "ReadService::read_receipt; generic read/read_retained explicitly refuse Receipt. Actual production service remains disabled.",
+  "existing_proposed_http_route": "GET /api/v1/operations/:id; browser still receives unwrapped existing Receipt. No new route/body/schema.",
+  "native_validation": [
+    "Only canonical lowercase UUIDv4 operation_id selector; unknown/duplicate fields, account/character/generation/outcome assertions refused.",
+    "Existing independently verified read principal and current account/character ownership; proof is opaque, no issuer/key policy introduced.",
+    "Provider returns sealed exact-subject proof only after known read transaction commit; rechecks identity/time/ownership. No current online Session or mutation capability required."
+  ],
+  "actionable_bff_scope": [
+    "Add pure wrapped Receipt mapper for existing operationReceipt route with fake transport fixtures. Do not implement/enable identity, endpoints, native provider or live connection from this packet.",
+    "Validate kind/size, exact requested operation_id, positive bounded character_id against trusted verified-owner context, existing known state and successful authoritative object result; never use browser identity as authority.",
+    "Unwrap existing Receipt. Preserve running/pending_reconciliation as nonterminal and never automatically retry/re-enqueue mutation. No original body, fresh snapshot/obs1, expected_revision or online Session prerequisite.",
+    "Missing/foreign/uncertain read stays unavailable; no synthetic failed/succeeded record, inventory/gil delta or resubmit authority. Native success receipt proves stored outcome only, not native body publication or cleared obligations."
+  ],
+  "unchanged": [
+    "v1 canonical browser mutation body and Receipt fields/states",
+    "v2 read/obs1 revisions and snapshot-key retention",
+    "all false actual capabilities/activation flags",
+    "role/control/client ownership and existing source work"
+  ],
+  "minimum_focused_cases": [
+    "Wrapped running/pending_reconciliation maps unchanged and is nonterminal.",
+    "Wrong requested operation or unowned returned character/native refusal is unavailable.",
+    "Receipt read works with fake offline owner and without snapshot/original mutation body; no auto retry."
+  ],
+  "evidence": {
+    "source_comparison": {
+      "server/crates/xi-companion/src/lib.rs": {
+        "sha256": "8fb305059f64186a532d8f3713fae63fad3a6a6265bc9c2764b59b6164e3ef2d",
+        "historical_cbd_sha256": "e774984019c02d65a3674760190be4491e0563a6df7051d09baac828aaf39471",
+        "byte_identical": false
+      },
+      "server/crates/xi-companion/src/reads.rs": {
+        "sha256": "264b972f58ac3e690c6594dab47b81ac9b00a6ee91d838554c002edb9c98779a",
+        "historical_cbd_sha256": "264b972f58ac3e690c6594dab47b81ac9b00a6ee91d838554c002edb9c98779a",
+        "byte_identical": true
+      },
+      "server/crates/xi-companion/src/reads_receipt.rs": {
+        "sha256": "3c92490886c78d9f0799210344fe02a9a013849f996f0cb672bc6df41742c481",
+        "historical_cbd_sha256": "3c92490886c78d9f0799210344fe02a9a013849f996f0cb672bc6df41742c481",
+        "byte_identical": true
+      },
+      "server/crates/xi-companion/src/queue/receipt_read.rs": {
+        "sha256": "8012b3ef37afac09e67802c343bb666b1e6dc24defd585800163e7198c79b19e",
+        "historical_cbd_sha256": "8012b3ef37afac09e67802c343bb666b1e6dc24defd585800163e7198c79b19e",
+        "byte_identical": true
+      },
+      "docs/companion-owner-receipt-read.md": {
+        "sha256": "4a0ff58399ec54dc64a23244123c698052a6bb175a9d0fad8b03d6998977ea75",
+        "historical_cbd_sha256": "4a0ff58399ec54dc64a23244123c698052a6bb175a9d0fad8b03d6998977ea75",
+        "byte_identical": true
+      }
+    },
+    "historical_core4": {
+      "source": "cbd7146ae32c15cbab7a5f4d7c3bf0722762618d",
+      "receipt_sha256": "18f54c15707822cfbbcd36578c0bb382c37d29de12de3d0cafa77deb4ae96824",
+      "original_session": 47223,
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "scope": "Historical default-feature core/read-boundary fake identity/realm/store/transaction tests. No current33a full-source test transfer, liveSQL, transport, authentication or retail claim."
+    },
+    "current_source_reconciliation_sha256": "2413e05ba4162618914b3e4475260aade131f87d12b02dad8b0183d86f5fb7ec",
+    "new_checks_run_for_this_packet": false
+  },
+  "holds": "Actual /fb readiness precedes companion activation. Preserve current identity/key/permission/trust, schema/provider/listener/pump/offline-lease, source/era/device/player and owner holds. No installation, restart, credentials or public release. Existing native owner and companion file ownership retained."
+}

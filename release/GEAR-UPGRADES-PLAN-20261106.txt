@@ -1,0 +1,116 @@
+Forever gear upgrades / Equip Best — owner e91bf0d5645f2ddf
+Recorded and reconciled 2026-11-06; implementation backlog, NOT shipped.
+
+Sequence and current delivery baseline
+- Urgent map/navigation controls and markers are in prior increments; actual
+  owner route/feed evidence and held live door/HP checks remain unresolved.
+- Early visible Windurst masonry is in43; Home Point preview44 is LIVE
+  2026-11-06T10:58:28Z. Independent44current/43rollback full package readbacks
+  passed11:00:38Z. Classic17 remains unchanged.
+- This is the next new Forever gameplay-convenience lane, after any fresh
+  urgent playable navigation regression. Reuse the existing sole client
+  writer and launcher publisher. No duplicate gear lane exists in this repo.
+
+Delivery increments
+1. Pure, testable comparison + UI upgrade arrows and explanation. First useful
+   visible increment; show comparable/tradeoff/unknown distinctly. Inventory
+   and equipment lists use identical comparison results. No item mutation.
+2. Main-inventory Equip Best: build and display an explicit change plan,
+   include before/after items and reasons/skips, then Apply/Cancel. Revalidate
+   eligibility, inventory identity and slot conflicts immediately before each
+   request. Wait for authoritative equip updates; handle rejection/timeout,
+   repeat clicks and manual changes without toggling gear off or losing focus.
+3. Optional auto-equip-new-upgrade only if the same state machine supports it
+   cleanly. Explicit opt-in, off by default, no silent migration/enabling;
+   uncertain gear and intentional/manual equipment decisions stay untouched.
+   Do not add a misleading setting before this behavior is supported.
+
+Evidence from current code / owned retail data
+- dat/items.rs::Item carries kind, level, jobs, races, slots, superior_level,
+  skill, damage, delay, shield_size and description. Most armor/stat bonuses
+  are NOT normalized numeric fields yet. Do not guess extra offsets or use
+  level/dps as a universal score.
+- equipwin::candidates uses shop::can_wear (job/race/level/Superior/encumbrance
+  and ready status) and sorts by level/name. This is eligibility/list ordering,
+  not upgrade logic. Current candidates span many bags; new bulk action must
+  restrict to currently valid main-inventory items, never move other bags.
+- try_equip sends0x050, but selecting an already worn inventory address sends
+  index0 to unequip. Bulk retries MUST NOT call that toggle blindly.
+- Existing Pending handles a bag transfer only, with5-second timeout. It is
+  not an equipment-command acknowledgement queue.
+- net.rs decodes server0x050 into NetEvent::Equip; mod.rs applies set_equip.
+  This is the authoritative acknowledgement seam. Do not optimistically change
+  inventory/equipment state or treat command-send success as server acceptance.
+- Existing sub-hand check uses a job list and main weapon skill; it is not
+  sufficient evidence of all level-dependent Dual Wield traits or later-job
+  effects. Verify actual retail trait/state data before automatic hand changes.
+- Exact44 Linux binary item-dump, network disabled/read-only owned DAT fixture:
+  Bronze Sword6damage/231delay/skill3 versus Iron Sword14/231/skill3, differing
+  level requirements; body/leg examples expose DEF only in description text.
+  This validates available fields, NOT an implemented gear ranking or UI test.
+  Private samples: owner-20261106-gear-upgrades/owned-item-samples.txt in cache.
+
+Comparison contract
+- No universal item-level assumption or opaque weighted "best" claim. Maintain
+  manual job/weapon-skill/role intent; explain exact comparable stat changes.
+- Prefer conservative dominance within an established comparable class. Missing
+  fields, unparsed/special/conditional/latent effects, augment/extdata differences,
+  changed weapon skill or damage/delay/TP tradeoffs remain review/unknown unless
+  their semantics are actually modeled. Do not turn a partially parsed item
+  description into a guaranteed upgrade.
+- Job/level/race/slot and all known equip restrictions first. Preserve weapon
+  skill choice; main/offhand, two-hand/hand-to-hand, shield, ranged/ammo coupling,
+  paired ear/ring and multi-slot/unique restrictions require whole-plan checks.
+- Unknown restrictions or incomplete inventory/status data fail closed for
+  automation, while manual equipment controls remain available.
+- Deduplicate physical item instances, not merely item IDs. Preserve extdata,
+  equipment sets, current selection, bag contents and manual placements.
+
+Command / recovery contract
+- Preview is non-mutating. Apply revalidates the snapshot and intent; stale
+  plans are invalidated. Only0x050-equivalent equip operations are in scope.
+- One outstanding command; compare acknowledgement against requested physical
+  item/slot and reject stale/reused inventory indices. Already satisfied is a
+  no-op. Repeated Apply cannot become an unequip or duplicate batch.
+- A server refusal, missing ack, manual change, job/zone/state change or changed
+  inventory stops the remainder and reports confirmed partial results. No
+  automatic retry loops or speculative restoration.
+- Any Restore Previous action must be separately explicit, revalidated and
+  server-acknowledged; never invent items, overwrite saved sets or assume rollback
+  succeeded. Item loss is never an acceptable equipment recovery mechanism.
+- Never sell/discard/consume/purchase, move bags, or edit character/save state
+  to make a recommendation or application possible.
+
+Focused evidence gates (not run yet for the feature)
+- Pure tests: melee/caster/tank/support tradeoffs, unusable higher-level/job
+  gear, same/different weapon skill, delay/TP, unknown modifiers/augments,
+  main/offhand/Dual Wield/two-hand/shield/ranged/ammo, duplicate physical items,
+  paired/unique/multi-slot conflicts and intentional manual choices.
+- Command tests: stale plans, server ack/refusal/timeout, repeated clicks,
+  manual override, partial application and explicitly requested restoration.
+- Actual client offline synthetic inventory UI: arrows/reasons, reviewed change
+  list, Apply/Cancel, empty/incomplete/no-upgrade inventory and preserved focus.
+  No owner-device/account movement/equipment test or new server action implied.
+- Focused Forever/classic exclusion/build/startup and changed-feature smoke;
+  eligible small private increment handed once to existing publisher, then
+  activation receipt + current/rollback package readback. A unit test, commit or
+  queued package is not live. No full suite or routine coordinator sign-off.
+
+Ownership and holds
+Root remains sole source writer. Reuse existing retail item/equip data and
+server protocol; ask existing FFXI lead only for concrete missing contract
+metadata, no duplicate server worker or live intervention. Forever feature
+requires compiled Forever + w.forever/modern gating. Classic behavior/settings
+remain unchanged except separately justified generic fixes. Retain all active
+player/device, source/public push, server, access, data and release holds.
+No schema/access/spending/public-release authorization is added.
+
+Follow-up while pinned gil45 builds: pure gear_compare.rs core added, not wired
+into Cargo/client/UI/commands and not included in45.7standalone rustc testsPASS
+for eligibility, level!=quality, stat loss tradeoffs, explicit role, enmity,
+unknown/multi-slot review and weapon skill/delay review. Facts adapter/parser,
+complete role coverage/whole-plan conflict rules, UI, authoritative equip queue
+and optional automation still outstanding. This is not a shipped gear feature.
+Evidence owner-20261106-gear-upgrades/compare-core-verification.json.
+
+Strict plain-description parser now rejects unknown/conditional/percentage/duplicate text as a whole and verifies weapon DMG/Delay against structured fields. 10 standalone checks pass. Parser alone does not establish complete instance/augment facts. Still unwired, no UI/actions, outside pinned45.

@@ -1,0 +1,31 @@
+Forever.36 — stop misleading quest guidance through walls (Forever only)
+
+The selected quest/mission arrow now needs a clear local approach in the loaded
+collision model. Before showing it, the client checks the whole approach, up to
+64 yalms, for floor continuity, walls/closed doors and zone boundaries. It stops
+short for manual interaction. Longer or blocked/unknown approaches show an
+explicit manual-navigation reason without a directional arrow. Objective map
+numbers remain location markers, not routes. Personal pins remain bearings only.
+
+Auto Navigation also rechecks the complete approach immediately before starting;
+its existing live short-corridor, manual-input and timeout stops remain. The
+checks never open doors, cross zone triggers, move the physics body during probing,
+start movement automatically, or write player settings/layouts. Geometry probes
+are bounded and refreshed at most four times per second. They are local collision
+checks, not a full pathfinder or proof of server-side door/access permission.
+
+For The Horutoto Ruins Experiment step 2 / Magical Gizmo gate only, guidance names
+the East Sarutabaruta entrance. From another Inner Horutoto map section it asks
+the player to leave and re-enter from East, instead of pointing through the wall.
+A missing section is reported unknown. It does not globally route every Inner
+Horutoto objective east. This follows local mission/zoneline and private installed
+DAT evidence; the screenshot's map3/I-8 matches the western section, while this
+gate is on map1. The owner's exact coordinates/live door state were not captured.
+
+This is a safe navigation increment, not an end-to-end route planner. Curved routes,
+long-distance travel, stairs and doors may require manual navigation. The separate
+Start/Stop panel and persistent enable option remain queued. No owner device,
+real account, live gameplay or native Windows GUI test. Offline focused collision,
+closed/open/closed door, floor, section and UI/startup checks are recorded with the
+release. Regular remains vana.15; rollback is Forever.35. Existing sole publisher,
+private owner-native route, server/source/device holds remain. No game data ships.

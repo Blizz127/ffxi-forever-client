@@ -1,0 +1,19 @@
+Forever.31 — recover mouse capture when the map opens
+
+Fixed a native cursor-release failure in the shared input path. Redraw temporarily
+holds Gfx outside App; opening a map during camera drag could clear the old capture
+flag while skipping the OS ungrab because App.gfx was absent. Later recovery saw
+no flag, leaving the pointer confined and camera motion stopped.
+
+Camera capture now retains the actual native window until successful release,
+independent of redraw ownership. A failed native release keeps its handle for
+retry and suppresses further camera motion. Escape and focus changes can also
+release an orphaned native grab even without old capture bookkeeping. A gesture
+interrupted by a map stays blocked until its buttons are released; a fresh press
+then starts camera movement normally. Map panning, M typing/binding suppression,
+waypoints and user settings are preserved.
+
+Shared fix for classic and Forever. The .30 layout/50%-arrow defaults remain in
+Forever. No owner-device input, forced restart, account/login or server change.
+Local checks do not establish the exact owner-device trigger or native Windows
+playtest; those remain owner verification after the release is available.

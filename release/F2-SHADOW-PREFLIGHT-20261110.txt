@@ -1,0 +1,58 @@
+Read-only F2 preflight while private82/F1 compiles; no F2 implementation or dispatch.
+
+Inspected sources: FFXI F1 5c8c7871, shared preset donor52c1cdde at
+[redacted-path], Vanilla V1 d4586159 at
+[redacted-path], WotLK W1 a36e7b37 at
+[redacted-path]
+No shared shadow module or completed V2/W2 extraction found in these sources.
+This is not proof that every lane queue is empty; retain existing integrators.
+
+Candidate boundary: FFXI render/forever_sun.rs soft_params() and snapped ortho
+matrix math in params() through arrays; shadow-only soft PCF/per-cascade lookup/
+edge blend helpers from sunshadow.wgsl. Keep host camera/uniform packing,
+cascade policy/allocation/fallback, caster selection, bindings and scheduling.
+Do not move the whole sunshadow.wgsl (sky/cloud/material/culling also live there).
+FFXI radii24/72/200, forward depth and light-space snapping differ from WoW's
+dynamic20 and40/160/640 bands, reversed depth, snapping and bias/composition.
+Preserve host policy, parameterize reusable math instead of changing the look.
+
+Concrete source restriction: the shared LIGHTING_PORT_PLAN forbids captured
+tables. WoW wow_shadow.wgsl PCF_TAPS explicitly cites recovered offsets from
+0x8742e0. Do not copy that table into shared core. Prefer eligible FFXI-authored
+helpers/math; no authority to reinterpret the source restriction. This does
+not affect F1, which contains no shadow extraction or captured WoW table.
+No build/test/release or new permission/owner decision requested by this note.
+
+F2 IMPLEMENTED (source + preview only) — 2026-11-10 ~05:20Z
+
+Relay 92385d8e8f55 (owner goal: lighting F1-F5 by 11:59 PM CST Nov 10) moves F2 from
+preflight to work. Source ce2d07039610f32e4f9cb205e4240cabf664114d, branch
+private/lighting-f2-20261110, [redacted-path], base frozen84.
+forever-gfx-core gains src/shadow.rs (soft_params, snapped_light, array API),
+shaders/sun_soft_cascade.wgsl (SOFT_TAPS, sun_visibility_soft, cascade_vis,
+sun_visibility_cascaded) and SHADOW-API.txt. Client keeps uniform packing, bindings,
+radii/sizes/fallbacks, culling, sky and depth passes (sunshadow_head/tail.wgsl) and
+reassembles the shader byte-for-byte: pin 8f7c9e56 unchanged. No WoW PCF table.
+Core 14/0; client render::forever_sun + shader_pins 11/0 on lavapipe. One new core
+test was first too strict (depth is not snapped); test corrected, failed log kept.
+Preview binary e23a9d45: gate-inside and woods-near renders byte-identical to the
+pre-F2 binary. NOT run: Classic check, dist builds, Windows, hardware, gameplay.
+No .85 dist/package/intake for F2 alone (no visible change; .84 awaits QA). It rides
+in the next numbered private build; run the Classic check then. No shared source kit
+sent to the Vanilla/WotLK integrators yet. F3-F5 scope and the /fb contract were
+requested from the coordinator once. Evidence:
+[redacted-path]
+
+F3 IMPLEMENTED (source only) — 2026-11-10 ~06:25Z
+
+F3-F5 are not defined anywhere on disk; the lead proposed F3 = ambient occlusion,
+F4 = fog, F5 = FFXI adoption of the shared sun/ambient grading to the coordinator
+(task 92385d8e8f55) and proceeds unless told otherwise.
+F3 source 2a64a69cc08a3b1accbd651ef8f5e2956811b43b on private/lighting-f3-20261110,
+[redacted-path], based on frozen85 4f1c87f3 (so it carries
+F2, /fb forwarding and the Woods architecture art). forever-gfx-core gains src/ao.rs
+(params bounds), shaders/post_ao.wgsl (TAPS, ao_fs, blur, blur_h_fs, blur_v_fs) and
+AO-API.txt. postdepth.rs keeps SHADER_HEAD/SHADER_TAIL and reassembles byte-for-byte:
+pin e4c32d35 unchanged. Core 16/0; client render::postdepth + shader_pins + ssao
+12/0 on lavapipe. NOT run: scene render comparison, Classic check, dist build. Not in
+any numbered build yet. Evidence [redacted-path]

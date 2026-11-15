@@ -1,0 +1,24 @@
+Scene actor prefetch — Forever46 / classic18 candidate
+
+A pending event can request its missing bound actors once the matching CPU scene
+is installed, while static textures are still uploading. Previously these requests
+started only after the GPU upload, making two independent waits sequential.
+No event VM execution, resource-ready ACK or missing-script fallback moves before
+full resource readiness. Actor-model readiness still gates VM start; ACK never
+waits for actors. Existing bounded request retry/dedup, black/fades, cancel/end,
+control restoration and server reward/state semantics are retained.
+
+Generic load-quality fix for both flavours. No preferences changed or enabled,
+no new scene-completion packet or authored simulation speed change. No universal
+standing-flash/BCNM fix claimed. Historical premature resource ACK fixed in40/17
+remains separate. Platform4083883 CHARREQ priority is a separate server change;
+its modeled2.4–2.8s backlog and tests are not native timings or deployment proof.
+
+Required focused evidence: CPU/GPU gate separation, missing/duplicate/arriving
+actors and retry/replaced-event ownership; owned Bastok opening bindings; existing
+black/cancel/event/VM/resource regressions, both flavours, both platform builds,
+exact binary isolated startup/scene smoke. Native firstCHARREQ/reply/GPU/fade/
+control stage capture and exact owner scene remain unrun, subject to existing
+safe fixture/device/server constraints. No owner movement/reset/replay or reward
+mutation. Preserve sole publisher and actual classic zero-human gate; Forever
+client publishing has no human gate. Retain current client rollback packages.

@@ -1,0 +1,13 @@
+{
+  "source": "the Forever server's pinned LSB reference tree (r3), read only; the one the platform's era-gates analysis pins",
+  "files": {
+    "abilities.sql": "b668edd1499515b69b190f9a4ad7860e2ee68050c1ee90626cc3ded13fdef120",
+    "weapon_skills.sql": "2a2876d1ec256fe0a13d7503fdf3a57c643575f1caee8bc58d7b6f22b2ac2e5a"
+  },
+  "rows": {
+    "ja": 601,
+    "ws": 189
+  },
+  "transform": "ja rows: abilityId, job (1..22, 0 other), level, content_tag (NULL -> BASE) for every ability with a job or a tag; ws rows: weaponskillid and the bit mask (bit job-1) of the nonzero bytes of the `jobs` binary(22) for every skill with a nonzero mask. Ids only, no names. Client ability id = 0x200 + abilityId for job abilities and pet commands; weapon skill id as is (verified by the ignored owned-DAT test ability_era::...).",
+  "assumptions": "level is an assumption (LSB's learn level may differ from the 2002 retail one); the ws `jobs` bytes are read only as 'some byte set' per job"
+}

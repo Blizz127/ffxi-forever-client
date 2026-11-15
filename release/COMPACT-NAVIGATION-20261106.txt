@@ -1,0 +1,118 @@
+Owner request fc549c6bbfdb7466 — compact navigation and cross-zone personal pin
+
+Confirmed .50 source7780129: Auto prioritizes any personal pin over selected
+objective. Pin in another zone always yields no point; matches coordinator's
+inspected screenshot: Personal waypoint in Windurst Walls / No local bearing.
+Current area/step not visible; do not conflate this with either Inner Horutoto
+or Heavens Tower report. Owner process .50 is host evidence, not our device read.
+Mode selection only, NOT a resolution: Objective selects the tracked quest
+without clearing the pin or starting movement. Owner now explicitly confirms
+the failure persists in both modes; do not ask them to repeat mode switching.
+
+Library ref libfile_226f0805c27481918e3e5d7843d66f96, image(20261106-190030).png:
+No Library skill/files/materialization tools are exposed in this native session;
+local skill search also found none. Image not retrieved or inspected here.
+Implement from explicit requested behavior and coordinator's pixel observations;
+do not fabricate URL or cloud/devbox path, or claim owner screenshot comparison.
+
+Planned .54 production353446b (frozen checkout forever-client-compact54-20261106):
+- Default220-point-wide HUD: arrow, local horizontal distance, one-line destination
+  with full hover text. Details/controls collapsed by default; expands explanation,
+  Auto/Objective/Pin, Hide/Clear pin and guarded Start. Stop remains visible while
+  running; manual input still cancels. Saved placement/size/arrow scale retained.
+- Auto selects tracked objective before pin; explicit Pin preserved, neither pin
+  nor per-character saved navigation mode deleted. Existing Show Navigation Arrow
+  restore controls remain unchanged. No schema migration or gameplay commands.
+- Remote pins show known current-zone exit/portal location toward destination.
+  Missing route/data/page or mismatched section gives honest unavailability;
+  known exits are bearings, not route geometry or walking permission. Personal
+  pins never authorize auto-walk. Same-zone pin must match current map page.
+  Tower portal remains manual; no event/warp/start sent.
+- Routes may load offline while only personal-pin guidance is enabled. This does
+  not subscribe to quest feeds or run collision probes for a pin-only tracker.
+- Classic UI/settings unchanged; shared qtrack helpers require classic compile.
+
+Focused plan: source arbitration incl explicit Pin/hidden modes, compact bounds
+and expand interaction, Start/Stop safeguards, known exit vs remote coordinates,
+missing routes/page mismatch/loading/unknown states, actual private Woods DAT
+exit toward Walls. No owner/network/native Windows test. Exact final Linux render
+and startup, Windows WineCLI, packages/hash/flavour gates before sole handoff.
+
+Existing .51/.52/.53 pins/drops/handoffs immutable. Current publication must be
+reconciled by same verified publisher; do not resend prior artifacts or assume
+predecessor version. .54 may supersede pending earlier builds but cannot be
+called live until publisher receipt/current+actualrollback readback. No device,
+player/server/GM/access action or source-derived DAT/art distribution.
+
+Focused final pin f4091f9:38PASS/0FAIL, one explicit privateDAT check. Woods
+page0 -> Walls exit(-60.724518,-7.1841636,91.983376) matches current map page.
+Compact bounds under135 high at default scale and details click passed; source
+selection and existing Start/Stop/restore/input guards passed. Classic exact pin
+cargo checkPASS. Initial test compile API error retained and fixed, no runtime
+change between353446b andf4091f9. Production builds/final renders still pending.
+Channel-only read19:14:04Z still50/2112ac15; no54live/owner-test claim.
+
+2026-11-06T19:37:26.391707+00:00: final dist/startup/render/Wine/package/hash/flavour checksPASS.
+Inspected navigation2 unknown,4 visibleStop,6 portal56yalms,7 Woods exit229yalms
+and login. Compact row has no long description/disabled Start; Details small
+and discoverable. Exact screenshots/evidence in release54 cache.
+DROP 54221885047884cdfaeca520da1f79747bb689fcf19d2150cd1b08648a510bc0; [redacted-path]
+Handed ONCE via verifiedexistingnativepublisher; no acknowledgement/live claim.
+
+Post-handoff channel-only read2026-11-06T19:37:48.782945Z still50,
+SHA2112ac15f2f62b768c4550c7aaad08bab26599152d078be8eebaca56a6d1b425.
+No51/52/53/54receipt. Remaining delivery dependency is execution/receipt by
+existing sole publisher; no local build/test/package gate remains and no
+repeat dispatch or publisher takeover. Not a live54 fix or owner-install claim.
+
+Owner clarification5c3e4f342574c24b — failure in BOTH modes
+The pin screenshot establishes one displayed target, not a sole root cause.
+Exact50source7780129 independently contains these display defects:
+1 remote pin_point is None irrespective of known local exit;
+2 Objective HUD uses Clear-only walking marker, suppressing direction for
+  Far/Blocked/Floor/Boundary/Unknown even when an exit position is known;
+3 step2 Horutoto entrance hint returns unavailable before route lookup;
+4 ordinary zone graph has no scripted Tower portal edge.
+No claim of the exact current owner stage/position or which condition fired.
+.54 already includes52/53 corrections to2–4 and54 remote-pin correction1, plus
+compact default. Auto objective-first is a usability choice, not the root fix.
+
+Targeted offline reconciliation uses EXISTING hash-verified50 and54 test
+executables: three50 checks confirm its old suppression/hint behavior;54
+privateDAT mission route check passes for Port/Woods/West/East/westernInner
+and separateTowerportal/Walls chain. Personal-pin privateDAT check and both
+exact54 rendered cases reused from completed54 evidence, not repeated.
+Supplement: owner-20261106-both-modes-reconciliation/result.json/targeted.log.
+Initial glibc runtime mismatch ran zero tests; retained, corrected with host
+loader in network-none container. No new worker/build/package/publication,
+player movement/replay/reset, forced restart or native/login claim. .54 once-only
+handoff unchanged. Unknown section/door/floor/trigger remains guarded; a bearing
+is not a traversable route. Exact owner acceptance still unverified.
+
+Publisher routing correction — 2026-11-06 19:47 UTC
+The sole authorized publisher is Codex thread 01a1a3c6-1c89-73c1-912a-eb8ea8b64ed4.
+Launcher Claude e7946e5e-3bb9-41e4-97d4-5e447bcb07f6 is NOT the publisher.
+Earlier .53/.54 native inbox sends there were misroutes, not publisher handoffs;
+those historical receipts are retained, but any earlier publisher identity claim
+is superseded by this correction. Do not rerun the old handoff.py scripts.
+Independent read-only queue audit found .51/.52 present and .53/.54 absent.
+After checking unchanged DROP hashes and completed verification, queued once:
+.53: 01a1b266-afe6-73a1-be0b-c5ff00e5e6f2 (order31)
+.54: 01a1b266-b0f3-7570-98d3-3c19189b020e (order32)
+All preexisting queue entries and order/payloads verified unchanged afterward.
+No --resume, daemon, new publisher, deployment, device or player action.
+QUEUED IS NOT PUBLISHED. Publisher unloaded/occupied-host continuation remains
+unresolved. Last channel observation 19:42:39Z was .50; no .53/.54 receipt found.
+Publisher must reconcile current feed and predecessor rollback before activation.
+Evidence: [redacted-path]
+
+Current delivery status — 2026-11-07 03:29 UTC
+Cumulative 1.0.7-forever.54 is LIVE owner-native, activated03:23:39Z.
+Independent channel read03:29:00.124856Z confirms .54/sourcef4091f9 and SHA256
+55c2b8d36d625db35f320d3069d51e3072a4a77eb79a9cbd8d3864a8532e189a.
+Publisher receipt [redacted-path]
+records both full package readbacks, actual .50 rollback channel/full packages,
+and synthetic .50-to-.54 offers PASS. No device restart/install/gameplay claim.
+Owner canceled standalone .51; .54 includes .51-.53. Do not replay .51/.52/.53,
+downgrade, republish .54 or alter queued history. Prior continuation blocker is
+resolved for this release. Existing sole publisher and all other holds remain.

@@ -1,0 +1,22 @@
+Forever 1.0.7-forever.44 — Home Point destination preview
+
+Forever's existing retail destination menu now shows a known destination map
+without waiting for separate teleport registration bits. Zone, map page and
+marker coordinates come from the player's own retail DATs. While registration
+is unknown, only the selected destination is drawn with an explicit unknown
+registration label. Late registration updates refresh the markers.
+
+Changing to an unresolved or invalid destination hides the previous map.
+Changing zone/page hides the old preview before reopening the exact new page.
+The selected marker remains visible even in a crowded point list. Existing map
+ownership, menu selection, confirmation, cancellation and server-authoritative
+teleport logic remain in place. Classic/regular-server behavior is unchanged.
+
+This addresses a reproducible offline dependency and stale-preview behavior;
+the owner's actual missing-preview trigger is not established. Live HP/Survival
+expansion-mask and 0x114 holds remain. No live teleport, account login, owner
+device/session restart or server change is part of this release. Unknown or
+unowned map data is not guessed. Offline fixture evidence is recorded separately.
+
+Includes .43's opt-in Woods masonry preview and prior navigation/map fixes.
+Rollback: .43, retained through the existing sole private launcher publisher.

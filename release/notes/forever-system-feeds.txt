@@ -1,0 +1,14 @@
+Forever hidden feeds: recipient-stamped system packets
+
+The .24 live QA login showed HPM1 JSON in chat. Both LSB and the Rust map's
+printToPlayer packet builder substitute the recipient's character name for an
+empty sender. The client incorrectly required the wire sender to be empty.
+
+Training (FVT), Home Points (HPM), and quest tracking (QST/QSA) now recognize
+system-kind 6 packets with either an empty sender or the current character's
+name. Existing version, validation, enablement and Forever gates remain.
+Other players' names, ordinary chat/tells, and regular servers pass through.
+
+This is queued source after Forever.24. The single authorized .24 live QA run
+proved login, character selection, zone-in and clean server logout, and exposed
+the bug. It did not test this fix; no second live run was performed.

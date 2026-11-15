@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "kind": "additive-retained-read-mapping-amendment",
+  "task": "0fcbfa0421bc",
+  "created_utc": "2026-11-12T00:31:51.714602+00:00",
+  "supersedes": "Only backend-v1 read revision-family assumptions. Original1074 operations/Snapshot/Receipt and eff6 wrappers/field mappings remain; no source replay.",
+  "native_source": "3a3b16b413fbb91f5ebf45b8f7c26c7272feb041",
+  "native_retained_test_source": "d730c84da65a70524af9b6d26a9c4dd9ceca8f64",
+  "native_evidence": "The retained-read source files are identical. Two exact retained-read cases passed within native48; this is not a full3a build/test or real SQL/retail claim.",
+  "revision_families": {
+    "read": {
+      "form": "read:<incarnation_u64>:<generation_u32>:<observation_u64>",
+      "semantics": "Advisory read observation; preserve existing view-only behavior."
+    },
+    "obs1": {
+      "form": "obs1:<incarnation_u64>:<retained_store_lifetime_u64>:<sequence_u64>",
+      "semantics": "Server-retained projected-state lookup key; not authentication, permission, durable identity, complete CAS, or proof of execution readiness."
+    }
+  },
+  "validation": "Each component is positive canonical decimal without signs/leading zero; enforce u64/u32 bounds with BigInt/string-safe comparisons, preserve exact string, reject malformed/overflow/unknown families. Do not rewrite between families.",
+  "unchanged_fields": "All response wrappers and snapshot/catalog/session/market fields remain unchanged. This amendment only extends snapshot/catalog revision acceptance.",
+  "operation_use": "Independent verified BFF capabilities remain separately controlled and currently disabled. A valid obs1 string cannot enable craft/bid or bypass native retained lookup, revocation/expiry, owner/generation and exact-state/native-engine checks.",
+  "snapshot_catalog": "Separate reads get different keys. Browser expected_revision must use its cached snapshot key; never silently substitute a catalog key. Each native retained read captures the paired projection internally.",
+  "expiry": "Retained expiry is internal and absent from serialized response. Retention TTL is configurable1..120s; browser30s freshness is not authority. Do not manufacture expiry from observed_at. No new expiry field in this amendment.",
+  "requested_companion_change": "In owned BFF mapper, accept both exact families with correct bounds, add focused mapper/fake-transport vectors; preserve read-only capability flags and UI/runtime inactivity. No auth/credential/permission/listener/deploy changes.",
+  "source_only": true,
+  "installation": "No change to owner-approved rc70/2051 install. Companion activation still follows real /fb readiness and identity/schema/device/source/era gates.",
+  "actual_retail_login_gameplay": "NOT RUN"
+}

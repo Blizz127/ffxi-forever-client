@@ -1,0 +1,16 @@
+Forever quest tracker: guidance between nation missions
+
+Support the server's QST1 k:"n" entry for the next nation mission. The tracker
+labels it "Next mission", uses the installed mission name, and shows the server's
+availability or rank-crystal instruction without calling it an accepted mission
+step. The same numbered map marker and minimap guidance follow its supplied NPC.
+
+Split rank-points text is joined before replacing the visible objective. A new
+next-mission ID replaces the old one for that nation; done removes only the exact
+kind/log/id, leaving a newly accepted mission with the same ID intact. Explicit
+selection and hidden-objective choices keep priority. Without an explicit choice,
+the current nation's accepted mission takes priority, then its next mission.
+
+This does not calculate eligibility, grant progress, or invent targets. Guidance
+requires a server that sends the new entry. All code remains Forever-only behind
+the existing tracker setting and Modern UI gates; classic is unchanged.

@@ -1,0 +1,22 @@
+Forever1.0.7-forever.45 — inventory gil display
+
+Modern Items now shows Gil above the inventory controls and search results,
+with thousands separators. Uses only server-reported main-inventory slot0
+quantities from the existing item/count updates; no balance calculation,
+transaction, equipment change, bag move or saved-setting change.
+
+Loading/zoning shows Loading. A settled inventory without a gil report says
+Not reported, rather than inventing zero. An explicit zero update displays0.
+Each later server balance update refreshes the next rendered frame. Existing
+disconnect handling closes World/inventory and shows the login error; a new
+session/zone starts with no retained balance report. No stale disconnected
+inventory balance is kept on screen.
+
+Display bookkeeping is separate from the existing transaction/legacy gil helper;
+classic behavior remains unchanged. Forever compiled+server gate, Modern only.
+Gear-upgrade/Equip Best request remains separately recorded; not included here.
+
+Focused synthetic update/format/reset checks and actual offline client renders
+are recorded with the release evidence. No real purchase/sale/reward/trade,
+owner-device input, gameplay or server change is claimed. Rollback44 remains
+with the existing sole private launcher publisher. Prior project holds remain.

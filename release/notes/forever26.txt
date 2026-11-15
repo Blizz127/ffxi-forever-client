@@ -1,0 +1,22 @@
+Forever.26 — circular minimap and waypoint controls
+
+- The Forever Modern minimap is circular, north up and centered on the player.
+  Existing zoom, saved placement/size, fold controls and Wide Scan selection
+  remain. Map coordinates and the large M map are unchanged.
+- Right-click inside the minimap to place or replace the same waypoint used by
+  the main map. Clear waypoint removes it from both. Blank corners, missing map
+  data, disabled waypoints and Wide Scan range selection cannot place a pin.
+- Quest and waypoint edge pointers follow the circular rim. A separate cyan
+  diamond on the compass points toward a waypoint in the current zone without
+  replacing Wide Scan or call-for-help tracking.
+- A different-zone pin remains saved for the session, labeled with its zone,
+  but shows no invented cross-zone compass route. Minimap pins are page-specific;
+  the compass gives a horizontal same-zone bearing, not floor/path navigation.
+- Includes the queued Forever.25 changes: map-settings frame fit, L tracker
+  shortcut, active objective defaults, hidden recipient-stamped system feeds,
+  next-mission guidance and the optional locally generated Windurst texture pilot.
+
+Forever Modern UI only. Plain minimap geometry, regular FFXI and all saved map
+settings remain unchanged. No game data is included. No live .26, owner-device,
+native Windows GUI or hardware-performance check is claimed. Existing server,
+device, source and actual owner-only delivery holds remain in effect.

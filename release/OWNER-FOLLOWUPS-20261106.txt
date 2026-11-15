@@ -1,0 +1,46 @@
+Queued owner follow-ups received during pinned47 builds (2026-11-06)
+47 source16a4513 remains frozen: account-creation UI only; do not mix these into it.
+8d61d91f864c6e75: per-character UI isolation. Source confirms Hide writes map_prefs
+navigation0 then modern/mod.rs copies whole map prefs to global cfg.forever_map;
+next World reloads it. quest_tracker and auto_navigation also save globally.
+This explains cross-character preference leakage in source, not a current device
+reproduction. Modern layouts keyed by name also need inventory. Next focused UI
+increment: stable connection realm + authenticated account ID + server char ID,
+non-destructive migration, no load/apply/write before identity; sibling/relog/restart
+fixtures, preserve device globals. No account IDs/save records changed here.
+f39d8297ce6da423 /57cc8c7126c595be /b9eb1eb88295c7a3: graphics next demonstration
+is coherent Heavens Tower floor/wall coverage, superseding Woods as next target.
+Current preview has Forever+Enhanced+environment_textures+zone242 and exact
+model/key/aspect binding. Need matched released-binary renders, binding/status,
+software performance limits and discoverable enablement; no owner session action.
+Correction7ba78c8e551f3807: platform withdrew the missing zone-in weather diagnosis.
+Livev3.47 already patches real weather into0x00A; no normal-case missing packet
+defect established. Source1991167 cleanup is in sealedv3.62, not native visual
+proof or reason to promise earlier weather. Actual zone/roll/static-city rules,
+DAT effects and client rendering remain to diagnose with weather_sweep; do not
+duplicate platform's server writer or manipulate the active owner's weather.
+Navigation Show/restore discoverability couples to per-character UI fix.
+ERA1/GM authority remains held; weather/Tower requests do not lift provisioning.
+Runtime smooth transitions and pre-Zilart acceptance remain critical path. New
+followups may prepare offline while47builds without modifying its pinned source.
+
+825cd173fe0edaa2 GM/era clarification: server-authorized GM CHARACTER should see
+all implemented available eras; ordinary siblings stay on released-era content.
+Clear capabilities on identity/realm/relog changes; unsupported content remains
+explicitly unsupported. No local visibility bypass or account-wide authority.
+Platformc5a2127 reports missing egress isolation for later-era items (trade,
+delivery,bazaar and related channels), guards planned before switch activation.
+GM-era switch, grants/menu/security rollout remain action-time approval-held.
+Shared later-era populations/drops/AH still incomplete: do not claim all-era play.
+This is design only, no client runtime/privilege change or live test.
+
+Horutoto host evidence reconciliation — 2026-11-06, offline .32 fixture only:
+Host handoff [redacted-path]
+now identifies zone116 West arrival z383(-341.49,-12.09,106.47) and East Inner
+entry z38az5c5 center(399.29,-8.29,99.97),yaw3.14,size[2,8,10]. Outdoor search
+exceeded45seconds; result is INCONCLUSIVE, neither route nor blocked-path proof.
+No exact3D segment/trigger crossing, current doors/floors or live data parity
+established. Do not import rounded positions as auto-walk waypoints or assert a
+verified exit/re-entry route. Existing guards/manual guidance remain unchanged.
+No duplicate search, build, source routing change, owner movement or server/device
+activity from this handoff. .51 Tower artifact remains immutable/queued separately.

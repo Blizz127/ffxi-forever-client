@@ -1,0 +1,9 @@
+Escape game menu — classic and Forever
+
+Escape first cancels existing text input, events, prompts, windows, action menu and dismissible targets. With no dismissible layer left it opens Game Menu; Escape closes it. Held Escape does not cascade through layers. An engaged action menu closes before Game Menu; autorun stops first. A locked combat target is not cleared to open the menu.
+
+Options / Settings opens the existing Apply/Cancel settings. Key Bindings opens the existing assignments (the second assignment list remains on its parent Config page). Help opens the existing Help Desk. Return to Game closes the menu. All six actions are clickable. Up/Down or Tab/Shift+Tab selects; Enter/Space activates; the controller's usual arrow/Enter/Escape mapping works. Classic uses stock frames, Forever Modern uses its existing theme; Forever with Modern disabled uses stock frames too.
+
+Log Out and Exit Game open the existing Yes/No confirmation, initially No. Cancel leaves Game Menu open. Yes invokes the existing /logout or /shutdown command; the server's refusal, countdown and cancellation remain authoritative. The window is not force-closed. Log Out returns to character select after acknowledgement by reopening the lobby through normal sign-in. Current sign-in inputs are retained in process memory only for this; no new password save, OTP replay, trust change or token mint. A changed account/server, expired authorization or required OTP falls back to ordinary login/prompts. Exit does not sign in again. Test-drive explicit relogin keeps its existing behavior.
+
+Verification and limitations are in the build evidence. Offline checks do not prove the live server countdown, account reconnect, device interaction or native Windows GUI. Existing door, HP/Survival expansion-mask, 0x114 and public-source holds remain.

@@ -1,0 +1,335 @@
+Next joint Woods architectural material trial — authoring intake only
+
+Stone21 preferred input is now woods-stone21-v4.png, replacing v2 only for the
+next authoring/runtime preparation trial. File SHA256 independently matched:
+d8614cb054bf4df53a4cd4cde292df22c2b86a25220aa570509080a0ce89c40d
+1774x887 RGB/opaque. Visually inspected as a material image: dark recesses present,
+neutral palette and etched-looking fine detail remain; not scene acceptance.
+
+Coordinate it with unchanged masonry17-v2 SHA
+3c2c83a63907cf867d43e732dd9a86d8521d882b15b5a4b9cb9600aecf33d74f
+and timber14-v3 SHA
+81706986086412fa14b912bf074c6a743eeb262189cda9ecdf0b1d0169414642.
+Both original inputs independently hash/dimension checked. Full pinned manifest,
+provenance/reference hashes and first matched camera proposals are in:
+[redacted-path]
+
+Sequence after priority F1 menu/teleport recovery; do not mutate frozen82/83 or
+block their existing work on this intake. Next architectural trial starts with
+the gate-near/context pair from private MASONRY-SCENE-TRIAL.txt. Same binary/source,
+camera/time/weather/exposure and ground/detail settings across baseline/art; vary
+only architecture, log actual bindings, pin effective tool0017=1 and inspect
+normal/mip fit. Analytic camera fit is not a rendered view. Return actual PNGs and
+exact binary/source/settings only after that trial executes.
+
+All three runtime_ready=false. Preserve original/custom-art/flavor gates and native
+UVs, alpha/vertex-alpha and normal semantics. Stone21 has one blended32768 part;
+under current opaque-only replacement policy it retains native texture. Master
+alpha255 is not native coverage238..255. Repeated V and approximate regional
+boundaries need actual scene review; no whole-atlas tile assumption. The8part
+recess intersections are not visibility proof. Protected pixels changed in the
+generative edit, so no exact localized-edit claim.
+
+No new source/runtime/render/build/helper, broad variants, ground-shot rerun,
+release or picture-copy action for this intake. Art lane owns picture transfers.
+Independent81 identity reconciliation was received as evidence only; no repeated
+build/render/copy/intake or new publication/QA claim is needed for identical81.
+
+Bank/decorative follow-up — 2026-11-10
+
+Bank09 preferred authoring input is now windurst-bank-atlas-v6.png,1774x887,
+SHA1239b453814d140df28cee90c16d651918a155d3f86db1827f295b8c3088c142.
+Image and exact text-only prompt hashes verified; material image visually viewed.
+It supersedes only bankV4 authoring; V5 is unaccepted. Stone21V4 unchanged.
+Pinned evidence/next-step requirements:
+[redacted-path]
+
+All101bank parts/5452triangles remain full replacement scope, including36blended,
+15U-repeat and2blended V-repeat parts. Do not apply the stone21 opaque-only subset
+as a completed bank replacement. Preserve native local coverage and vertex alpha,
+UVs, normals/mips and custom-art/fingerprint/Original/flavor gates; master255alpha
+cannot supply native0..255 coverage. New warmer palette and U/V boundary metrics
+are unaccepted diagnostics, not a seamless pass. Existing wi_hand27 camera may
+be used for a later bank-bound comparison; no unchanged ground rerender requested.
+
+Decorative03 gray-band mapping:88contained triangles wi_h_in00p3; gray base
+34intersecting/24contained wi_r_kasap4. Read the supplied preservation review;
+these are producer-reviewed UV counts, not newly recomputed geometry here. Material
+identity remains unresolved. Preserve motifs, adjacent content and96degenerate-UV
+triangles; native alpha238/255 is not an icon mask. No new03art/runtime integration.
+
+This intake adds no immediate source/build/render/helper or publisher transaction.
+Priority F1 correction continues. All authoring/runtime-ready distinctions remain.
+
+Timber04 follow-up — 2026-11-10
+
+Preferred woods-timber-atlas-v6.png,1254-square, SHA
+76eaadc3f6e0750669a2fc095d552486eaeecbb50d976f11df60833f5d05795a.
+Image/exact prompt hashes verified; viewed authoring image and read updated audit,
+provenance and rope mapping. Existing HANDOFF matched its previously read hash.
+Pinned record:
+[redacted-path]
+Supersedes timber04V4 authoring only; distinct timber14V3 gate input is unchanged.
+
+All42parts/5097triangles and8lower-apron crossing triangles remain in scope.
+Three rope courses lie lower; V.28349 centroid is a coarse locator, not certified
+coverage. Both old/intended ROI intersect72triangles. Far-right circular cell's
+36triangle uses do not establish material/meaning: retain/review in actual scene,
+never certify a generated wood-knot interpretation from mesh names. Master255alpha
+is not native238..255 coverage. Preserve UVs, flags, normal/mip/blend semantics,
+custom-art/Original/flavor gates and all full-scope requirements. Generative changes
+outside the edit and remaining warm/bright palette are unaccepted visual limits.
+
+Runtime-ready remains false. Sequence after F1; no new source/build/render/helper,
+frozen artifact change or picture/device work. Existing bankV6/stone21V4 and
+current ground-seam intake remain valid; no extra acknowledgement requested.
+
+Foliage01 / kusa01 follow-up — 2026-11-10
+
+Original foliage01V3 component SHA
+29ec88f5ef3d8ef0f7ee17edd9cc1a264a50e03e9fe422d843fdb0614e249fb0
+and Python full-array extraction SHA
+726af4f30eca8bd6acd52f87164f11c31285a903317fcb05a9f6ad3dcb4ed3b1
+independently hash-verified; prompt/extractor identities and peer-review read.
+Pinned record:
+[redacted-path]
+
+The prior no-original-study and missing Python normals/deltas states are superseded.
+Native metadata/full-array correspondence remains FALSE. When foliage is sequenced,
+the bounded missing proof is native position/normal/delta/UV float bits, packedBGRA
+and index order for zone241/file341/chunk5668752, _wi_kusa01 parts0win_ku02 and
+1win_ku01. Each28vertices/42indices, animated48byte stride, blend0x2000,alpha128,
+14nonzero delta vertices. Existing mmb-dump/TEXINV summaries and Python-cache/peer
+agreement do not supply native parity. No whole-zone render matrix is required.
+
+Foliage01V3 is a color/shape COMPONENT, never bind unchanged. Coverage18.49% vs
+native25.32% and fringe remain unaccepted; V2density21.29% is not a finished fallback.
+Preserve animation, normal, alpha/culling/UV and actual mip semantics. No new native
+check/source/build/render/helper/runtime action for this intake. F1 priority/jobs,
+prior ground review/picture ownership and existing gates unchanged. Art lane now
+reports29authoring inputs and6component-only Woods keys; full goal remains open.
+Private arrays/source images/mapping and any decoder key material stay out of
+release assets and generation inputs.
+
+Notice23 timber substrate follow-up — 2026-11-10
+
+Preferred woods-notice23-weathered-timber-v2.png,1254square opaque, SHA
+33d1439c537c5f4a154f6e2984a2619f34f721767c4046346daa4c70e6bc1499.
+Image/review/prompt hashes independently verified and image viewed; provenance,
+audit, four UV cells and corrected semantic composition note read. Pinned record:
+[redacted-path]
+
+Supersedes only no-original23-authoring status. This is substrate COMPONENT ONLY,
+not a whole atlas/direct binding. Seven construction parts404tri occupy four
+cells but include bands/braces/framing; no whole part is certified plain grain.
+Never apply the uniform tile to those whole parts or mixed yatai/esa6 uses.
+Supplied counts cross-check internally; no repeat native UV/index audit performed.
+Retain notices, pale chevrons, gold-marked field, diagonal pattern and uncertain
+surfaces. Native238/255checker is not an ink mask, master255 not native coverage.
+
+Later composition must preserve regional structure/semantics before scene checks,
+including UVs, local/vertex alpha, normals/mips and existing Original/custom-art/
+flavor gates. Do not invent wording or substitute blank final notices. Palette
+closer to one native sample and softer grain do not prove wrap/scene acceptance.
+Frozen81 Grass/Transition-only module has no notice compositor; none is added.
+
+F1 stays priority; frozen jobs/intakes and previous29inputs unchanged. Art lane
+now reports30authoring inputs, no runtime-ready/full-goal claim. No new client
+source/build/render/helper or picture/device/server/publication action. Private
+native data stays out of archives and imagegen inputs.
+
+Emblem16 authoring study follow-up — 2026-11-10
+
+woods-signs-emblems16-v2.png,1254square opaque, SHA
+3f8144348831fe0151cb060f2df3c78a349f694d44fc34d0210fd55964bfa75f.
+Image, mapping, prompt, official-reference review and82reconciliation hashes
+verified; authoring image viewed. Full record and unresolved issues:
+[redacted-path]
+
+Supersedes only no-original16-authoring. Complete10cell layout AUTHORING STUDY,
+not semantically accepted/directly bindable. Fine heraldic/tree/bird/ambiguous
+glyph forms, small-cell framing/colors and embossed-looking detail remain. Do
+not silently substitute familiar symbols or infer nation/service labels. Official
+collection-reference evidence does not label individual panels or eight services.
+All19parts56tri are blended; preserve per-part flags and varying vertex alpha.
+Native238/255checker is not glyph coverage; no global foreground/alpha rule.
+Full independent native UV/index, normal/mip/filtering/scene proof remains absent.
+
+82 reconciliation SHA88e61ce606c9d6709b40632290984fc7c77d4f63a99a678fc6284b6f81cd74a7
+was read/pinned: its tone/bloom pictures have both texture preview flags false
+and0bindings. They are stock lighting controls, never new-art evidence. No82
+rerender, changed frozen artifact, repeated package test or new gate. Art lane's
+81-latest-art-review statement is scoped to its03:00Z evidence; the existing lead
+83 ground-scene review/intake completed later and remains valid, not replayed.
+
+F1 priority and prepared masonry/stone/timber inputs unchanged. Later material
+view must explicitly demonstrate new-art binding and actual matched scene use.
+Art lane reports31inputs; previous30unchanged. No new client source/helper/build/
+render/device/server/publisher action or full-art acceptance from this intake.
+
+Organic M01/M02 preparation intake — 2026-11-10
+
+Received M01V3 SHA87c041048d36e725c7d91d35f1301f84a4b1cc52858728a7754ac77b1a790233
+and M02V2 SHA6a6febe0c6772ae4494d712d01dc88b2372f19f78460f1f3e706e5fd436852f0.
+Both1254square opaque, complete six-cell RGB authoring studies only. Images,
+full Python arrays,34placement evidence and exact prompts hash-verified; both
+images viewed. Pinned record:
+[redacted-path]
+
+Version reconciliation: received intake specifiesM01V3, while live art HANDOFF/
+PROVENANCE already preferV5 and retainV3as palette reference. This record pins
+receivedV3 and notes newer preference; no silent runtime adoption of either.
+Reconcile latest authoring revision when sequenced. V3 lacks the tapered warm
+opaque-cell RGB motif, which alpha preservation cannot restore. M02V2 remains
+darker;V3overshot/non-preferred. No final fidelity/species/fixture/emission claim.
+
+Current preview excludes these underscore/animated uses. Preserve native cutout
+coverage, flags/UVs/normals/vertex colors/animation; generated255 is never runtime
+coverage. M01 retains345positive UVtri+1degenerate; M02leaf72+72 across V periods
+uses one repeated period. M02part0 has238nonzero sway deltas,part1 none. Bothp1
+flags0x2000 are no-cull alpha-test, not ordinary blending. Six full saved parts
+and34placements(11h/11t/12m02) retain exact f32bits,indices,light/LOD/group/area/link.
+Near-coincident h/t transforms differ; never merge. Light refs do not prove emission.
+Native independent full-array parity, camera/PVS/LOD/occlusion/mips/animation
+and actual scene remain unverified; Python saved-data agreement is insufficient.
+
+Existing art-lane Alienware picture receipts were read, no device access/copy
+repeated. Private native masks/decoded arrays/placements never enter packages or
+generation inputs. F1 priority, frozen jobs and publisher transactions unchanged.
+33reported authoring inputs; previous31unchanged. No new helper/build/render or
+source/runtime acceptance; actual original-art game evidence remains ground-only.
+
+M01 V5 / decorative03 V3 / decorative11 routing — 2026-11-10
+
+Preferred M01 authoring choice is now V5, SHA
+58febfe2abfcbcbf83554dcd8dfe33de3f80a1037e0eb535f7eb7dd2e6cc1774.
+This resolves the V3/V5 preference difference recorded above; V3 remains a palette
+reference and M02 remains unchanged. V5 restores an approximate warm taper and
+blush, but contrast, dark/yellow color and fine patterns remain unaccepted.
+Preserve local cutout coverage, flags, UVs, normals, vertex colors and sway.
+
+Decorative03 V3, SHA
+a6e006e41ff67894b6191d46cd529bb8c29532bed317213f9bfb8f70a33c5821,
+is a complete 16-motif color study with explicit packing failures: observed cuts
+around 207/417/627 versus 222/444/665, lower split 411 versus 444, gold ending
+1212 versus 1331. Do not change game UVs or crop native details to force a fit.
+Keep the 16 cross-guide positive triangles and all 96 UV-degenerate triangles.
+The map accounts for 12 parts / 1230 triangles; rectangles are authoring guides,
+not semantic masks. Motif fidelity, normal/mip behavior and scene use are unproven.
+
+Decorative11 routing accounts for 31 parts / 1300 triangles: 20 opaque parts
+(1164 positive UV triangles plus 24 degenerate) and 11 blended parts / 112 triangles.
+All 1164 positive opaque triangles fall within seven wrapped guides. The small
+square's 1021/1024 nonzero-alpha pixels preserve its square, not its internal
+symbol. Preserve internal RGB divisions in it and the large curl. Opaque RGB
+remains meaningful at zero alpha; no global premultiplication or cutout rule.
+No decorative11 art or compositor exists. Native full-array parity remains unproven.
+
+Verified the reported root environment/shader hashes. Frozen84 has a different
+environment hash (bec1f5e0...) because it includes ground work, but inspection
+confirms the same architectural opaque-only binding and animated/underscore
+exclusions. The shader hash is identical (9446eaa4...). An opaque-only material
+path cannot claim coverage of all 31 decorative11 parts.
+
+Images viewed; image/map/prompt hashes, dimensions/opacity and saved summary
+arithmetic checked. Existing picture receipts read locally; no device copy or
+native extraction repeated. Exact pins, source observations and limits:
+[redacted-path]
+
+Art lane reports 34 authoring inputs, all runtime_ready=false. This intake changes
+only authoring preferences/evidence. F1/private84 remains priority; existing builds,
+frozen drops and QA/publisher transactions stay intact. No new helper, runtime
+source change, build, render or publication. Actual new-art game evidence remains
+limited to the existing ground views. Private native assets stay out of releases.
+
+Exact83 art-lane review and decorative11 first study — 2026-11-10
+
+Art-lane review SHA
+3ebb79d49c46951709086cbba39848650aea71cd5f5c0d97e54a2f52447d6338
+now supersedes exact81 as that lane's latest reviewed art-on scene. Source289892f5
+and binaryf6208950 match the existing lead83 inspection. The distant diagonal is
+less conspicuous; the near straight join around x700-980,y448 already existed in81.
+Retain that join, pale patches, bright earth and native bank mismatch for subsequent
+refinement. No new visible hole/alpha cut in these two views; no motion, native
+Windows, live gameplay or full-art acceptance. Existing83 packaging/intake remains
+intact. Prior render, artifact and crop checks were not repeated.
+
+Decorative11 V1 SHA
+71f65be6ac192e137fb84b8b0291971e6266752f926ef6687485c64b6af1a3a8
+is a text-only original shape/color study, 953x1651 opaque. Wrong intended1:2
+aspect, independent offsets, oversized motifs and warm color prohibit direct
+binding. Seven opaque/four blended guides and their separate RGB/alpha semantics
+remain mandatory. Images/prompt hash, dimensions and opacity checked; study viewed.
+On-disk notes already prefer V2 with a corrected canvas but unresolved packing;
+this intake pins V1 and records that newer preference without runtime adoption.
+
+New83 picture and decorative11 picture receipts were read locally; copies belong
+to the art lane and were not repeated. Complete pins and follow-up findings:
+[redacted-path]
+
+Catalogue now35 authoring inputs, all runtime_ready=false. F1/private84 stays
+priority; joint masonry17V2/stone21V4/timber14V3 trial pins unchanged. No new helper,
+source/build/render/package/publisher action, reopening old copies or added gate.
+
+Architectural normal dependencies / decorative11 V2 — 2026-11-10
+
+Normal dependency map SHA
+47e02f3f54cf89499059cb6005456b022df2f094c2ef39e036fd6cbcfe01549f
+accounts for 43 type-1 meshes and 138 actual parts: 46 targets (45 opaque-eligible)
+and 92 untouched. The earlier filtered cache omitted three empty-name parts:
+wi_r_kanban part2, wi_k_aucknb01 part1, wi_k_arch05 part1. They already lack normal
+matches; retain that baseline. Forty meshes have complete normal availability.
+The art lane's complete Bp metadata has 35 keys, with all 29 earlier native
+inventory dimensions matching. Python re-decode agrees with 135 cached parts;
+this is not independent native full-array or shader/scene acceptance.
+
+Frozen84 renderer inspection confirms lookup uses texture-name bytes8..15 and
+requires a match for every model part, including untouched/blended parts. Ordinary
+ffenv   t_win21d / ffenv   t_win17d / ffenv   t_win14d names preserve native suffixes.
+The supplied prospective-name check retains all 43 availability states. Missing
+alias normals can disable a whole mesh's bump path; neutral normals preserve
+eligibility but change relief. Do not invent normals for the three baseline gaps.
+Native relief compatibility with the new art remains unverified.
+
+Gate03 has six actual parts. Stone21 part0 has 800 geometry triangles: the earlier
+18/146 shorthand means 18 left-strip and 146 right-strip intersections, not a
+146-triangle total. Keep normal dependencies of all untouched/blended parts.
+Stone21V4, masonry17V2 and timber14V3 image pins remain unchanged.
+
+Decorative11 V2 is now preferred authoring study, SHA
+9b16d254c9c8a3a953f44c7ed9a9ed0e76da53eb0039bea0d34cf8d7260b26bd.
+Its 887x1774 opaque canvas restores 1:2; triangular border and some shapes improve.
+Square placement regresses left, early rows/long curl/high flourish and a darker
+red field remain. V1 is an alternate reference. Neither may bind directly.
+
+Map/image/prompt hashes, image dimensions/opacity and saved part counts verified;
+V2 image viewed. Existing picture receipt read locally, with no repeated copy.
+Exact pins, frozen84 source hash and remaining constraints:
+[redacted-path]
+
+F1/private84 and immutable release transactions remain unchanged. No new helper,
+source change, build, render, publication or acceptance gate. Native height/normal
+pixels and private source evidence stay out of generation inputs and releases.
+
+First executed architectural trial — 2026-11-10 ~04:50Z (after84 hand-off)
+
+Private84 was packaged and handed off once at04:10:20Z, so the queued trio trial ran.
+Source ca52c17890b8fb44182f2d8a4fcabba838e482be, branch private/arch-trial-20261110,
+[redacted-path] (base frozen84/95ec7864). The only
+change is a development-only hook: FFXI_ARCH_ART_DIR binds external masters to the
+audited opaque parts of t_win21d/17d/14d in zone241. Unset = unchanged behaviour.
+No art is embedded or committed. Non-dist preview binary9998f980...; not a release.
+
+Same binary/config, only the variable differs. Bound: stone21 10 opaque (1 blended
+keeps stock), masonry17 3, timber14 32 = 45, matching the art lane's 45 opaque-
+eligible count; native normals present and retained by suffix.
+Five baseline/art pairs rendered and viewed. The two proposed analytic cameras sit
+outside walkable space and show only the passage's dark exterior; gate-inside
+(158,-9.6,-37 -> 130,-9.6,-37) is the useful review view (44.5% pixels changed).
+Art is visibly bound and regions line up with ribs/dado/rubble; no hole or alpha cut
+seen. It is sharper but loses stock moss/tonal variation (uniform dark blue-grey,
+flatter), mortar reads outlined/etched, rubble stones are larger, dado reads smooth.
+Timber14 is not visible in these views and remains unreviewed. Not art acceptance;
+runtime_ready stays false. No package, QA/publisher intake, picture copy or device
+action. Evidence, hashes, settings and findings:
+[redacted-path]

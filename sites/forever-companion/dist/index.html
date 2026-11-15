@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172322"><meta name="description" content="Your workshop, wherever you are. FFXI Forever recipe log, ingredient planner and auction-house companion.">
+<link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css">
+<title>Forever Companion · Crafting Log</title>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<div class="app-shell">
+<header class="app-header">
+ <a class="brand" href="#craft"><img src="icon.svg" width="38" height="38" alt=""><span>FOREVER <span class="muted">COMPANION</span></span></a>
+ <div class="header-actions"><span class="connection-pill" id="connection">Local sandbox</span><button class="secondary" id="install" hidden>Install app</button><button class="icon-button" id="help" aria-label="About this companion">?</button></div>
+</header>
+<aside class="sidebar">
+ <div class="character-card"><div class="char-avatar">F</div><div><strong id="character-name">Workshop Adventurer</strong><div class="muted small">Sample character · Forever</div></div></div>
+ <div class="eyebrow desktop-only">YOUR ADVENTURE</div>
+ <nav aria-label="Main navigation" id="navigation">
+ <button class="nav-button active" title="Crafting log" data-view="craft"><span aria-hidden="true">⚒</span> Crafting log</button>
+ <button class="nav-button" title="Auction house" data-view="market"><span aria-hidden="true">⚖</span> Auction house</button>
+ <button class="nav-button" title="Shopping list" data-view="planner"><span aria-hidden="true">☷</span> Shopping list <span class="nav-count" id="plan-count">0</span></button>
+ <button class="nav-button" title="Inventory" data-view="inventory"><span aria-hidden="true">▣</span> Inventory</button>
+ <button class="nav-button" title="Activity" data-view="activity"><span aria-hidden="true">◷</span> Activity</button>
+ </nav>
+ <div class="sidebar-bottom desktop-only"><div class="eyebrow">A LITTLE CRAFT, EVERY DAY.</div><p class="muted small">Your workshop,<br>wherever you are.</p><button class="secondary" id="reset">Reset sandbox</button></div>
+</aside>
+<main class="workspace" id="workspace">
+ <div class="notice"><span>✧</span><span><strong>Try your portable workshop.</strong> Inventory, gil, bids and synthesis below are local practice data. Game connection is pending.</span></div>
+ <section class="view" id="view-craft" aria-label="Crafting log">
+  <div class="title-row"><div><div class="eyebrow">THE ART OF MAKING</div><h1>Crafting log</h1><p class="muted">Find your next creation. Gather what you need. Make it yours.</p></div><span class="badge" id="catalog-count">Loading recipes…</span></div>
+  <div class="craft-tabs" id="craft-tabs" aria-label="Crafting disciplines"></div>
+  <div class="toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input id="recipe-search" type="search" placeholder="Search recipes or ingredients…" aria-label="Search recipes or ingredients"></label><label class="field"><span class="screen-reader">Recipe levels</span><select id="level-filter"><option value="all">All levels</option><option value="0">Lv. 1–10</option><option value="10">Lv. 11–20</option><option value="20">Lv. 21–30</option><option value="30">Lv. 31–40</option><option value="40">Lv. 41–50</option><option value="50">Lv. 51–60</option><option value="60">Lv. 61–70</option><option value="70">Lv. 71+</option></select></label></div>
+  <div class="filter-row"><button class="chip active" id="era-filter" aria-pressed="true">Base era</button><button class="chip" id="ready-filter" aria-pressed="false">Materials ready</button><button class="chip" id="favorite-filter" aria-pressed="false">☆ Favorites</button><span id="filter-count" class="muted small"></span></div>
+  <div class="log-grid"><section class="recipe-panel"><div class="panel-heading"><span>RECIPE</span><span>SKILL CAP</span></div><div class="recipe-list" id="recipe-list" aria-label="Recipes"></div></section><section class="detail-panel" id="detail" aria-label="Selected recipe"></section></div>
+ </section>
+ <section class="view" id="view-market" hidden aria-label="Auction house"><div class="title-row"><div><div class="eyebrow">TRADE & TREASURE</div><h1>Auction house</h1><p class="muted">Find ingredients for your next synthesis.</p></div><span class="badge gold" id="market-gil"></span></div><div class="notice">Local market simulation · generated asking prices and stock, not live listings or actual price history.</div><div class="toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input id="market-search" type="search" aria-label="Search auction items" placeholder="Search ingredients and crafted items…"></label><button class="secondary" id="market-clear">Clear</button></div><div id="market-context"></div><div class="market-table" id="market-list"></div></section>
+ <section class="view" id="view-planner" hidden aria-label="Shopping list"><div class="title-row"><div><div class="eyebrow">A PLAN IN THE MAKING</div><h1>Shopping list</h1><p class="muted">One list for every recipe. Materials you own count toward the total.</p></div><button class="secondary" id="clear-plan">Clear list</button></div><div id="plan-recipes"></div><div id="plan-materials"></div></section>
+ <section class="view" id="view-inventory" hidden aria-label="Inventory"><div class="title-row"><div><div class="eyebrow">READY AT HAND</div><h1>Inventory</h1><p class="muted">Adjust your sandbox supplies and crafting skills to plan a session.</p></div><span class="badge gold" id="inventory-gil"></span></div><div class="panel-heading">CRAFTING SKILLS · SANDBOX</div><div class="stat-grid" id="skills"></div><div class="toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input type="search" id="inventory-search" placeholder="Find an item to add or adjust…" aria-label="Search inventory"></label><button class="secondary" id="export">Export sandbox</button><button class="secondary" id="import">Import sandbox</button><input id="import-file" type="file" accept="application/json,.json" hidden></div><div class="inventory-grid" id="inventory-list"></div></section>
+ <section class="view" id="view-activity" hidden aria-label="Activity"><div class="title-row"><div><div class="eyebrow">YOUR WORKSHOP JOURNAL</div><h1>Activity</h1><p class="muted">A record of your local practice bids and synthesis.</p></div></div><div class="activity-list" id="activity-list"></div></section>
+ <footer class="small muted">FFXI Forever · Companion preview 0.1.0-preview2 <span id="footer-count"></span></footer>
+</main>
+</div>
+<nav class="bottom-nav" aria-label="Mobile navigation"><button class="nav-button" title="Crafting log" data-view="craft"><span aria-hidden="true">⚒</span>Crafts</button><button class="nav-button" title="Auction house" data-view="market"><span aria-hidden="true">⚖</span>Auction</button><button class="nav-button" title="Shopping list" data-view="planner"><span aria-hidden="true">☷</span>List</button><button class="nav-button" title="Inventory" data-view="inventory"><span aria-hidden="true">▣</span>Inventory</button><button class="nav-button" title="Activity" data-view="activity"><span aria-hidden="true">◷</span>Activity</button></nav>
+<dialog class="modal" id="dialog"><div id="dialog-content"></div><div class="modal-actions" id="dialog-actions"></div></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+<noscript>This app needs JavaScript to browse recipes and plan ingredients.</noscript>
+</body></html>

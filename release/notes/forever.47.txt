@@ -1,0 +1,7 @@
+FFXI Forever 1.0.7-forever.47
+Remove standalone account creation; use Banshee Realm launcher account management.
+Existing-account login, launcher credentials/token handoff, two-factor and character creation unchanged.
+Login buttons/focus now adapt to visible actions; direct starts show launcher guidance.
+Classic retains its Create Account UI. No auth protocol, accounts, characters or saved credentials changed.
+No active-player restart, owner-device or real-account/login test. Offline UI/launcher contract checks only; evidence in owner-20261106-release47.
+Rollback: Forever46. Existing server/transition/door/HP/0x114/source/device holds preserved.

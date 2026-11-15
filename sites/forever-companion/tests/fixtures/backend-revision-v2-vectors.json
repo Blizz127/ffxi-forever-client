@@ -1,0 +1,89 @@
+{
+  "mapping_valid": [
+    {
+      "revision": "read:1:1:1",
+      "snapshot_and_catalog": "accept and preserve exact string"
+    },
+    {
+      "revision": "read:18446744073709551615:4294967295:18446744073709551615",
+      "snapshot_and_catalog": "accept and preserve exact string"
+    },
+    {
+      "revision": "obs1:1:1:1",
+      "snapshot_and_catalog": "accept and preserve exact string"
+    },
+    {
+      "revision": "obs1:1:4294967296:1",
+      "snapshot_and_catalog": "accept and preserve exact string"
+    },
+    {
+      "revision": "obs1:18446744073709551615:18446744073709551615:18446744073709551615",
+      "snapshot_and_catalog": "accept and preserve exact string"
+    }
+  ],
+  "mapping_invalid": [
+    {
+      "revision": "read:1:4294967296:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:0:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:0:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:1:0",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:01:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:01:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:1:01",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:18446744073709551616:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:18446744073709551616:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:1:18446744073709551616",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:1:1:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "other:1:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    },
+    {
+      "revision": "obs1:+1:1:1",
+      "snapshot_and_catalog": "reject unavailable"
+    }
+  ],
+  "scenarios": [
+    "read revisions remain view-only for mutation preparation",
+    "distinct snapshot A and catalog B display; prepare uses cached snapshot A only",
+    "validobs1 with craft/bid capabilities absent never prepares operation",
+    "unknown/expired obs1 or changed native owner/generation/projectedstate is refused by native admission"
+  ],
+  "status": "Required expectations for the companion owner; not presented as passing current mapper tests"
+}
